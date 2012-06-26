@@ -1,0 +1,4 @@
+# Module aceproject
+# RPC service class, partial path of RPC policy file
+project.client.LoginService, 762D164F90DF2A4C1F39061357159E45.gwt.rpc
+project.client.SubmitService, F076C5DD6BBFED05402F36E05C6E2A92.gwt.rpc

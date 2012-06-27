@@ -21,25 +21,22 @@ public class AceProject implements EntryPoint {
 	
 	
 	private LoginInfo loginInfo = null;
-	private VerticalPanel loginPanel; 
-	private VerticalPanel editor; 
+	private LoginWidget loginPanel; 
+	private AceEditorWidget editor; 
 	/**
 	 * This is the entry point method.
 	 * @wbp.parser.entryPoint
 	 */
 	public void onModuleLoad() {
 		// Check login status using login service.
-		System.out.println("Step 1");
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 		loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
 		      public void onFailure(Throwable error) {
 		      }
 
 		      public void onSuccess(LoginInfo result) {
-		    	  System.out.println("Step 2");
 		        loginInfo = result;
 		        if(loginInfo.isLoggedIn()) {
-		        	System.out.println("Step 3");
 		        	loadEditorAndService();
 		        } else {
 		          loadLogin();
@@ -58,8 +55,8 @@ public class AceProject implements EntryPoint {
 		
 		if(editor==null)
 			editor=new AceEditorWidget(loginInfo);
-		//RootPanel.get("ace").add(editor);
-		
+		RootPanel.get("ace").add(editor);
+		editor.buildEditor();
 		
 	}
 

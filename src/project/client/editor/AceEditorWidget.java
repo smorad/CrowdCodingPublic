@@ -40,7 +40,6 @@ public class AceEditorWidget extends VerticalPanel {
 		if (submitService == null)
 			submitService = (SubmitServiceAsync) GWT
 					.create(SubmitService.class);
-		System.out.println("Step 5");
 		// create first AceEditor widget
 		editor1 = new AceEditor(true);
 		editor1.setWidth("798px");

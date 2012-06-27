@@ -1,0 +1,2 @@
+serviceClass: project.client.editor.SubmitService
+path: 59BE2E533F487AEEAA38E09E1B302C54.gwt.rpc

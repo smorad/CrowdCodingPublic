@@ -8,12 +8,12 @@
   <!-- Servlets -->
   <servlet>
     <servlet-name>SubmitServiceImpl</servlet-name>
-    <servlet-class>project.server.SubmitServiceImpl</servlet-class>
+    <servlet-class>project.server.editor.SubmitServiceImpl</servlet-class>
   </servlet>
 
    <servlet>
     <servlet-name>loginService</servlet-name>
-    <servlet-class>project.server.LoginServiceImpl</servlet-class>
+    <servlet-class>project.server.login.LoginServiceImpl</servlet-class>
   </servlet>
   
    <servlet-mapping>

@@ -6,12 +6,14 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import edu.ycp.cs.dh.acegwt.client.ace.AceAnnotationType;
@@ -22,17 +24,21 @@ import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
 
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 
 public class AceEditorWidget extends LayoutPanel {
 	static AceEditor editor1;
 	private SubmitServiceAsync submitService;
 	private LoginInfo loginInfo;
 	private Anchor signOutLink = new Anchor("Sign Out");
+	private int points=0;
 	
 	private String METHOD_DESCRIPTION="This is a description.\n"
-									+"Paremeters:\n"
+									+"Parameters:\n"
 									+"\ta-some int\n"
-									+"\tb-some int\n";
+									+"\tb-some int\n"
+									;
 	
 	
 	private  String[] parameters={"int a", "int b"};
@@ -54,7 +60,6 @@ public class AceEditorWidget extends LayoutPanel {
 		editor1 = new AceEditor(true);
 		editor1.setWidth("798px");
 		editor1.setHeight("300px");
-
 	}
 
 	/**
@@ -68,7 +73,10 @@ public class AceEditorWidget extends LayoutPanel {
 		setWidgetLeftWidth(editor1, 147.0, Unit.PX, 835.0, Unit.PX);
 		setWidgetTopHeight(editor1, 184.0, Unit.PX, 300.0, Unit.PX);
 		
-		final Label description=new Label(METHOD_DESCRIPTION);
+		final TextArea description=new TextArea();
+		description.setReadOnly(true);
+		description.setEnabled(false);
+		description.setText(METHOD_DESCRIPTION);
 		add(description);
 		setWidgetLeftWidth(description, 145.0, Unit.PX, 800.0, Unit.PX);
 		setWidgetTopHeight(description, 16.0, Unit.PX, 162.0, Unit.PX);
@@ -90,7 +98,7 @@ public class AceEditorWidget extends LayoutPanel {
 		layoutPanel.setWidgetTopHeight(showGutterBox, 4.0, Unit.PX, 48.0,
 				Unit.PX);
 		showGutterBox.setValue(true);
-		Button setTabSizeButton = new Button("Set tab size");
+		final Button setTabSizeButton = new Button("Set tab size");
 		layoutPanel.add(setTabSizeButton);
 		layoutPanel.setWidgetLeftWidth(setTabSizeButton, 91.0, Unit.PX, 100.0,
 				Unit.PX);
@@ -99,7 +107,13 @@ public class AceEditorWidget extends LayoutPanel {
 		setTabSizeButton.setSize("100px", "");
 
 		// add text box and button to set tab size
-		final TextBox tabSizeTextBox = new TextBox();
+		final TextArea tabSizeTextBox = new TextArea();
+		tabSizeTextBox.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				if(KeyCodes.KEY_ENTER==event.getNativeEvent().getKeyCode())
+					setTab(tabSizeTextBox);
+			}
+		});
 		layoutPanel.add(tabSizeTextBox);
 		layoutPanel.setWidgetLeftWidth(tabSizeTextBox, 4.0, Unit.PX, 62.0,
 				Unit.PX);
@@ -108,7 +122,13 @@ public class AceEditorWidget extends LayoutPanel {
 		tabSizeTextBox.setWidth("4em");
 
 		// add text box and button to go to a given line
-		final TextBox gotoLineTextBox = new TextBox();
+		final TextArea gotoLineTextBox = new TextArea();
+		gotoLineTextBox.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				if(KeyCodes.KEY_ENTER==event.getNativeEvent().getKeyCode())
+					goToLine(gotoLineTextBox);
+			}
+		});
 		layoutPanel.add(gotoLineTextBox);
 		layoutPanel.setWidgetLeftWidth(gotoLineTextBox, 348.0, Unit.PX, 62.0,
 				Unit.PX);
@@ -241,7 +261,7 @@ public class AceEditorWidget extends LayoutPanel {
 			 * Code to be overridden
 			 */
 			public void onClick(ClickEvent event) {
-				editor1.gotoLine(Integer.parseInt(gotoLineTextBox.getText()));
+				goToLine(gotoLineTextBox);
 			}
 		});
 		setTabSizeButton.addClickHandler(new ClickHandler() {
@@ -250,7 +270,7 @@ public class AceEditorWidget extends LayoutPanel {
 			 * Code to be overridden
 			 */
 			public void onClick(ClickEvent event) {
-				editor1.setTabSize(Integer.parseInt(tabSizeTextBox.getText()));
+				setTab(tabSizeTextBox);
 			}
 		});
 		showGutterBox.addClickHandler(new ClickHandler() {
@@ -301,7 +321,7 @@ public class AceEditorWidget extends LayoutPanel {
 
 	// Method used to call service
 	public void callSubmitService() {
-		submitService.sendCode(sendText(), new AsyncCallback<String>() {
+		submitService.sendCode(sendText(), points, new AsyncCallback<String>() {
 			public void onFailure(Throwable caught) {
 				// System.out.println(caught.toString());
 				Window.alert("Failure");
@@ -332,6 +352,27 @@ public class AceEditorWidget extends LayoutPanel {
 		else
 			s+="null";
 		return s+";\n}";
+	}
+	
+	private void goToLine(TextArea gotoLineTextBox){
+		try{
+			editor1.gotoLine(Integer.parseInt(gotoLineTextBox.getText()));	
+		}
+		catch(Exception e){
+		}
+		finally{
+			gotoLineTextBox.setText("");
+		}
+	}
+	private void setTab(TextArea tabSizeTextBox){
+		try{
+			editor1.setTabSize(Integer.parseInt(tabSizeTextBox.getText()));
+		}
+		catch(Exception e){
+		}
+		finally{
+			tabSizeTextBox.setText("");
+		}
 	}
 	
 	

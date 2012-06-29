@@ -5,6 +5,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -18,25 +19,30 @@ public class LoginWidget extends LayoutPanel{
 	//private VerticalPanel loginPanel=this;
 	private Anchor signInLink = new Anchor("Sign in");
 	private LoginInfo loginInfo;
+	private int width, height;
+	private AbsolutePanel absolutePanel;
 	
 	public LoginWidget(final LoginInfo loginInfo){
-		setSize("1024px","768px");
+		//setSize("1024px","768px");
+		width=Window.getClientWidth();
+		height=Window.getClientHeight();
+		setPixelSize(width, height);
 		this.loginInfo=loginInfo;
-		createLogin(loginInfo);
-		//Window.addResizeHandler(new ResizeHandler(){
-			
-		//});
+		createLogin();
+		
 	}
 	public void onResize(){
 		setPixelSize(Window.getClientWidth(), Window.getClientHeight());
 		clear();
-		createLogin(loginInfo);
+		createLogin();
+		
+		
 	}
+
 	
-	private void createLogin(final LoginInfo loginInfo){
-	    
-	    AbsolutePanel absolutePanel = new AbsolutePanel();
-	    add(absolutePanel);
+	private void createLogin(){
+		absolutePanel = new AbsolutePanel();
+		add(absolutePanel);
 	    setWidgetLeftWidth(absolutePanel, Window.getClientWidth()/3, Unit.PX, 408.0, Unit.PX);
 	    setWidgetTopHeight(absolutePanel, Window.getClientHeight()/3, Unit.PX, 126.0, Unit.PX);
 	    absolutePanel.setSize("408px", "126px");
@@ -49,4 +55,8 @@ public class LoginWidget extends LayoutPanel{
 	    absolutePanel.add(signInLink, 188, 47);
 	    signInLink.setSize("58px", "33px");
 	}
+	
+	
+	
+
 }

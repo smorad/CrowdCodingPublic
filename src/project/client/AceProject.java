@@ -9,9 +9,8 @@ import project.client.login.LoginWidget;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -48,16 +47,17 @@ public class AceProject implements EntryPoint {
 	private void loadLogin() {
 	    if(loginPanel==null)
 	    	loginPanel=new LoginWidget(loginInfo);
-	    RootPanel.get("ace").add(loginPanel);//see the html file for id
+	    RootLayoutPanel.get().add(loginPanel);//see the html file for id
   }
 
 	private void loadEditorAndService() {
 		
 		if(editor==null)
 			editor=new AceEditorWidget(loginInfo);
-		RootPanel.get("ace").add(editor);
+		//RootPanel.get("ace").add(editor);
+		RootLayoutPanel.get().add(editor);
 		editor.buildEditor();
-		
+		System.out.println("Success");
 	}
 
 	

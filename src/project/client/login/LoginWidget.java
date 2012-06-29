@@ -1,26 +1,44 @@
 package project.client.login;
 
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 
-public class LoginWidget extends VerticalPanel{
+public class LoginWidget extends LayoutPanel{
 	
 	private Label loginLabel = new Label("Please sign in to your Google account");
-	private VerticalPanel loginPanel=this;
+	//private VerticalPanel loginPanel=this;
 	private Anchor signInLink = new Anchor("Sign in");
+	private LoginInfo loginInfo;
 	
-	public LoginWidget(LoginInfo loginInfo){
+	public LoginWidget(final LoginInfo loginInfo){
+		setSize("1024px","768px");
+		this.loginInfo=loginInfo;
+		createLogin(loginInfo);
+		//Window.addResizeHandler(new ResizeHandler(){
+			
+		//});
+	}
+	public void onResize(){
+		setPixelSize(Window.getClientWidth(), Window.getClientHeight());
+		clear();
 		createLogin(loginInfo);
 	}
 	
 	private void createLogin(final LoginInfo loginInfo){
 	    
 	    AbsolutePanel absolutePanel = new AbsolutePanel();
-	    loginPanel.add(absolutePanel);
+	    add(absolutePanel);
+	    setWidgetLeftWidth(absolutePanel, Window.getClientWidth()/3, Unit.PX, 408.0, Unit.PX);
+	    setWidgetTopHeight(absolutePanel, Window.getClientHeight()/3, Unit.PX, 126.0, Unit.PX);
 	    absolutePanel.setSize("408px", "126px");
 	    loginLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 	    absolutePanel.add(loginLabel, 0, 0);

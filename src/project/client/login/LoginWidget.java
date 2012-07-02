@@ -5,18 +5,13 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 
 public class LoginWidget extends LayoutPanel{
 	
 	private Label loginLabel = new Label("Please sign in to your Google account");
-	//private VerticalPanel loginPanel=this;
 	private Anchor signInLink = new Anchor("Sign in");
 	private LoginInfo loginInfo;
 	private int width, height;
@@ -35,8 +30,6 @@ public class LoginWidget extends LayoutPanel{
 		setPixelSize(Window.getClientWidth(), Window.getClientHeight());
 		clear();
 		createLogin();
-		
-		
 	}
 
 	

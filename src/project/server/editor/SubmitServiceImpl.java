@@ -31,13 +31,14 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		}
 		catch(EntityNotFoundException e){
 			user=new Entity(k);
+			user.setProperty("nickname", currentUser.getNickname());
 		}
 		
 		if(!user.hasProperty("points"))
 			user.setProperty("points",points);
 		else
 			user.setProperty("points", ((Integer)user.getProperty("points"))+points);	
-		user.setProperty("nickname", currentUser.getNickname());
+		
 		datastore.put(user);	//puts code in datastore
 		return string;
 	}

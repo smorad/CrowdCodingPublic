@@ -34,6 +34,7 @@ public class AceEditorWidget extends LayoutPanel {
 	private LoginInfo loginInfo;
 	private Anchor signOutLink = new Anchor("Sign Out");
 	private int points=0;
+	private Label userPoints=new Label("0");
 	private static VerticalPanel pointRank=new VerticalPanel();
 	
 	private String METHOD_DESCRIPTION="This is a description.\n"
@@ -72,10 +73,10 @@ public class AceEditorWidget extends LayoutPanel {
 	 * of the AceEditor methods, so it's a bit of a kitchen sink.
 	 */
 	private void buildUI() {
-		setSize("1024px","768px");
+		setSize("1179px","617px");
 		
 		add(editor1);
-		setWidgetLeftWidth(editor1, 147.0, Unit.PX, 835.0, Unit.PX);
+		setWidgetLeftWidth(editor1, 147.0+50, Unit.PX, 835.0, Unit.PX);
 		setWidgetTopHeight(editor1, 184.0, Unit.PX, 300.0, Unit.PX);
 		
 		final TextArea description=new TextArea();
@@ -83,18 +84,30 @@ public class AceEditorWidget extends LayoutPanel {
 		description.setEnabled(false);
 		description.setText(METHOD_DESCRIPTION);
 		add(description);
-		setWidgetLeftWidth(description, 145.0, Unit.PX, 800.0, Unit.PX);
+		setWidgetLeftWidth(description, 145.0+50, Unit.PX, 800.0, Unit.PX);
 		setWidgetTopHeight(description, 16.0, Unit.PX, 162.0, Unit.PX);
 		
 		
 		add(pointRank);
-		setWidgetLeftWidth(pointRank, 18.0, Unit.PX, 119.0, Unit.PX);
+		setWidgetLeftWidth(pointRank, 18.0, Unit.PX, 119.0+30, Unit.PX);
 		setWidgetTopHeight(pointRank, 53.0, Unit.PX, 500.0, Unit.PX);
+		callRankUpdateService();
+		
+		Label lab=new Label("Your current total points:");
+		add(lab);
+		setWidgetLeftWidth(lab, 1001.0, Unit.PX, 147.0, Unit.PX);
+		setWidgetTopHeight(lab, 53.0, Unit.PX, 18.0, Unit.PX);
+		
+		add(userPoints);
+		setWidgetLeftWidth(userPoints, 1001.0, Unit.PX, 119.0+50, Unit.PX);
+		setWidgetTopHeight(userPoints, 79.0, Unit.PX, 18.0, Unit.PX);
 		callPointUpdateService();
+		
+		
 
 		LayoutPanel layoutPanel = new LayoutPanel();
 		add(layoutPanel);
-		setWidgetLeftWidth(layoutPanel, 147.0, Unit.PX, 808.0, Unit.PX);
+		setWidgetLeftWidth(layoutPanel, 147.0+50, Unit.PX, 808.0, Unit.PX);
 		setWidgetTopHeight(layoutPanel, 490.0, Unit.PX, 113.0, Unit.PX);
 		Button button = new Button("Submit Code");
 		layoutPanel.add(button);
@@ -125,7 +138,7 @@ public class AceEditorWidget extends LayoutPanel {
 			public void onClick(ClickEvent event) {
 				try {
 					callSubmitService();
-					callPointUpdateService();
+					callRankUpdateService();
 				}
 
 				catch (Exception e) {
@@ -185,8 +198,8 @@ public class AceEditorWidget extends LayoutPanel {
 		});
 	}
 	
-	public void callPointUpdateService(){
-		pointUpdater.updatePoints( new AsyncCallback<List<String>>(){
+	public void callRankUpdateService(){
+		pointUpdater.updatedList( new AsyncCallback<List<String>>(){
 			public void onFailure(Throwable caught){
 				Window.alert("Failed to update");
 			}
@@ -196,6 +209,21 @@ public class AceEditorWidget extends LayoutPanel {
 				for(int x=0; x<result.size(); x++)
 					pointRank.add(new Label(result.get(x)));
 				Window.alert("Successful update");
+			}
+		});
+	}
+	
+	public void callPointUpdateService(){
+		pointUpdater.updatedPoints(new AsyncCallback<Long>(){
+			public void onFailure(Throwable caught){
+				Window.alert("Failed to get points");
+			}
+			
+			public void onSuccess(Long result){
+				
+				System.out.println("Result is: "+result.toString());
+				userPoints.setText(result.toString());
+				Window.alert("Successfully gotten points");
 			}
 		});
 	}

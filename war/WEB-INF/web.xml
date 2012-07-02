@@ -16,6 +16,11 @@
     <servlet-class>project.server.login.LoginServiceImpl</servlet-class>
   </servlet>
   
+    <servlet>
+    <servlet-name>PointUpdateService</servlet-name>
+    <servlet-class>project.server.points.PointUpdateServiceImpl</servlet-class>
+  </servlet>
+  
    <servlet-mapping>
     <servlet-name>SubmitServiceImpl</servlet-name>
     <url-pattern>/aceproject/AceProjectPath</url-pattern>
@@ -24,6 +29,11 @@
   <servlet-mapping>
     <servlet-name>loginService</servlet-name>
     <url-pattern>/aceproject/login</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>PointUpdateService</servlet-name>
+    <url-pattern>/aceproject/points</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

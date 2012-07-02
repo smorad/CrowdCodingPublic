@@ -5,6 +5,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("AceProjectPath")
 	public interface SubmitService extends RemoteService {
-		String sendCode(String string, int points);
+		String sendCode(String string, Long points);
 	}
 

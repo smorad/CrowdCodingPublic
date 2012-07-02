@@ -33,7 +33,7 @@ public class AceEditorWidget extends LayoutPanel {
 	private PointUpdateServiceAsync pointUpdater;
 	private LoginInfo loginInfo;
 	private Anchor signOutLink = new Anchor("Sign Out");
-	private int points=0;
+	private Long points=(long) 10;
 	private Label userPoints=new Label("0");
 	private static VerticalPanel pointRank=new VerticalPanel();
 	
@@ -139,6 +139,7 @@ public class AceEditorWidget extends LayoutPanel {
 				try {
 					callSubmitService();
 					callRankUpdateService();
+					callPointUpdateService();
 				}
 
 				catch (Exception e) {
@@ -188,7 +189,6 @@ public class AceEditorWidget extends LayoutPanel {
 	public void callSubmitService() {
 		submitService.sendCode(sendText(), points, new AsyncCallback<String>() {
 			public void onFailure(Throwable caught) {
-				// System.out.println(caught.toString());
 				Window.alert("Failure");
 			}
 
@@ -201,14 +201,12 @@ public class AceEditorWidget extends LayoutPanel {
 	public void callRankUpdateService(){
 		pointUpdater.updatedList( new AsyncCallback<List<String>>(){
 			public void onFailure(Throwable caught){
-				Window.alert("Failed to update");
 			}
 			
 			public void onSuccess(List<String> result){
 				pointRank.clear();
 				for(int x=0; x<result.size(); x++)
 					pointRank.add(new Label(result.get(x)));
-				Window.alert("Successful update");
 			}
 		});
 	}
@@ -216,19 +214,15 @@ public class AceEditorWidget extends LayoutPanel {
 	public void callPointUpdateService(){
 		pointUpdater.updatedPoints(new AsyncCallback<Long>(){
 			public void onFailure(Throwable caught){
-				Window.alert("Failed to get points");
 			}
 			
 			public void onSuccess(Long result){
-				
-				System.out.println("Result is: "+result.toString());
 				userPoints.setText(result.toString());
-				Window.alert("Successfully gotten points");
 			}
 		});
 	}
 	
-	public String method(){
+	private String method(){
 		String s="public "+methodType+" "+methodName+"(";
 		for(int x=0; x<parameters.length; x++)
 			s+=parameters[x]+", ";

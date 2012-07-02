@@ -36,9 +36,6 @@ public class PointUpdateServiceImpl extends RemoteServiceServlet implements Poin
 			strings.add(" "+Long.toString(b)+" pts.");
 			strings.add("");
 		}
-		//strings.add("Person A");
-		//strings.add("100");
-		//strings.add("");
 		return strings;
 	}
 	

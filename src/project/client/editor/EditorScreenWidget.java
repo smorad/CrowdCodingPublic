@@ -11,6 +11,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+<<<<<<< HEAD
+=======
+import com.google.gwt.user.client.Window;
+>>>>>>> Added code indentifier services
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -31,6 +35,10 @@ public class EditorScreenWidget extends LayoutPanel{
 	private int currentIndex, numTabs;
 	private LoginInfo loginInfo;
 	private TabPanel panel=new TabPanel();
+<<<<<<< HEAD
+=======
+	public static AceEditorWidget a;
+>>>>>>> Added code indentifier services
 	public EditorScreenWidget(LoginInfo loginInfo){
 		this.loginInfo=loginInfo;
 		setSize("1150px\r\n", "768px");
@@ -115,7 +123,11 @@ public class EditorScreenWidget extends LayoutPanel{
 			 */
 			public void onClick(ClickEvent event) {
 				try {
+<<<<<<< HEAD
 					AceEditorWidget a=(AceEditorWidget)getWidget(currentIndex);
+=======
+					a=(AceEditorWidget)getWidget(currentIndex);
+>>>>>>> Added code indentifier services
 					a.callSubmitService();
 					callRankUpdateService();
 					callPointUpdateService();
@@ -166,4 +178,9 @@ public class EditorScreenWidget extends LayoutPanel{
 	public void onTabSelected(SourcesTabEvents s, int tabIndex){
 		currentIndex=tabIndex;
 	}
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> Added code indentifier services
 }

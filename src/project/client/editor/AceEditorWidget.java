@@ -30,6 +30,10 @@ import com.google.gwt.dom.client.Style.Unit;
 public class AceEditorWidget extends LayoutPanel {
 	private AceEditor editor1;
 	private SubmitServiceAsync submitService;	
+<<<<<<< HEAD
+=======
+	private static CodeIdentifierServiceAsync codeService;
+>>>>>>> Added code indentifier services
 	private Long points;
 	private String methodDescription
 									;
@@ -108,11 +112,6 @@ public class AceEditorWidget extends LayoutPanel {
 		// set some initial text in editor 1
 		
 		editor1.setText(method());
-		// add some annotations
-		editor1.addAnnotation(0, 1, "What's up?", AceAnnotationType.WARNING);
-		editor1.addAnnotation(2, 1, "This code is lame",
-				AceAnnotationType.ERROR);
-		editor1.setAnnotations();
 	}
 
 	// Method used to call service
@@ -128,6 +127,20 @@ public class AceEditorWidget extends LayoutPanel {
 		});
 	}
 	
+<<<<<<< HEAD
+=======
+	public static void callCodeIdentifierService(){
+		  codeService.storeType(CodeIdentifier.row, CodeIdentifier.type, new AsyncCallback() {
+		   public void onFailure(Throwable caught) {
+		    Window.alert("Failure");
+		   }
+
+		   public void onSuccess(Object result) {
+		    Window.alert("Success");
+		   }
+		  });
+		 }
+>>>>>>> Added code indentifier services
 	
 	
 	private String method(){

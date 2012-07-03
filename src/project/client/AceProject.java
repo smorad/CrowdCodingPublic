@@ -2,6 +2,7 @@ package project.client;
 
 
 import project.client.editor.AceEditorWidget;
+import project.client.editor.EditorScreenWidget;
 import project.client.login.LoginInfo;
 import project.client.login.LoginService;
 import project.client.login.LoginServiceAsync;
@@ -10,7 +11,9 @@ import project.client.login.LoginWidget;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -21,7 +24,7 @@ public class AceProject implements EntryPoint {
 	
 	private LoginInfo loginInfo = null;
 	private LoginWidget loginPanel; 
-	private AceEditorWidget editor; 
+	private EditorScreenWidget editor; 
 	/**
 	 * This is the entry point method.
 	 * @wbp.parser.entryPoint
@@ -52,10 +55,9 @@ public class AceProject implements EntryPoint {
 
 	private void loadEditorAndService() {
 		if(editor==null)
-			editor=new AceEditorWidget(loginInfo);
-		//RootPanel.get("ace").add(editor);
-		RootLayoutPanel.get().add(new ScrollPanel(editor));
-		editor.buildEditor();
+			editor=new EditorScreenWidget(loginInfo);
+		RootLayoutPanel.get().add((editor));
+		editor.startEditor();
 		System.out.println("Success");
 	}
 

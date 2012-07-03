@@ -50,7 +50,7 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 			user.setProperty("points", ((Long)user.getProperty("points"))+points);	
 
 		datastore.put(user);	//puts code in datastore
-
+		
 	}
 	
 	

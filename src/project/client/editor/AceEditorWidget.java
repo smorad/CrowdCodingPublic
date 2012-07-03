@@ -28,44 +28,32 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.dom.client.Style.Unit;
 
 public class AceEditorWidget extends LayoutPanel {
-	static AceEditor editor1;
-	private SubmitServiceAsync submitService;
-	private PointUpdateServiceAsync pointUpdater;
-	private LoginInfo loginInfo;
-	private Anchor signOutLink = new Anchor("Sign Out");
-	private Long points=(long) 10;
-	private Label userPoints=new Label("0");
-	private static VerticalPanel pointRank=new VerticalPanel();
-	
-	private String METHOD_DESCRIPTION="This is a description.\n"
-									+"Parameters:\n"
-									+"\ta-some int\n"
-									+"\tb-some int\n"
+	private AceEditor editor1;
+	private SubmitServiceAsync submitService;	
+	private Long points;
+	private String methodDescription
 									;
-	
-	
-	private  String[] parameters={"int a", "int b"};
-	private String methodName="helloWorld", methodType="void";
+	private  String[] parameters;
+	private String methodName, methodType;
+	private TextArea description;
 
-	public AceEditorWidget(LoginInfo loginInfo) {
-		this.loginInfo = loginInfo;
+	public AceEditorWidget(long points, String methodDescription, String[] parameters,
+							String methodName, String methodType) {
+		this.points=points;
+		this.methodDescription=methodDescription;
+		this.parameters=parameters;
+		this.methodName=methodName;
+		this.methodType=methodType;
 		//create the editor stuff
-		createEditor();
+		startServices();
 		// build the UI
 		buildUI();
 	}
 
-	private void createEditor() {
+	private void startServices() {
 		if (submitService == null)
 			submitService = (SubmitServiceAsync) GWT
 					.create(SubmitService.class);
-		if(pointUpdater==null)
-			pointUpdater=(PointUpdateServiceAsync) GWT
-					.create(PointUpdateService.class);
-		// create first AceEditor widget
-		editor1 = new AceEditor(true);
-		editor1.setWidth("798px");
-		editor1.setHeight("300px");
 	}
 
 	/**
@@ -73,92 +61,34 @@ public class AceEditorWidget extends LayoutPanel {
 	 * of the AceEditor methods, so it's a bit of a kitchen sink.
 	 */
 	private void buildUI() {
-		setSize("1179px","617px");
+		setSize("730px","505px");
+		buildEditorUI();
 		
+	
+	}
+	
+	private void buildEditorUI(){
+		// create first AceEditor widget
+		editor1 = new AceEditor(true);
+		editor1.setWidth("652px");
+		editor1.setHeight("300px");
 		add(editor1);
-		setWidgetLeftWidth(editor1, 147.0+50, Unit.PX, 835.0, Unit.PX);
-		setWidgetTopHeight(editor1, 184.0, Unit.PX, 300.0, Unit.PX);
-		
-		final TextArea description=new TextArea();
+		setWidgetLeftWidth(editor1, 21.0, Unit.PX, 652.0, Unit.PX);
+		setWidgetTopHeight(editor1, 195.0, Unit.PX, 300.0, Unit.PX);
+				
+		description=new TextArea();
 		description.setReadOnly(true);
 		description.setEnabled(false);
-		description.setText(METHOD_DESCRIPTION);
+		description.setText(methodDescription);
 		add(description);
-		setWidgetLeftWidth(description, 145.0+50, Unit.PX, 800.0, Unit.PX);
-		setWidgetTopHeight(description, 16.0, Unit.PX, 162.0, Unit.PX);
-		
-		
-		add(pointRank);
-		setWidgetLeftWidth(pointRank, 18.0, Unit.PX, 119.0+30, Unit.PX);
-		setWidgetTopHeight(pointRank, 53.0, Unit.PX, 500.0, Unit.PX);
-		callRankUpdateService();
-		
-		Label lab=new Label("Your current total points:");
-		add(lab);
-		setWidgetLeftWidth(lab, 1001.0, Unit.PX, 147.0, Unit.PX);
-		setWidgetTopHeight(lab, 53.0, Unit.PX, 18.0, Unit.PX);
-		
-		add(userPoints);
-		setWidgetLeftWidth(userPoints, 1001.0, Unit.PX, 119.0+50, Unit.PX);
-		setWidgetTopHeight(userPoints, 79.0, Unit.PX, 18.0, Unit.PX);
-		callPointUpdateService();
-		
-		
-
-		LayoutPanel layoutPanel = new LayoutPanel();
-		add(layoutPanel);
-		setWidgetLeftWidth(layoutPanel, 147.0+50, Unit.PX, 808.0, Unit.PX);
-		setWidgetTopHeight(layoutPanel, 490.0, Unit.PX, 113.0, Unit.PX);
-		Button button = new Button("Submit Code");
-		layoutPanel.add(button);
-		button.setWidth("100px");
-		layoutPanel.setWidgetLeftWidth(button, 0.0, Unit.PX, 119.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(button, 14.0, Unit.PX, 28.0, Unit.PX);
-		layoutPanel.add(signOutLink);
-		layoutPanel
-				.setWidgetLeftWidth(signOutLink, 153.0, Unit.PX, 100.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(signOutLink, 14.0, Unit.PX, 32.0,
-				Unit.PX);
-
-		// Set up sign out hyperlink.
-		signOutLink.setHref(loginInfo.getLogoutUrl());
-		
-		Label label = new Label("Editor by daveho@Github");
-		layoutPanel.add(label);
-		layoutPanel.setWidgetLeftWidth(label, 0.0, Unit.PX, 154.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(label, 82.0, Unit.PX, 25.0, Unit.PX);
-		
-		
-				
-		button.addClickHandler(new ClickHandler() {
-			@Override
-			/**
-			 * Code to be overridden
-			 */
-			public void onClick(ClickEvent event) {
-				try {
-					callSubmitService();
-					callRankUpdateService();
-					callPointUpdateService();
-				}
-
-				catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
-
-			}
-		});
-
-		// RootPanel.get("ace").add(mainPanel);
+		setWidgetLeftWidth(description, 21.0, Unit.PX, 652.0, Unit.PX);
+		setWidgetTopHeight(description, 10.0, Unit.PX, 162.0, Unit.PX);
 	}
+	
+	
 
 	private void updateEditor1CursorPosition() {
 	}
-
-	public String sendText() {
-		return editor1.getText();
-	}
-
 
 	public void buildEditor() {
 		// start the first editor and set its theme and mode
@@ -187,7 +117,7 @@ public class AceEditorWidget extends LayoutPanel {
 
 	// Method used to call service
 	public void callSubmitService() {
-		submitService.sendCode(sendText(), points, new AsyncCallback<String>() {
+		submitService.sendCode(getCode(), points, new AsyncCallback<String>() {
 			public void onFailure(Throwable caught) {
 				Window.alert("Failure");
 			}
@@ -198,29 +128,7 @@ public class AceEditorWidget extends LayoutPanel {
 		});
 	}
 	
-	public void callRankUpdateService(){
-		pointUpdater.updatedList( new AsyncCallback<List<String>>(){
-			public void onFailure(Throwable caught){
-			}
-			
-			public void onSuccess(List<String> result){
-				pointRank.clear();
-				for(int x=0; x<result.size(); x++)
-					pointRank.add(new Label(result.get(x)));
-			}
-		});
-	}
 	
-	public void callPointUpdateService(){
-		pointUpdater.updatedPoints(new AsyncCallback<Long>(){
-			public void onFailure(Throwable caught){
-			}
-			
-			public void onSuccess(Long result){
-				userPoints.setText(result.toString());
-			}
-		});
-	}
 	
 	private String method(){
 		String s="public "+methodType+" "+methodName+"(";
@@ -231,20 +139,34 @@ public class AceEditorWidget extends LayoutPanel {
 			;
 		else if(methodType.equals("int")||methodType.equals("short")
 				||methodType.equals("long")||methodType.equals("byte"))
-			s+="-1";
+			s+=" -1";
 		else if(methodType.equals("double")||methodType.equals("float"))
-			s+="-1.0";
+			s+=" -1.0";
 		else if(methodType.equals("char"))
-			s+='a';
+			s+=" a";
 		else if(methodType.equals("String"))
-			s+="\"\"";
+			s+=" \"\"";
 		else
-			s+="null";
+			s+=" null";
 		return s+";\n}";
 	}
 	
-	
-	
-	
-	
+	public String getCode() {
+		return editor1.getText();
+	}
+	public Long getPoints(){
+		return points;
+	}
+	public String getMethodDescription(){
+		return methodDescription;
+	}
+	public String getMethodName(){
+		return methodName;
+	}
+	public String[] getParameters(){
+		return parameters;
+	}
+	public String getMethodType(){
+		return methodType;
+	}	
 }

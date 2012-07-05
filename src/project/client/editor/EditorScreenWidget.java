@@ -11,10 +11,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-<<<<<<< HEAD
-=======
 import com.google.gwt.user.client.Window;
->>>>>>> Added code indentifier services
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -25,6 +22,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+//EditorScreenWidget is a container for the AceEditorWidget class
 @SuppressWarnings("deprecation")
 public class EditorScreenWidget extends LayoutPanel{
 	
@@ -35,10 +33,7 @@ public class EditorScreenWidget extends LayoutPanel{
 	private int currentIndex, numTabs;
 	private LoginInfo loginInfo;
 	private TabPanel panel=new TabPanel();
-<<<<<<< HEAD
-=======
 	public static AceEditorWidget a;
->>>>>>> Added code indentifier services
 	public EditorScreenWidget(LoginInfo loginInfo){
 		this.loginInfo=loginInfo;
 		setSize("1150px\r\n", "768px");
@@ -55,7 +50,7 @@ public class EditorScreenWidget extends LayoutPanel{
 		//buildPointDisplays();
 	}
 	
-	private void buildPointDisplays(){
+	private void buildPointDisplays(){  //displays player points
 		add(pointRank);
 		setWidgetLeftWidth(pointRank, 18.0, Unit.PX, 119.0+30, Unit.PX);
 		setWidgetTopHeight(pointRank, 53.0, Unit.PX, 500.0, Unit.PX);
@@ -72,7 +67,7 @@ public class EditorScreenWidget extends LayoutPanel{
 		callPointUpdateService();
 	}
 	
-	private void callRankUpdateService(){
+	private void callRankUpdateService(){  //leaderboard update
 		pointUpdater.updatedList( new AsyncCallback<List<String>>(){
 			public void onFailure(Throwable caught){
 			}
@@ -123,11 +118,7 @@ public class EditorScreenWidget extends LayoutPanel{
 			 */
 			public void onClick(ClickEvent event) {
 				try {
-<<<<<<< HEAD
-					AceEditorWidget a=(AceEditorWidget)getWidget(currentIndex);
-=======
 					a=(AceEditorWidget)getWidget(currentIndex);
->>>>>>> Added code indentifier services
 					a.callSubmitService();
 					callRankUpdateService();
 					callPointUpdateService();
@@ -178,9 +169,6 @@ public class EditorScreenWidget extends LayoutPanel{
 	public void onTabSelected(SourcesTabEvents s, int tabIndex){
 		currentIndex=tabIndex;
 	}
-<<<<<<< HEAD
-=======
 
 
->>>>>>> Added code indentifier services
 }

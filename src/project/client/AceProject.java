@@ -24,11 +24,7 @@ public class AceProject implements EntryPoint {
 	
 	private LoginInfo loginInfo = null;
 	private LoginWidget loginPanel; 
-<<<<<<< HEAD
-	private EditorScreenWidget editor; 
-=======
 	public static EditorScreenWidget editor; 
->>>>>>> Added code indentifier services
 	/**
 	 * This is the entry point method.
 	 * @wbp.parser.entryPoint
@@ -53,7 +49,7 @@ public class AceProject implements EntryPoint {
 	
 	private void loadLogin() {
 	    if(loginPanel==null)
-	    	loginPanel=new LoginWidget(loginInfo);
+	    	loginPanel=new LoginWidget(loginInfo);  //make sure only 1 service is running
 	    RootLayoutPanel.get().add(new ScrollPanel(loginPanel));//see the html file for id
   }
 

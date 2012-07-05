@@ -42,18 +42,15 @@ public class CodeIdentifier extends LayoutPanel {
 		
 		comboBox.addChangeHandler(new ChangeHandler(){
 			public void onChange(ChangeEvent e){
-				type = comboBox.getValue(comboBox.getSelectedIndex());
-				String position = editor.getCursorPosition().toString();
+				type = comboBox.getValue(comboBox.getSelectedIndex());  //pseudo or real
+				String position = editor.getCursorPosition().toString(); 
 				int subPos = position.indexOf(':');
 				String pos = position.substring(0, subPos);
-				row = Integer.parseInt(pos);
-				EditorScreenWidget.a.callCodeIdentifierService();
+				row = Integer.parseInt(pos);  //this and above parses row:col to get row number
+				EditorScreenWidget.a.callCodeIdentifierService();  //calls service at AceEditorWidget
 				
 			}
 		});
-		
-	}
-	public void onChange(ChangeEvent e){
 		
 	}
 }

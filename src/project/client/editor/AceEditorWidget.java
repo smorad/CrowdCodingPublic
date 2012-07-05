@@ -30,10 +30,7 @@ import com.google.gwt.dom.client.Style.Unit;
 public class AceEditorWidget extends LayoutPanel {
 	private AceEditor editor1;
 	private SubmitServiceAsync submitService;	
-<<<<<<< HEAD
-=======
 	private static CodeIdentifierServiceAsync codeService;
->>>>>>> Added code indentifier services
 	private Long points;
 	private String methodDescription
 									;
@@ -91,7 +88,7 @@ public class AceEditorWidget extends LayoutPanel {
 	
 	
 
-	private void updateEditor1CursorPosition() {
+	private void updateEditor1CursorPosition() {  //not sure why this is here
 	}
 
 	public void buildEditor() {
@@ -109,9 +106,8 @@ public class AceEditorWidget extends LayoutPanel {
 			}
 		});
 		updateEditor1CursorPosition(); // initial update
-		// set some initial text in editor 1
 		
-		editor1.setText(method());
+		editor1.setText(method());  //autogenerates method stub
 	}
 
 	// Method used to call service
@@ -127,9 +123,7 @@ public class AceEditorWidget extends LayoutPanel {
 		});
 	}
 	
-<<<<<<< HEAD
-=======
-	public static void callCodeIdentifierService(){
+	public static void callCodeIdentifierService(){  //Identify if code is real or pseudo
 		  codeService.storeType(CodeIdentifier.row, CodeIdentifier.type, new AsyncCallback() {
 		   public void onFailure(Throwable caught) {
 		    Window.alert("Failure");
@@ -140,10 +134,9 @@ public class AceEditorWidget extends LayoutPanel {
 		   }
 		  });
 		 }
->>>>>>> Added code indentifier services
 	
 	
-	private String method(){
+	private String method(){  //used to autogenerate method stub
 		String s="public "+methodType+" "+methodName+"(";
 		for(int x=0; x<parameters.length; x++)
 			s+=parameters[x]+", ";
@@ -164,7 +157,7 @@ public class AceEditorWidget extends LayoutPanel {
 		return s+";\n}";
 	}
 	
-	public String getCode() {
+	public String getCode() {  //Recieves code in editor
 		return editor1.getText();
 	}
 	public Long getPoints(){

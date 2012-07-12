@@ -1,0 +1,2 @@
+serviceClass: project.client.points.PointUpdateService
+path: D25B3302669734374461342FE4B3908E.gwt.rpc

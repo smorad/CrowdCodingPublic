@@ -7,7 +7,7 @@ import project.client.tests.TestCaseInfo;
 
 public class EntryMethodInfo {
 
-	
+	private boolean isDone;
 	private String methodDescription;
 	
 	private String methodName;
@@ -57,6 +57,12 @@ public class EntryMethodInfo {
 	
 	public TestCaseInfo getTest(){
 		return test;
+	}
+	public boolean isDone(){
+		return isDone;
+	}
+	public void setDone(boolean bool){
+		isDone=bool;
 	}
 	
 	

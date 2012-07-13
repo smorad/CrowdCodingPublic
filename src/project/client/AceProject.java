@@ -1,6 +1,10 @@
 package project.client;
 
 
+import java.util.ArrayList;
+
+import project.client.entry.EntryPointTab;
+import project.client.entry.EntryPointWidget;
 import project.client.login.LoginInfo;
 import project.client.login.LoginService;
 import project.client.login.LoginServiceAsync;
@@ -8,7 +12,11 @@ import project.client.login.LoginWidget;
 import project.client.screen.ScreenWidget;
 import project.client.submission.SubmitService;
 import project.client.submission.SubmitServiceAsync;
+import project.client.tests.TestCaseWidget;
+import project.client.tests.UnitTestWidget;
 import project.client.userstory.UserStoryInfo;
+import project.client.userstory.UserStoryWidget;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -23,6 +31,7 @@ public class AceProject implements EntryPoint {
 	
 	//private static somethinginfo;
 	//private static othersomthinginfo;
+	
 	private static LoginInfo loginInfo = null;
 	private LoginWidget loginPanel; 
 	private static ScreenWidget editor; 
@@ -63,29 +72,43 @@ public class AceProject implements EntryPoint {
 	
 	private static void loadRandomly(){
 		RootLayoutPanel.get().clear();
-		instantiateRandomly();
+		instantiateRandomly(loginInfo);
 		//editor=new project.client.editor.AceEditorWidget(loginInfo);
 		RootLayoutPanel.get().add(new ScrollPanel(editor));
 		if(editor instanceof EditorContainer)
 			((EditorContainer)editor).buildEditor();
 	}
 	
-	private static void instantiateRandomly(){
-		int a=(int)(Math.random()*5);
-		switch(a){
-			case 0: //editor=new project.client.editor.AceEditorWidget(loginInfo);
-					break;
-			case 1: //editor=new project.client.userstory.UserStoryWidget(loginInfo);
-					break;	
-			case 2: //editor=new project.client.entry.EntryPointWidget(loginInfo, null, "Blah");
-					break;
-			case 3: //editor=new project.client.tests.TestCaseWidget(loginInfo);
-					break;
-			case 4: //editor=new project.client.tests.UnitTestWidget(loginInfo);
-					break;	
-			case 5: //editor=new project.client.identifier.CodeIdentifier(loginInfo);
-					break;
-		}
+	private static void instantiateRandomly(LoginInfo loginInfo){
+		ArrayList<ScreenWidget> list = new ArrayList<ScreenWidget>();
+		UserStoryWidget story = new UserStoryWidget(loginInfo, storyInfo);
+		if(!story.getInfo().isDone()){
+			list.add(story);  //add story
+			if(!story.getInfo().getChild().isDone()){
+				EntryPointWidget ePoint = new EntryPointWidget(loginInfo, story.getInfo().getChild(), story.getInfo().getStory());  //add entry point
+				list.add(ePoint);
+				for(int i= 0; i<story.getInfo().getChild().getNumMethods(); i++ )
+					if(!story.getInfo().getChild().getMethod(i).isDone()){	
+						if(!story.getInfo().getChild().getMethod(i).getTest().isDone()){  //adding testcaseinfo
+							TestCaseWidget tCase = new TestCaseWidget(loginInfo, story.getInfo().getChild().getMethod(i).getTest());
+							list.add(tCase);
+							if(!tCase.getInfo().getTestInfo(i).isDone()){
+								UnitTestWidget uTest = new UnitTestWidget(loginInfo, tCase.getInfo().getTestInfo(i));
+								list.add(uTest);
+							}
+						
+
+						
+						
+					}
+						
+					}
+					}
+			}
+		
+		
+		int a=(int)(Math.random()*list.size());
+		editor=list.get(a);
 	}
 	
 	@SuppressWarnings("rawtypes")

@@ -18,6 +18,9 @@ public class TestCasePersist {
 	
 	@Persistent
 	private ArrayList<UnitTestPersist> testInfos=new ArrayList<UnitTestPersist>();
+	
+	@Persistent
+	private boolean isDone;
 
 	
 	public void addTest(String test){
@@ -45,7 +48,12 @@ public class TestCasePersist {
 	public int getNumTests(){
 		return tests.size();
 	}
-	
+	public boolean isDone(){
+		return isDone;
+	}
+	public void setDone(boolean bool){
+		isDone=bool;
+	}
 	
 	
 }

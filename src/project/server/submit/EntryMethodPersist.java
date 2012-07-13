@@ -24,6 +24,9 @@ public class EntryMethodPersist {
 	@Persistent
 	private TestCasePersist test;//child
 	
+	@Persistent
+	private boolean isDone;
+	
 	public void setMethodDescription(String description){
 		methodDescription=description;
 	}
@@ -65,7 +68,12 @@ public class EntryMethodPersist {
 	public TestCasePersist getTest(){
 		return test;
 	}
-	
+	public boolean isDone(){
+		return isDone;
+	}
+	public void setDone(boolean bool){
+		isDone=bool;
+	}
 	
 	
 	

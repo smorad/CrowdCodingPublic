@@ -12,10 +12,19 @@ public class UnitTestPersist{
 	@Persistent
 	private String code;
 	
+	@Persistent
+	private boolean isDone;
+	
 	public void setCode(String code){
 		this.code=code;
 	}
 	public String getCode(){
 		return code;
+	}
+	public boolean isDone(){
+		return isDone;
+	}
+	public void setDone(boolean bool){
+		isDone=bool;
 	}
 }

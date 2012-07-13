@@ -64,9 +64,7 @@ public class EntryPointWidget extends ScreenWidget{
 		mainPanel.setWidgetTopHeight(addMethodButton, 611.0, Unit.PX, 28.0, Unit.PX);
 		addMethodButton.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event){
-				tabs.add(new EntryPointTab(), "Nothing more");
-				tabs.selectTab(numTabs);
-				numTabs++;
+				addTab();
 			}
 		});
 		
@@ -87,6 +85,12 @@ public class EntryPointWidget extends ScreenWidget{
 			eInfo.addMethod(e);
 			
 		}
+	}
+		public void addTab(){
+			tabs.add(new EntryPointTab(), "Nothing more");
+			tabs.selectTab(numTabs);
+			numTabs++;
+		
 			
 	}
 

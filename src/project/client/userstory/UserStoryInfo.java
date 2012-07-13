@@ -1,11 +1,10 @@
 package project.client.userstory;
 
 import project.client.entry.EntryPointInfo;
-import project.server.submit.EntryPointPersist;
 
 public class UserStoryInfo {
 
-	
+	private boolean isDone;
 	private String story;
 	private String name;
 
@@ -42,7 +41,12 @@ public class UserStoryInfo {
 	public String getName(){
 		return name;
 	}
-	
+	public boolean isDone(){
+		return isDone;
+	}
+	public void setDone(boolean bool){
+		isDone=bool;
+	}
 	
 	
 	

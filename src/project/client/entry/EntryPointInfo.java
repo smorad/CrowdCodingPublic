@@ -2,20 +2,9 @@ package project.client.entry;
 
 import java.util.ArrayList;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 
-import com.google.appengine.api.datastore.Key;
-
-@PersistenceCapable
 public class EntryPointInfo {
-	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
-	
-	@Persistent
+	private boolean isDone;
 	private ArrayList<EntryMethodInfo> methods;//children
 	
 	public void addMethod(EntryMethodInfo method){
@@ -27,5 +16,11 @@ public class EntryPointInfo {
 	}
 	public int getNumMethods(){
 		return methods.size();
+	}
+	public boolean isDone(){
+		return isDone;
+	}
+	public void setDone(boolean bool){
+		isDone=bool;
 	}
 }

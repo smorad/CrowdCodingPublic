@@ -14,6 +14,9 @@ public class EntryPointPersist {
 	@Persistent
 	private ArrayList<EntryMethodPersist> methods;//children
 	
+	@Persistent
+	private boolean isDone;
+	
 	public void addMethod(EntryMethodPersist method){
 		methods.add(method);
 	}
@@ -23,5 +26,11 @@ public class EntryPointPersist {
 	}
 	public int getNumMethods(){
 		return methods.size();
+	}
+	public boolean isDone(){
+		return isDone;
+	}
+	public void setDone(boolean bool){
+		isDone=bool;
 	}
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 
 public class TestCaseInfo {
-
+	private boolean isDone;
 	private ArrayList<String> tests=new ArrayList<String>();
 	private ArrayList<UnitTestInfo> testInfos=new ArrayList<UnitTestInfo>();
 	
@@ -33,7 +33,12 @@ public class TestCaseInfo {
 	public int getNumTests(){
 		return tests.size();
 	}
-	
+	public boolean isDone(){
+		return isDone;
+	}
+	public void setDone(boolean bool){
+		isDone=bool;
+	}
 	
 	
 }

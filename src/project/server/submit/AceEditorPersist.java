@@ -9,6 +9,9 @@ public class AceEditorPersist{
 	@Persistent
 	private String code;
 	
+	@Persistent
+	private boolean isDone;
+	
 	@PrimaryKey
     private String key;
 	
@@ -18,5 +21,10 @@ public class AceEditorPersist{
 	public String getCode(){
 		return code;
 	}
-	
+	public boolean isDone(){
+		return isDone;
+	}
+	public void setDone(boolean bool){
+		isDone=bool;
+	}
 }

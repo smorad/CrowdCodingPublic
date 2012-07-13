@@ -77,6 +77,10 @@ public class TestCaseWidget extends ScreenWidget {
 		}
 	}
 	
+	public TestCaseInfo getInfo(){
+		return tInfo;
+	}
+	
 	public void submit(){
 		for(int x=0; x<testCase.size(); x++)
 			tInfo.addTest(testCase.get(x).getTest());

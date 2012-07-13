@@ -40,7 +40,7 @@ public abstract class ScreenWidget extends LayoutPanel{
 		System.out.println(1);
 		buildButtonUI();
 		System.out.println(2);
-		startService();
+		//startService();
 		
 		add(mainPanel);
 		setWidgetTopHeight(mainPanel, 28.0, Unit.PX, 650.0, Unit.PX);
@@ -164,7 +164,8 @@ public abstract class ScreenWidget extends LayoutPanel{
 	public abstract void UI();
 	
 	public abstract void submit();
-	
+
+
 	
 	/*private void addInitialEditor(){
 		add(panel);

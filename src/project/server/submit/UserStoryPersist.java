@@ -21,9 +21,16 @@ public class UserStoryPersist {
 	
 	@Persistent
 	private EntryPointPersist childInfo;//child
+	
+	@Persistent
+	private boolean isDone;
 		
 	public void setStory(String story){
 		this.story=story;
+	}
+	
+	public Key getKey(){
+		return key;
 	}
 	
 	public String getStory(){
@@ -56,6 +63,12 @@ public class UserStoryPersist {
 	}
 	public String getName(){
 		return name;
+	}
+	public boolean isDone(){
+		return isDone;
+	}
+	public void setDone(boolean bool){
+		isDone=bool;
 	}
 	
 	

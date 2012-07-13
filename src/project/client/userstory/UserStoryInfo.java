@@ -1,26 +1,16 @@
 package project.client.userstory;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-
 import project.client.entry.EntryPointInfo;
+import project.server.submit.EntryPointPersist;
 
-import com.google.appengine.api.datastore.Key;
-
-@PersistenceCapable
 public class UserStoryInfo {
-	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
+
 	
-	@Persistent
 	private String story;
-	
-	@Persistent
-	private EntryPointInfo childInfo;
-	
+	private String name;
+
+	private EntryPointInfo childInfo;//child
+		
 	public void setStory(String story){
 		this.story=story;
 	}
@@ -28,6 +18,32 @@ public class UserStoryInfo {
 	public String getStory(){
 		return story;
 	}
+	
+	public void createEntryChild(){
+		childInfo=new EntryPointInfo();
+	}
+	public void deleteChild(){
+		childInfo=null;
+	}
+	
+	public EntryPointInfo getChild(){
+		return childInfo;
+	}
+	public boolean hasChild(){
+		return childInfo==null;
+	}
+	public void setChild(EntryPointInfo c){
+		childInfo=c;
+	}
+	
+	public void setName(String name){
+		this.name=name;
+	}
+	public String getName(){
+		return name;
+	}
+	
+	
 	
 	
 }

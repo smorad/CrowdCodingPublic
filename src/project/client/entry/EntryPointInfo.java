@@ -16,7 +16,7 @@ public class EntryPointInfo {
     private Key key;
 	
 	@Persistent
-	private ArrayList<EntryMethodInfo> methods;
+	private ArrayList<EntryMethodInfo> methods;//children
 	
 	public void addMethod(EntryMethodInfo method){
 		methods.add(method);

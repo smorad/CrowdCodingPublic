@@ -1,20 +1,28 @@
-package project.client.entry;
+package project.server.submit;
 
 import java.util.ArrayList;
 
-import project.client.tests.TestCaseInfo;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
 
-public class EntryMethodInfo {
-
+@PersistenceCapable
+public class EntryMethodPersist {
+	@PrimaryKey
+    private String key;
 	
+	@Persistent
 	private String methodDescription;
 	
+	@Persistent
 	private String methodName;
 	
+	@Persistent
 	private ArrayList<String> parameters=new ArrayList<String>();
 	
-	private TestCaseInfo test;//child
+	@Persistent
+	private TestCasePersist test;//child
 	
 	public void setMethodDescription(String description){
 		methodDescription=description;
@@ -49,13 +57,12 @@ public class EntryMethodInfo {
 	}
 	
 	public void addTest(){
-		test=new TestCaseInfo();
+		test=new TestCasePersist();
 	}
 	public void removeTest(){
 		test=null;
 	}
-	
-	public TestCaseInfo getTest(){
+	public TestCasePersist getTest(){
 		return test;
 	}
 	

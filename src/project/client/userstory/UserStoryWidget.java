@@ -33,5 +33,10 @@ public class UserStoryWidget extends ScreenWidget{
 	}
 	public void submit(){
 		uInfo.setStory(area.getText());
+		uInfo.createEntryChild();
+	}
+	
+	public UserStoryInfo getInfo(){
+		return uInfo;
 	}
 }

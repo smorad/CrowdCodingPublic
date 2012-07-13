@@ -1,8 +1,6 @@
 package project.client;
 
 
-import javax.jdo.PersistenceManager;
-
 import project.client.login.LoginInfo;
 import project.client.login.LoginService;
 import project.client.login.LoginServiceAsync;
@@ -11,8 +9,6 @@ import project.client.screen.ScreenWidget;
 import project.client.submission.SubmitService;
 import project.client.submission.SubmitServiceAsync;
 import project.client.userstory.UserStoryInfo;
-import project.shared.PMF;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -92,6 +88,7 @@ public class AceProject implements EntryPoint {
 		}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public static void submit(){
 		editor.submit();
 		service.submit(storyInfo, new AsyncCallback(){

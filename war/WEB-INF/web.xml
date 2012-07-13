@@ -26,6 +26,11 @@
     <servlet-class>project.server.editor.CodeIdentifierServiceImpl</servlet-class>
   </servlet>
   
+  <servlet>
+    <servlet-name>SubmissionService</servlet-name>
+    <servlet-class>project.server.submissions.SubmitServiceImpl</servlet-class>
+  </servlet>
+  
   
    <servlet-mapping>
     <servlet-name>SubmitServiceImpl</servlet-name>
@@ -45,6 +50,11 @@
   <servlet-mapping>
     <servlet-name>CodeIdentifierService</servlet-name>
     <url-pattern>/aceproject/CodeIdentifierPath</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>SubmissionService</servlet-name>
+    <url-pattern>/aceproject/submit</url-pattern>
   </servlet-mapping>
   
   

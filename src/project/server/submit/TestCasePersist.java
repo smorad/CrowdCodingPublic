@@ -2,25 +2,35 @@ package project.server.submit;
 
 import java.util.ArrayList;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import project.client.tests.UnitTestInfo;
 
 @PersistenceCapable
-public class TestCasePersist {
+public class TestCasePersist implements IsSerializable{
 	@PrimaryKey
-    private String key;
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private Key key;
 	
 	@Persistent
 	private ArrayList<String> tests;
 	
 	@Persistent
-	private ArrayList<UnitTestPersist> testInfos=new ArrayList<UnitTestPersist>();
+	private ArrayList<UnitTestPersist> testInfos;
 	
 	@Persistent
 	private boolean isDone;
+	
+	public TestCasePersist(){
+		testInfos=new ArrayList<UnitTestPersist>();
+		tests=new ArrayList<String>();
+	}
 
 	
 	public void addTest(String test){

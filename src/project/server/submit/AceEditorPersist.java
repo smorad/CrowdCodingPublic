@@ -4,8 +4,10 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 @PersistenceCapable
-public class AceEditorPersist{
+public class AceEditorPersist implements IsSerializable{
 	@Persistent
 	private String code;
 	

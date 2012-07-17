@@ -17,11 +17,16 @@ import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
 public class UnitTestWidget extends ScreenWidget implements EditorContainer{
 	private AceEditor aceEditor;
 	private UnitTestInfo uInfo;
+	private String description, testCase;
 	
-	public UnitTestWidget(LoginInfo info, UnitTestInfo uInfo) {
+	public UnitTestWidget(LoginInfo info, UnitTestInfo uInfo, String description, String testCase) {
 		super(info);
 		setSize("1150px", "768px");
 		this.uInfo=uInfo;
+		this.description=description;
+		this.testCase=testCase;
+		
+		UI();
 	}
 	
 	public void UI(){
@@ -32,13 +37,13 @@ public class UnitTestWidget extends ScreenWidget implements EditorContainer{
 		
 		TextArea txtrMethodDescription = new TextArea();
 		txtrMethodDescription.setEnabled(false);
-		txtrMethodDescription.setText("Method description");
+		txtrMethodDescription.setText(description);
 		mainPanel.add(txtrMethodDescription);
 		mainPanel.setWidgetLeftWidth(txtrMethodDescription, 86.0, Unit.PX, 631.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(txtrMethodDescription, 90.0, Unit.PX, 106.0, Unit.PX);
 		
-		TextBox txtbxTestCase = new TextBox();
-		txtbxTestCase.setText("Test case");
+		TextArea txtbxTestCase = new TextArea();
+		txtbxTestCase.setText(testCase);
 		txtbxTestCase.setEnabled(false);
 		mainPanel.add(txtbxTestCase);
 		mainPanel.setWidgetLeftWidth(txtbxTestCase, 86.0, Unit.PX, 631.0, Unit.PX);
@@ -54,7 +59,7 @@ public class UnitTestWidget extends ScreenWidget implements EditorContainer{
 		aceEditor.startEditor(); // must be called before calling
 								// setTheme/setMode/etc.
 		aceEditor.setTheme(AceEditorTheme.ECLIPSE);
-		aceEditor.setMode(AceEditorMode.JAVA);
+		aceEditor.setMode(AceEditorMode.JAVASCRIPT);
 
 		
 		//aceEditor.setText(method());  //autogenerates method stub
@@ -62,6 +67,7 @@ public class UnitTestWidget extends ScreenWidget implements EditorContainer{
 	
 	public void submit(){
 		uInfo.setCode(aceEditor.getText());
+		uInfo.setDone(true);
 	}
 
 }

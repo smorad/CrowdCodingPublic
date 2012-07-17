@@ -28,7 +28,7 @@
   
   <servlet>
     <servlet-name>SubmissionService</servlet-name>
-    <servlet-class>project.server.submissions.SubmitServiceImpl</servlet-class>
+    <servlet-class>project.server.submit.SubmitServiceImpl</servlet-class>
   </servlet>
   
   

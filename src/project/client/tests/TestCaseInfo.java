@@ -2,11 +2,20 @@ package project.client.tests;
 
 import java.util.ArrayList;
 
+import project.server.submit.UnitTestPersist;
 
-public class TestCaseInfo {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+
+public class TestCaseInfo implements IsSerializable{
 	private boolean isDone;
 	private ArrayList<String> tests=new ArrayList<String>();
 	private ArrayList<UnitTestInfo> testInfos=new ArrayList<UnitTestInfo>();
+	
+	public TestCaseInfo(){
+		testInfos=new ArrayList<UnitTestInfo>();
+		tests=new ArrayList<String>();
+	}
 	
 	public void addTest(String test){
 		tests.add(test);

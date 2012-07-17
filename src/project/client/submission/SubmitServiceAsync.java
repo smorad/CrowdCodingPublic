@@ -6,4 +6,5 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface SubmitServiceAsync {
 	void submit(UserStoryInfo info, AsyncCallback callback);
+	void retrieve(UserStoryInfo info, AsyncCallback callback);
 }

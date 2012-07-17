@@ -24,19 +24,22 @@ public class EntryPointWidget extends ScreenWidget{
 	public EntryPointWidget(LoginInfo info, EntryPointInfo eInfo, String story){
 		super(new LoginInfo());
 		setSize("1150px", "768px");
+		System.out.println(story);
 		this.story=story;
 		this.eInfo=eInfo;
 
+		UI();
 	}
 	
 	public void UI(){
 		text=new TextArea();
-		text.setEnabled(false);
+		
 		text.setText(story);
+		text.setEnabled(false);
 		mainPanel.add(text);
 		mainPanel.setWidgetLeftWidth(text, 76.0, Unit.PX, 597.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(text, 77.0, Unit.PX, 82.0, Unit.PX);
-		
+
 		Label title=new Label("Identify the entry point necessary for this user story");
 		mainPanel.add(title);
 		mainPanel.setWidgetLeftWidth(title, 207.0, Unit.PX, 311.0, Unit.PX);
@@ -75,8 +78,10 @@ public class EntryPointWidget extends ScreenWidget{
 	
 	public void submit(){
 		Iterator<Widget> i=tabs.iterator();
-		EntryPointTab info=(EntryPointTab)i.next();
-		for(; i.hasNext();info=(EntryPointTab)i.next()){
+		
+		System.out.println(eInfo.getNumMethods());
+		for(int x=0; x<numTabs; x++){
+			EntryPointTab info=(EntryPointTab)i.next();
 			EntryMethodInfo e=new EntryMethodInfo();
 			e.setMethodName(info.getName());
 			e.setMethodDescription(info.getDesc());
@@ -85,13 +90,16 @@ public class EntryPointWidget extends ScreenWidget{
 			eInfo.addMethod(e);
 			
 		}
+		System.out.println(eInfo.getNumMethods());
+		eInfo.setDone(true);
 	}
-		public void addTab(){
-			tabs.add(new EntryPointTab(), "Nothing more");
-			tabs.selectTab(numTabs);
-			numTabs++;
-		
-			
+	public void addTab(){
+		tabs.add(new EntryPointTab(), "Nothing more");
+		tabs.selectTab(numTabs);
+		numTabs++;	
+	}
+	public EntryPointInfo getInfo(){
+		return eInfo;
 	}
 
 

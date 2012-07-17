@@ -1,14 +1,23 @@
 package project.client.userstory;
 
-import project.client.entry.EntryPointInfo;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class UserStoryInfo {
+import project.client.entry.EntryPointInfo;
+import project.server.submit.EntryPointPersist;
+
+public class UserStoryInfo implements IsSerializable{
 
 	private boolean isDone;
 	private String story;
 	private String name;
 
 	private EntryPointInfo childInfo;//child
+	
+	public UserStoryInfo(){
+		story="story";
+		name="name";
+		childInfo=new EntryPointInfo();
+	}
 		
 	public void setStory(String story){
 		this.story=story;
@@ -22,14 +31,11 @@ public class UserStoryInfo {
 		childInfo=new EntryPointInfo();
 	}
 	public void deleteChild(){
-		childInfo=null;
+		childInfo=new EntryPointInfo();
 	}
 	
 	public EntryPointInfo getChild(){
 		return childInfo;
-	}
-	public boolean hasChild(){
-		return childInfo==null;
 	}
 	public void setChild(EntryPointInfo c){
 		childInfo=c;

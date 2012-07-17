@@ -6,6 +6,7 @@ import javax.jdo.PersistenceManager;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import project.client.entry.EntryMethodInfo;
 import project.client.entry.EntryPointInfo;
@@ -13,31 +14,30 @@ import project.client.submission.SubmitService;
 import project.client.tests.TestCaseInfo;
 import project.client.tests.UnitTestInfo;
 import project.client.userstory.UserStoryInfo;
-import project.client.userstory.UserStoryWidget;
 import project.shared.PMF;
 
-public class SubmitServiceImpl implements SubmitService {
+public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitService {
 
-	public void retrieve(UserStoryPersist pInfo) {
+	public void retrieve(UserStoryInfo storyInfo) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
-			Key key = KeyFactory.createKey("Story", pInfo.getName());
+			Key key = KeyFactory.createKey(UserStoryPersist.class.getSimpleName(), storyInfo.getName());
 
 			// retrieve userstory
-			UserStoryInfo storyInfo = new UserStoryInfo();
-			UserStoryPersist story = pm.getObjectById(UserStoryPersist.class,
-					key);
-			if (!pInfo.hasChild()) {
-				pm.close();
-				return;
-			}
-			storyInfo.setChild(new EntryPointInfo());
+			//UserStoryPersist pInfo = pm.getObjectById(UserStoryPersist.class,
+			//		key);
+			UserStoryPersist pInfo=new UserStoryPersist();
+			pInfo.setStory("sdifuhsf");//temporary testing demo thing
+			
+			
+			
 			storyInfo.setStory(pInfo.getStory());
-			storyInfo.setName(pInfo.getName());
+			storyInfo.setChild(new EntryPointInfo());
+			
 
 			// retrieve entrypoint
 			EntryPointPersist pChild1 = pInfo.getChild();
-			if (pChild1.getNumMethods() == 0) {
+			if (pChild1==null||pChild1.getNumMethods() == 0) {
 				pm.close();
 				return;
 			}
@@ -79,26 +79,28 @@ public class SubmitServiceImpl implements SubmitService {
 					child4.setCode(pChild4.getCode());
 				}
 			}
-		} finally {
 			pm.close();
+		} finally {
+
 		}
 	}
 
 	public void submit(UserStoryInfo info) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
-			Key key = KeyFactory.createKey("Story", info.getName());
+			Key key = KeyFactory.createKey(UserStoryPersist.class.getSimpleName(), info.getName());
 
 			// record userstory
-			UserStoryPersist story = pm.getObjectById(UserStoryPersist.class,
+			UserStoryPersist story = new UserStoryPersist();
+			story.setKey(key);
+			pm.makePersistent(story);
+			story=pm.getObjectById(UserStoryPersist.class,
 					key);
-			if (!info.hasChild()) {
-				pm.close();
-				return;
-			}
-			story.setChild(new EntryPointPersist());
+			
 			story.setStory(info.getStory());
 			story.setName(info.getName());
+			story.setChild(new EntryPointPersist());
+			
 
 			// record entrypoint
 			EntryPointInfo child1 = info.getChild();
@@ -145,10 +147,11 @@ public class SubmitServiceImpl implements SubmitService {
 					pChild4.setCode(child4.getCode());
 				}
 			}
-
-			// pm.makePersistent(info);
-		} finally {
 			pm.close();
+
+			// 
+		} finally {
+			//pm.close();
 		}
 	}
 

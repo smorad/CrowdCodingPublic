@@ -31,6 +31,7 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 		this.methodName=methodName;
 		this.methodType=methodType;
 		
+		UI();
 	}
 	
 	/**
@@ -111,5 +112,6 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 	
 	public void submit(){
 		eInfo.setCode(editor1.getText());
+		eInfo.setDone(true);
 	}
 }

@@ -1,2 +1,0 @@
-serviceClass: project.client.editor.CodeIdentifierService
-path: 31052DB87D80A5EF60F11A5E80EC7EFA.gwt.rpc

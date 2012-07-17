@@ -2,20 +2,29 @@ package project.server.submit;
 
 import java.util.ArrayList;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 @PersistenceCapable
-public class EntryPointPersist {
+public class EntryPointPersist implements IsSerializable{
 	@PrimaryKey
-    private String key;
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private Key key;
 	
 	@Persistent
 	private ArrayList<EntryMethodPersist> methods;//children
 	
 	@Persistent
 	private boolean isDone;
+	
+	public EntryPointPersist(){
+		methods=new ArrayList<EntryMethodPersist>();
+	}
 	
 	public void addMethod(EntryMethodPersist method){
 		methods.add(method);

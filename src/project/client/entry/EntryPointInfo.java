@@ -2,10 +2,18 @@ package project.client.entry;
 
 import java.util.ArrayList;
 
+import project.server.submit.EntryMethodPersist;
 
-public class EntryPointInfo {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+
+public class EntryPointInfo implements IsSerializable{
 	private boolean isDone;
 	private ArrayList<EntryMethodInfo> methods;//children
+	
+	public EntryPointInfo(){
+		methods=new ArrayList<EntryMethodInfo>();
+	}
 	
 	public void addMethod(EntryMethodInfo method){
 		methods.add(method);

@@ -1,7 +1,9 @@
 package project.client.editor;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class AceEditorInfo{
+
+public class AceEditorInfo implements IsSerializable{
 	private boolean isDone;
 	private String code;
 		

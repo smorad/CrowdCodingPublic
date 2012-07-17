@@ -6,9 +6,10 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 @PersistenceCapable
-public class UserStoryPersist {
+public class UserStoryPersist implements IsSerializable{
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
@@ -24,6 +25,12 @@ public class UserStoryPersist {
 	
 	@Persistent
 	private boolean isDone;
+	
+	public UserStoryPersist(){
+		story="story";
+		name="name";
+		childInfo=new EntryPointPersist();
+	}
 		
 	public void setStory(String story){
 		this.story=story;
@@ -41,14 +48,11 @@ public class UserStoryPersist {
 		childInfo=new EntryPointPersist();
 	}
 	public void deleteChild(){
-		childInfo=null;
+		childInfo=new EntryPointPersist();
 	}
 	
 	public EntryPointPersist getChild(){
 		return childInfo;
-	}
-	public boolean hasChild(){
-		return childInfo==null;
 	}
 	public void setChild(EntryPointPersist c){
 		childInfo=c;

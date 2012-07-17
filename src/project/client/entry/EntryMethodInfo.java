@@ -2,19 +2,29 @@ package project.client.entry;
 
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import project.client.tests.TestCaseInfo;
+import project.server.submit.TestCasePersist;
 
 
-public class EntryMethodInfo {
+public class EntryMethodInfo implements IsSerializable{
 
 	private boolean isDone;
 	private String methodDescription;
 	
 	private String methodName;
 	
-	private ArrayList<String> parameters=new ArrayList<String>();
+	private ArrayList<String> parameters;
 	
 	private TestCaseInfo test;//child
+	
+	public EntryMethodInfo(){
+		methodDescription="description";
+		methodName="name";
+		parameters=new ArrayList<String>();
+		test=new TestCaseInfo();
+	}
 	
 	public void setMethodDescription(String description){
 		methodDescription=description;

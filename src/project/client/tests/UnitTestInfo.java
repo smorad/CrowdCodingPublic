@@ -1,8 +1,14 @@
 package project.client.tests;
 
-public class UnitTestInfo {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class UnitTestInfo implements IsSerializable{
 	private boolean isDone;
 	private String code;
+	
+	public UnitTestInfo(){
+		code="code";
+	}
 	
 	public void setCode(String code){
 		this.code=code;

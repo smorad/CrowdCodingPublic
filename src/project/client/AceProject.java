@@ -1,8 +1,11 @@
 package project.client;
 
 
-import javax.jdo.PersistenceManager;
+import java.util.ArrayList;
 
+import project.client.entry.EntryMethodInfo;
+import project.client.entry.EntryPointTab;
+import project.client.entry.EntryPointWidget;
 import project.client.login.LoginInfo;
 import project.client.login.LoginService;
 import project.client.login.LoginServiceAsync;
@@ -10,8 +13,12 @@ import project.client.login.LoginWidget;
 import project.client.screen.ScreenWidget;
 import project.client.submission.SubmitService;
 import project.client.submission.SubmitServiceAsync;
+import project.client.tests.TestCaseInfo;
+import project.client.tests.TestCaseWidget;
+import project.client.tests.UnitTestInfo;
+import project.client.tests.UnitTestWidget;
 import project.client.userstory.UserStoryInfo;
-import project.shared.PMF;
+import project.client.userstory.UserStoryWidget;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -27,6 +34,7 @@ public class AceProject implements EntryPoint {
 	
 	//private static somethinginfo;
 	//private static othersomthinginfo;
+	
 	private static LoginInfo loginInfo = null;
 	private LoginWidget loginPanel; 
 	private static ScreenWidget editor; 
@@ -67,41 +75,77 @@ public class AceProject implements EntryPoint {
 	
 	private static void loadRandomly(){
 		RootLayoutPanel.get().clear();
-		instantiateRandomly();
-		//editor=new project.client.editor.AceEditorWidget(loginInfo);
+		storyInfo=new UserStoryInfo();
+		storyInfo.setName("Demo");
+		storyInfo.setDone(false);
+		service.retrieve(storyInfo, new AsyncCallback(){
+			public void onFailure(Throwable t){
+				Window.alert("Nope");
+			}
+			public void onSuccess(Object r){
+				//Window.alert("Yep");
+			}
+		});
+		//instantiateRandomly(loginInfo);
+		editor=new UserStoryWidget(loginInfo, storyInfo);
+		RootLayoutPanel.get().add(new ScrollPanel(editor));
+		
+	}
+	
+	public static void instantiateRandomly(LoginInfo loginInfo){
+		RootLayoutPanel.get().clear();
+		System.out.println(storyInfo.isDone());
+		
+		
+		ArrayList<ScreenWidget> list = new ArrayList<ScreenWidget>();
+		UserStoryWidget story = new UserStoryWidget(loginInfo, storyInfo);
+		System.out.println(story.getInfo().getStory());
+		System.out.println(story.getInfo().getName());
+		if(!story.getInfo().isDone())
+			list.add(story);//add story
+		
+		EntryPointWidget ePoint = new EntryPointWidget(loginInfo, story.getInfo().getChild(), story.getInfo().getStory());
+		System.out.println(ePoint.getInfo().isDone());
+		if(!ePoint.getInfo().isDone())
+			list.add(ePoint);  //add entry point
+		
+		//System.out.println(ePoint.getInfo().getNumMethods());
+		for(int i= 0; i<ePoint.getInfo().getNumMethods(); i++){
+			EntryMethodInfo e=ePoint.getInfo().getMethod(i);
+			TestCaseInfo t=e.getTest();
+			if(!t.isDone())
+				list.add(new TestCaseWidget(loginInfo, t, e.getDescription()));
+			for(int x=0; x<t.getNumTests(); x++){
+				UnitTestInfo u=t.getTestInfo(x);
+				if(!u.isDone())
+					list.add(new UnitTestWidget(loginInfo, u, e.getDescription(), t.getTest(x)));
+			}
+		}
+			
+		if(list.isEmpty()){
+			Window.alert("empty");
+			return;
+		}
+		int a=(int)(Math.random()*list.size());
+		editor=list.get(a);
 		RootLayoutPanel.get().add(new ScrollPanel(editor));
 		if(editor instanceof EditorContainer)
 			((EditorContainer)editor).buildEditor();
 	}
 	
-	private static void instantiateRandomly(){
-		int a=(int)(Math.random()*5);
-		switch(a){
-			case 0: //editor=new project.client.editor.AceEditorWidget(loginInfo);
-					break;
-			case 1: //editor=new project.client.userstory.UserStoryWidget(loginInfo);
-					break;	
-			case 2: //editor=new project.client.entry.EntryPointWidget(loginInfo, null, "Blah");
-					break;
-			case 3: //editor=new project.client.tests.TestCaseWidget(loginInfo);
-					break;
-			case 4: //editor=new project.client.tests.UnitTestWidget(loginInfo);
-					break;	
-			case 5: //editor=new project.client.identifier.CodeIdentifier(loginInfo);
-					break;
-		}
-	}
-	
+	@SuppressWarnings("rawtypes")
 	public static void submit(){
 		editor.submit();
+		System.out.println("a6");
 		service.submit(storyInfo, new AsyncCallback(){
 			public void onFailure(Throwable t){
 				Window.alert("failure");
 			}
 			public void onSuccess(Object result){
-				Window.alert("success");
+				//Window.alert("success");
 			}
 		});
+		instantiateRandomly(loginInfo);
 	}
 
 	

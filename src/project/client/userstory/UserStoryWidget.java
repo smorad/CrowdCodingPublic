@@ -16,6 +16,8 @@ public class UserStoryWidget extends ScreenWidget{
 		super(info);
 		setSize("1150px", "768px");
 		this.uInfo=uInfo;
+		
+		UI();
 	}
 	
 	public void UI(){
@@ -29,9 +31,15 @@ public class UserStoryWidget extends ScreenWidget{
 		mainPanel.add(area);
 		mainPanel.setWidgetLeftWidth(area, 49.0, Unit.PX, 630.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(area, 165.0, Unit.PX, 347.0, Unit.PX);
-		area.setText("Insert story here.");
+		area.setText(uInfo.getStory());
 	}
 	public void submit(){
 		uInfo.setStory(area.getText());
+		uInfo.createEntryChild();
+		uInfo.setDone(true);
+	}
+	
+	public UserStoryInfo getInfo(){
+		return uInfo;
 	}
 }

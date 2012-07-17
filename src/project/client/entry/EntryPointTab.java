@@ -67,9 +67,6 @@ public class EntryPointTab extends VerticalPanel{
 			}
 		});
 		h.add(removeParButton);
-		
-		Button testButton=new Button("Set Unit Tests");
-		h.add(testButton);
 	}
 	
 	public String getName(){

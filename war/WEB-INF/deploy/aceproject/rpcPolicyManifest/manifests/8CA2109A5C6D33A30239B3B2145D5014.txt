@@ -1,0 +1,2 @@
+serviceClass: project.client.LoginService
+path: 762D164F90DF2A4C1F39061357159E45.gwt.rpc

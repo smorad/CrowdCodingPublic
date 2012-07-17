@@ -1,26 +1,24 @@
 package project.client.userstory;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 import project.client.entry.EntryPointInfo;
+import project.server.submit.EntryPointPersist;
 
-import com.google.appengine.api.datastore.Key;
+public class UserStoryInfo implements IsSerializable{
 
-@PersistenceCapable
-public class UserStoryInfo {
-	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
-	
-	@Persistent
+	private boolean isDone;
 	private String story;
+	private String name;
+
+	private EntryPointInfo childInfo;//child
 	
-	@Persistent
-	private EntryPointInfo childInfo;
-	
+	public UserStoryInfo(){
+		story="story";
+		name="name";
+		childInfo=new EntryPointInfo();
+	}
+		
 	public void setStory(String story){
 		this.story=story;
 	}
@@ -28,6 +26,34 @@ public class UserStoryInfo {
 	public String getStory(){
 		return story;
 	}
+	
+	public void createEntryChild(){
+		childInfo=new EntryPointInfo();
+	}
+	public void deleteChild(){
+		childInfo=new EntryPointInfo();
+	}
+	
+	public EntryPointInfo getChild(){
+		return childInfo;
+	}
+	public void setChild(EntryPointInfo c){
+		childInfo=c;
+	}
+	
+	public void setName(String name){
+		this.name=name;
+	}
+	public String getName(){
+		return name;
+	}
+	public boolean isDone(){
+		return isDone;
+	}
+	public void setDone(boolean bool){
+		isDone=bool;
+	}
+	
 	
 	
 }

@@ -2,27 +2,29 @@ package project.client.entry;
 
 import java.util.ArrayList;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-import com.google.appengine.api.datastore.Key;
+import project.client.tests.TestCaseInfo;
+import project.server.submit.TestCasePersist;
 
-@PersistenceCapable
-public class EntryMethodInfo {
-	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
-	
-	@Persistent
+
+public class EntryMethodInfo implements IsSerializable{
+
+	private boolean isDone;
 	private String methodDescription;
 	
-	@Persistent
 	private String methodName;
 	
-	@Persistent
 	private ArrayList<String> parameters;
+	
+	private TestCaseInfo test;//child
+	
+	public EntryMethodInfo(){
+		methodDescription="description";
+		methodName="name";
+		parameters=new ArrayList<String>();
+		test=new TestCaseInfo();
+	}
 	
 	public void setMethodDescription(String description){
 		methodDescription=description;
@@ -55,6 +57,26 @@ public class EntryMethodInfo {
 	public int getNumParameters(){
 		return parameters.size();
 	}
+	
+	public void addTest(){
+		test=new TestCaseInfo();
+	}
+	public void removeTest(){
+		test=null;
+	}
+	
+	public TestCaseInfo getTest(){
+		return test;
+	}
+	public boolean isDone(){
+		return isDone;
+	}
+	public void setDone(boolean bool){
+		isDone=bool;
+	}
+	
+	
+	
 	
 	
 }

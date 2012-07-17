@@ -10433,6 +10433,7 @@ Rebinding project.client.editor.SubmitService
          Using a shard size of 0 for TypeSerializerCreator createMethodMap
    Adding '11' new generated units
       Removing invalidated units
+<<<<<<< HEAD
 Module location: file:/C:/Users/Patrick/workspace/Login/src/project/Login.gwt.xml
 Loading inherited module 'com.google.gwt.user.User'
    Module location: jar:file:/C:/Users/Patrick/Downloads/eclipse-jee-indigo-win32-x86_64/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201205091048-rel-r37/gwt-2.4.0/gwt-user.jar!/com/google/gwt/user/User.gwt.xml
@@ -24147,3 +24148,5 @@ Caused by: java.lang.RuntimeException: Failed to invoke native method: @com.goog
 	at com.google.gwt.dev.shell.designtime.ModuleSpace.invokeNative(ModuleSpace.java:308)
 	at com.google.gwt.dev.shell.designtime.ModuleSpace.invokeNativeObject(ModuleSpace.java:157)
 	... 91 more
+=======
+>>>>>>> e0743d378b6dfecb6172472fa08f450751e40c34

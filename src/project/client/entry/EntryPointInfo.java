@@ -2,21 +2,18 @@ package project.client.entry;
 
 import java.util.ArrayList;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import project.server.submit.EntryMethodPersist;
 
-import com.google.appengine.api.datastore.Key;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-@PersistenceCapable
-public class EntryPointInfo {
-	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
+
+public class EntryPointInfo implements IsSerializable{
+	private boolean isDone;
+	private ArrayList<EntryMethodInfo> methods;//children
 	
-	@Persistent
-	private ArrayList<EntryMethodInfo> methods;
+	public EntryPointInfo(){
+		methods=new ArrayList<EntryMethodInfo>();
+	}
 	
 	public void addMethod(EntryMethodInfo method){
 		methods.add(method);
@@ -27,5 +24,11 @@ public class EntryPointInfo {
 	}
 	public int getNumMethods(){
 		return methods.size();
+	}
+	public boolean isDone(){
+		return isDone;
+	}
+	public void setDone(boolean bool){
+		isDone=bool;
 	}
 }

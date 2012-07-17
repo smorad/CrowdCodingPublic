@@ -6,6 +6,7 @@ import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -14,12 +15,15 @@ import com.google.gwt.event.dom.client.ClickEvent;
 public class TestCaseWidget extends ScreenWidget {
 	private ArrayList<TestCasePanel> testCase;
 	private TestCaseInfo tInfo;
+	private String methodDescription;
 
-	public TestCaseWidget(LoginInfo info, TestCaseInfo tInfo) {
+	public TestCaseWidget(LoginInfo info, TestCaseInfo tInfo, String methodDescription) {
 		super(info);
 		setSize("1150px", "768px");
 		this.tInfo=tInfo;
+		this.methodDescription=methodDescription;
 		
+		UI();
 	}
 
 	
@@ -30,6 +34,13 @@ public class TestCaseWidget extends ScreenWidget {
 		mainPanel.add(lblDescribeTestCases);
 		mainPanel.setWidgetLeftWidth(lblDescribeTestCases, 336.0, Unit.PX, 125.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(lblDescribeTestCases, 13.0, Unit.PX, 42.0, Unit.PX);
+		
+		TextArea methodBox=new TextArea();
+		methodBox.setText(methodDescription);
+		methodBox.setEnabled(false);
+		mainPanel.add(methodBox);
+		mainPanel.setWidgetLeftWidth(methodBox, 79.0, Unit.PX, 604.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(methodBox, 44.0, Unit.PX, 189.0, Unit.PX);
 
 
 		Label lblTestCaseDescription = new Label("Test case description");
@@ -54,6 +65,8 @@ public class TestCaseWidget extends ScreenWidget {
 			}
 		});
 		btnNewTestCase.setText("Add test");
+		
+		createTextBox();
 	}
 	
 	private void createTextBox() {
@@ -77,8 +90,13 @@ public class TestCaseWidget extends ScreenWidget {
 		}
 	}
 	
+	public TestCaseInfo getInfo(){
+		return tInfo;
+	}
+	
 	public void submit(){
 		for(int x=0; x<testCase.size(); x++)
 			tInfo.addTest(testCase.get(x).getTest());
+		tInfo.setDone(true);
 	}
 }

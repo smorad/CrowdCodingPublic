@@ -1,0 +1,15 @@
+com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException, true, true, true, true, com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException/3936916533, 3936916533
+com.google.gwt.user.client.rpc.RpcTokenException, true, true, false, false, com.google.gwt.user.client.rpc.RpcTokenException/2345075298, 2345075298
+com.google.gwt.user.client.rpc.XsrfToken, false, false, true, true, com.google.gwt.user.client.rpc.XsrfToken/4254043109, 4254043109
+java.lang.Exception, true, false, true, false, java.lang.Exception/1920171873, 1920171873
+java.lang.RuntimeException, true, false, true, false, java.lang.RuntimeException/515124647, 515124647
+java.lang.String, true, true, true, true, java.lang.String/2004016611, 2004016611
+java.lang.Throwable, true, false, true, false, java.lang.Throwable/2953622131, 2953622131
+java.util.ArrayList, true, true, true, true, java.util.ArrayList/4159755760, 4159755760
+project.client.editor.AceEditorInfo, true, true, true, true, project.client.editor.AceEditorInfo/689269314, 689269314
+project.client.entry.EntryMethodInfo, true, true, true, true, project.client.entry.EntryMethodInfo/1845549972, 1845549972
+project.client.entry.EntryPointInfo, true, true, true, true, project.client.entry.EntryPointInfo/1684103059, 1684103059
+project.client.submission.SubmitService, false, false, false, false, _, 4161697879
+project.client.tests.TestCaseInfo, true, true, true, true, project.client.tests.TestCaseInfo/3917516047, 3917516047
+project.client.tests.UnitTestInfo, true, true, true, true, project.client.tests.UnitTestInfo/2059280551, 2059280551
+project.client.userstory.UserStoryInfo, true, true, true, true, project.client.userstory.UserStoryInfo/668789682, 668789682

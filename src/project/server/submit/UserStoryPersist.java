@@ -9,7 +9,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 @PersistenceCapable
-public class UserStoryPersist implements IsSerializable{
+public class UserStoryPersist implements IsSerializable, PersistObject{
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
@@ -34,6 +34,7 @@ public class UserStoryPersist implements IsSerializable{
 		
 	public void setStory(String story){
 		this.story=story;
+		childInfo.setStory(story);
 	}
 	
 	public Key getKey(){

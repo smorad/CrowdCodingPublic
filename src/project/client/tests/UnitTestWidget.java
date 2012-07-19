@@ -5,12 +5,9 @@ import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditorCallback;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorMode;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
 
@@ -19,12 +16,12 @@ public class UnitTestWidget extends ScreenWidget implements EditorContainer{
 	private UnitTestInfo uInfo;
 	private String description, testCase;
 	
-	public UnitTestWidget(LoginInfo info, UnitTestInfo uInfo, String description, String testCase) {
+	public UnitTestWidget(LoginInfo info, UnitTestInfo uInfo) {
 		super(info);
 		setSize("1150px", "768px");
 		this.uInfo=uInfo;
-		this.description=description;
-		this.testCase=testCase;
+		this.description=uInfo.getMethodDesc();
+		this.testCase=uInfo.getTestDesc();
 		
 		UI();
 	}

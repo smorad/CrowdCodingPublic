@@ -8,12 +8,13 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 import project.client.tests.UnitTestInfo;
 
 @PersistenceCapable
-public class TestCasePersist implements IsSerializable{
+public class TestCasePersist implements IsSerializable, PersistObject{
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
@@ -27,6 +28,9 @@ public class TestCasePersist implements IsSerializable{
 	@Persistent
 	private boolean isDone;
 	
+	@Persistent
+	private String description;//from parent
+	
 	public TestCasePersist(){
 		testInfos=new ArrayList<UnitTestPersist>();
 		tests=new ArrayList<String>();
@@ -35,7 +39,10 @@ public class TestCasePersist implements IsSerializable{
 	
 	public void addTest(String test){
 		tests.add(test);
-		testInfos.add(new UnitTestPersist());
+		UnitTestPersist u=new UnitTestPersist();
+		u.setMethodDesc(getDescription());
+		u.setTestDesc(test);
+		testInfos.add(u);
 	}
 	public void removeTest(String test){
 		int i=tests.indexOf(test);
@@ -64,6 +71,21 @@ public class TestCasePersist implements IsSerializable{
 	public void setDone(boolean bool){
 		isDone=bool;
 	}
+	
+	public Key getKey(){
+		return key;
+	}
+	public String getKeyString(){
+		return KeyFactory.keyToString(key);
+	}
+	
+	//from parent
+		public void setDescription(String s){
+			description=s;
+		}
+		public String getDescription(){
+			return description;
+		}
 	
 	
 }

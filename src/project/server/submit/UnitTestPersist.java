@@ -6,10 +6,11 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 @PersistenceCapable
-public class UnitTestPersist implements IsSerializable{
+public class UnitTestPersist implements IsSerializable, PersistObject{
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
@@ -19,6 +20,12 @@ public class UnitTestPersist implements IsSerializable{
 	
 	@Persistent
 	private boolean isDone;
+	
+	@Persistent
+	private String methodDesc;
+	
+	@Persistent
+	private String testDesc;//from parent
 	
 	public UnitTestPersist(){
 		code="code";
@@ -35,5 +42,27 @@ public class UnitTestPersist implements IsSerializable{
 	}
 	public void setDone(boolean bool){
 		isDone=bool;
+	}
+	
+	public Key getKey(){
+		return key;
+	}
+	public String getKeyString(){
+		return KeyFactory.keyToString(key);
+	}
+	
+	//from parent
+	public String getMethodDesc(){
+		return methodDesc;
+	}
+	public String getTestDesc(){
+		return testDesc;
+	}
+
+	public void setMethodDesc(String s){
+		methodDesc=s;
+	}
+	public void setTestDesc(String s){
+		testDesc=s;
 	}
 }

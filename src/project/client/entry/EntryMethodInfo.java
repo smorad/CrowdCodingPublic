@@ -4,16 +4,18 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+import project.client.InfoObject;
 import project.client.tests.TestCaseInfo;
-import project.server.submit.TestCasePersist;
 
 
-public class EntryMethodInfo implements IsSerializable{
+public class EntryMethodInfo implements IsSerializable, InfoObject{
 
 	private boolean isDone;
 	private String methodDescription;
 	
 	private String methodName;
+	
+	private String keyString;
 	
 	private ArrayList<String> parameters;
 	
@@ -28,6 +30,7 @@ public class EntryMethodInfo implements IsSerializable{
 	
 	public void setMethodDescription(String description){
 		methodDescription=description;
+		test.setDescription(description);
 	}
 	public void setMethodName(String name){
 		methodName=name;
@@ -73,6 +76,13 @@ public class EntryMethodInfo implements IsSerializable{
 	}
 	public void setDone(boolean bool){
 		isDone=bool;
+	}
+	
+	public void setKeyString(String s){
+		keyString=s;
+	}
+	public String getKeyString(){
+		return keyString;
 	}
 	
 	

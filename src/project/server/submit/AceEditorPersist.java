@@ -4,10 +4,11 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Key;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 @PersistenceCapable
-public class AceEditorPersist implements IsSerializable{
+public class AceEditorPersist implements IsSerializable, PersistObject{
 	@Persistent
 	private String code;
 	
@@ -28,5 +29,10 @@ public class AceEditorPersist implements IsSerializable{
 	}
 	public void setDone(boolean bool){
 		isDone=bool;
+	}
+	@Override
+	public Key getKey() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

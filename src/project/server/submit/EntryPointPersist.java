@@ -8,10 +8,11 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 @PersistenceCapable
-public class EntryPointPersist implements IsSerializable{
+public class EntryPointPersist implements IsSerializable, PersistObject{
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
@@ -21,6 +22,9 @@ public class EntryPointPersist implements IsSerializable{
 	
 	@Persistent
 	private boolean isDone;
+	
+	@Persistent
+	private String story;//from parent
 	
 	public EntryPointPersist(){
 		methods=new ArrayList<EntryMethodPersist>();
@@ -33,6 +37,9 @@ public class EntryPointPersist implements IsSerializable{
 	public EntryMethodPersist getMethod(int index){
 		return methods.get(index);
 	}
+	public void removeMethod(int index){
+		methods.remove(index);
+	}
 	public int getNumMethods(){
 		return methods.size();
 	}
@@ -42,4 +49,20 @@ public class EntryPointPersist implements IsSerializable{
 	public void setDone(boolean bool){
 		isDone=bool;
 	}
+	
+	public Key getKey(){
+		return key;
+	}
+	public String getKeyString(){
+		return KeyFactory.keyToString(key);
+	}
+	
+	//from parent
+	
+		public void setStory(String s){
+			this.story=s;
+		}
+		public String getStory(){
+			return story;
+		}
 }

@@ -1,15 +1,4 @@
-<!-- Indices written at Tue, 17 Jul 2012 11:23:11 PDT -->
+<!-- Indices written at Thu, 19 Jul 2012 10:17:05 PDT -->
 
-<datastore-indexes>
+<datastore-indexes/>
 
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="EntryMethodPersist" ancestor="true" source="auto">
-        <property name="methods_INTEGER_IDX" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="UnitTestPersist" ancestor="true" source="auto">
-        <property name="testInfos_INTEGER_IDX" direction="asc"/>
-    </datastore-index>
-
-</datastore-indexes>

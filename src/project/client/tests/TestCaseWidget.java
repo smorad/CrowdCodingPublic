@@ -17,11 +17,11 @@ public class TestCaseWidget extends ScreenWidget {
 	private TestCaseInfo tInfo;
 	private String methodDescription;
 
-	public TestCaseWidget(LoginInfo info, TestCaseInfo tInfo, String methodDescription) {
+	public TestCaseWidget(LoginInfo info, TestCaseInfo tInfo) {
 		super(info);
 		setSize("1150px", "768px");
 		this.tInfo=tInfo;
-		this.methodDescription=methodDescription;
+		this.methodDescription=tInfo.getDescription();
 		
 		UI();
 	}

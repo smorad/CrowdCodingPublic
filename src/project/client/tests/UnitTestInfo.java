@@ -7,7 +7,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class UnitTestInfo implements IsSerializable, InfoObject{
 	private boolean isDone;
 	private String code;
-	private String keyString;
+	private Long keyString;
 	private String methodDesc, testDesc;//from parent
 	
 	public UnitTestInfo(){
@@ -27,10 +27,10 @@ public class UnitTestInfo implements IsSerializable, InfoObject{
 		isDone=bool;
 	}
 	
-	public void setKeyString(String s){
+	public void setKeyString(Long s){
 		keyString=s;
 	}
-	public String getKeyString(){
+	public Long getKeyString(){
 		return keyString;
 	}
 	
@@ -49,5 +49,12 @@ public class UnitTestInfo implements IsSerializable, InfoObject{
 	}
 	public String getTestDesc(){
 		return testDesc;
+	}
+	
+	//for testing
+	public String info(){
+		return "methodDesc is: "+methodDesc
+				+"\ntestDesc is: "+testDesc
+				+"\ncode is: "+code;
 	}
 }

@@ -9,7 +9,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class EntryPointInfo implements IsSerializable, InfoObject{
 	private boolean isDone;
 	private ArrayList<EntryMethodInfo> methods;//children
-	private String keyString;
+	private Long keyString;
 	private String story;//from parent
 	
 	public EntryPointInfo(){
@@ -36,10 +36,10 @@ public class EntryPointInfo implements IsSerializable, InfoObject{
 		isDone=bool;
 	}
 	
-	public void setKeyString(String s){
+	public void setKeyString(Long s){
 		keyString=s;
 	}
-	public String getKeyString(){
+	public Long getKeyString(){
 		return keyString;
 	}
 	
@@ -50,5 +50,10 @@ public class EntryPointInfo implements IsSerializable, InfoObject{
 	}
 	public String getStory(){
 		return story;
+	}
+	
+	//for testing
+	public String info(){
+		return "Story is: "+story;
 	}
 }

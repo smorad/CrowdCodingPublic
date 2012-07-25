@@ -10,7 +10,7 @@ public class TestCaseInfo implements IsSerializable, InfoObject{
 	private boolean isDone;
 	private ArrayList<String> tests=new ArrayList<String>();
 	private ArrayList<UnitTestInfo> testInfos=new ArrayList<UnitTestInfo>();
-	private String keyString;
+	private Long keyString;
 	private String description;//from parent
 	
 	public TestCaseInfo(){
@@ -53,10 +53,10 @@ public class TestCaseInfo implements IsSerializable, InfoObject{
 		isDone=bool;
 	}
 	
-	public void setKeyString(String s){
+	public void setKeyString(Long s){
 		keyString=s;
 	}
-	public String getKeyString(){
+	public Long getKeyString(){
 		return keyString;
 	}
 	
@@ -66,6 +66,11 @@ public class TestCaseInfo implements IsSerializable, InfoObject{
 	}
 	public String getDescription(){
 		return description;
+	}
+	
+	//for testing
+	public String info(){
+		return "testDescription is: "+description;
 	}
 	
 	

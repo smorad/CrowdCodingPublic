@@ -34,11 +34,12 @@ public class AceProject implements EntryPoint {
 	private static ScreenWidget editor; 
 	private static InfoObject storyInfo;
 	private static SubmitServiceAsync service=(SubmitServiceAsync)GWT.create(SubmitService.class);
-	private static String name="Demo4";
+	private static String name="cDemo";//started using Obj at bDemo10
 	/**
 	 * This is the entry point method.
 	 * @wbp.parser.entryPoint
 	 */
+	@SuppressWarnings("rawtypes")
 	public void onModuleLoad() {
 		// Check login status using login service.
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
@@ -46,15 +47,26 @@ public class AceProject implements EntryPoint {
 		      public void onFailure(Throwable error) {
 		      }
 
-		      public void onSuccess(LoginInfo result) {
-		        loginInfo = result;
-		        if(loginInfo.isLoggedIn()) {
-		        	loadEditorAndService();
-		        } else {
-		          loadLogin();
-		        }
+		      public void onSuccess(final LoginInfo result) {
+		    	  service.register(new AsyncCallback(){
+					public void onSuccess(Object t){
+						loginInfo = result;
+				        if(loginInfo.isLoggedIn()) {
+				        	loadEditorAndService();
+				        } else {
+				          loadLogin();
+				        }
+				        
+				        //Window.alert("Worked");	
+					}
+					public void onFailure(Throwable t){
+						Window.alert("Didn't work");
+					}
+		    	  });
+
 		      }
-		    });		
+	    });	
+		
 	}
 	
 	private void loadLogin() {
@@ -67,10 +79,22 @@ public class AceProject implements EntryPoint {
 		RootLayoutPanel.get().clear();
 		storyInfo=new UserStoryInfo();
 		((UserStoryInfo)storyInfo).setName(name);
-		editor=new UserStoryWidget(loginInfo, (UserStoryInfo)storyInfo);
-		RootLayoutPanel.get().add(new ScrollPanel(editor));
-		System.out.println("Success");
+		callCreate();
 	}
+	private static void callCreate(){
+		service.create((UserStoryInfo)storyInfo, new AsyncCallback<UserStoryInfo>(){
+			public void onFailure(Throwable t){
+				Window.alert("bad luck");
+			}
+			public void onSuccess(UserStoryInfo info){
+				storyInfo=info;
+				editor=new UserStoryWidget(loginInfo, (UserStoryInfo)storyInfo);
+				RootLayoutPanel.get().add(new ScrollPanel(editor));
+				System.out.println("Success");
+			}
+		});
+	}
+	
 	
 
 	public static void instantiateRandomly(final LoginInfo loginInfo){
@@ -81,8 +105,13 @@ public class AceProject implements EntryPoint {
 				Window.alert("Nope");
 			}
 			public void onSuccess(InfoObject info){
-				System.out.println("Key is: "+info.getKeyString());
-				System.out.println("isDone is: "+info.isDone());
+				storyInfo=info;
+				if(info==null){
+					Window.alert("No more");
+					return;
+				}				
+				
+				
 				if(info instanceof EntryPointInfo)
 					editor=new EntryPointWidget(loginInfo, (EntryPointInfo)info);
 				else if(info instanceof TestCaseInfo)
@@ -102,35 +131,21 @@ public class AceProject implements EntryPoint {
 	
 	public static void submit(){
 		editor.submit();
-		if(storyInfo.getKeyString()==null)
-			callCreate();
-		else
-			callSubmit();
-		instantiateRandomly(loginInfo);
+		System.out.println(storyInfo.isDone());
+		callSubmit();
+		
 	}
 	
-	private static void callCreate(){
-		System.out.println("Null again");
-		service.create((UserStoryInfo)storyInfo, new AsyncCallback<UserStoryInfo>(){
-			public void onFailure(Throwable t){
-				Window.alert("bad luck");
-			}
-			public void onSuccess(UserStoryInfo info){
-				storyInfo=info;
-				System.out.println("Name is: "+info.getName());
-				System.out.println("Key is: "+storyInfo.getKeyString());
-			}
-		});
-	}
+	
 	@SuppressWarnings("rawtypes")
 	private static void callSubmit(){
-		System.out.println("Doesnt seem to be null this time.");
 		service.submit(storyInfo, new AsyncCallback(){
 			public void onFailure(Throwable t){
 				Window.alert("failure");
 			}
 			public void onSuccess(Object result){
 				//Window.alert("success");
+				instantiateRandomly(loginInfo);
 			}
 		});
 	}

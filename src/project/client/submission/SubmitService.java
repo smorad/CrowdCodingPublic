@@ -11,4 +11,5 @@ public interface SubmitService extends RemoteService{
 	void submit(InfoObject info);
 	InfoObject retrieve(String name);
 	UserStoryInfo create(UserStoryInfo info);
+	void register();
 }

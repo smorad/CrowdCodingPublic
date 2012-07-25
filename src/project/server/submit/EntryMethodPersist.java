@@ -1,47 +1,53 @@
 package project.server.submit;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Id;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.gwt.user.client.rpc.IsSerializable;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.annotation.Unindexed;
 
 
-@PersistenceCapable
-public class EntryMethodPersist implements IsSerializable, PersistObject{
-	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
+@Unindexed
+public class EntryMethodPersist implements PersistObject{
+	@Id
+	private Long id;
 	
-	@Persistent
+	
 	private String methodDescription;
 	
-	@Persistent
 	private String methodName;
 	
-	@Persistent
 	private ArrayList<String> parameters;
 	
-	@Persistent
-	private TestCasePersist test;//child
+	private Key<TestCasePersist> test;//child
 	
-	@Persistent
 	private boolean isDone;
 	
-	public EntryMethodPersist(){
+	/*public EntryMethodPersist(){
 		methodDescription="description";
 		methodName="name";
 		parameters=new ArrayList<String>();
-		test=new TestCasePersist();
-	}
+		Objectify o=ObjectifyService.begin();
+		TestCasePersist t=new TestCasePersist();
+		o.put(t);
+		test=new Key<TestCasePersist>(TestCasePersist.class, t.getId());
+	}*/
 	
 	public void setMethodDescription(String description){
+		
 		methodDescription=description;
+		if(test!=null){
+			Logger.getLogger("NameOfYourLogger").log(Level.SEVERE, "desc is: "+description);
+			TestCasePersist t=getTest();
+			t.setDescription(description);
+			ObjectifyService.begin().put(t);
+			Logger.getLogger("NameOfYourLogger").log(Level.SEVERE, getTest().getDescription());
+		}
 	}
 	public void setMethodName(String name){
 		methodName=name;
@@ -71,15 +77,18 @@ public class EntryMethodPersist implements IsSerializable, PersistObject{
 	public int getNumParameters(){
 		return parameters.size();
 	}
-	
-	public void addTest(){
-		test=new TestCasePersist();
-	}
-	public void removeTest(){
-		test=null;
+
+	public void newTest(){
+		Objectify o=ObjectifyService.begin();
+		if(test!=null)
+			o.delete(test);
+		test=o.put(new TestCasePersist());
+		TestCasePersist t=o.get(test);
+		//t.setDescription(methodDescription);
 	}
 	public TestCasePersist getTest(){
-		return test;
+		Objectify o=ObjectifyService.begin();
+		return o.get(test);
 	}
 	public boolean isDone(){
 		return isDone;
@@ -88,14 +97,16 @@ public class EntryMethodPersist implements IsSerializable, PersistObject{
 		isDone=bool;
 	}
 	
-	public Key getKey(){
-		return key;
-	}
-	public String getKeyString(){
-		return KeyFactory.keyToString(key);
+	public Long getId(){
+		return id;
 	}
 	
-	
+	//for testing
+	public String info(){
+		return "methodDescription is: "+methodDescription
+				+"\nmethodName is: "+methodName;
+	}
+
 	
 	
 }

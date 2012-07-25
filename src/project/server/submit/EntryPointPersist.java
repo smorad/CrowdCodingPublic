@@ -1,47 +1,47 @@
 package project.server.submit;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Id;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.gwt.user.client.rpc.IsSerializable;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.annotation.Entity;
 
-@PersistenceCapable
-public class EntryPointPersist implements IsSerializable, PersistObject{
-	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
+@Entity
+public class EntryPointPersist implements PersistObject{	
+	@Id
+	private Long id;
 	
-	@Persistent
-	private ArrayList<EntryMethodPersist> methods;//children
+	private ArrayList<Key<EntryMethodPersist>> methods=new ArrayList<Key<EntryMethodPersist>>();
 	
-	@Persistent
 	private boolean isDone;
 	
-	@Persistent
 	private String story;//from parent
 	
-	public EntryPointPersist(){
-		methods=new ArrayList<EntryMethodPersist>();
-	}
+	/*public EntryPointPersist(){
+		methods=new ArrayList<Key<EntryMethodPersist>>();
+	}*/
 	
 	public void addMethod(EntryMethodPersist method){
-		methods.add(method);
+		Objectify o=ObjectifyService.begin();
+		methods.add(o.put(method));
 	}
 	
 	public EntryMethodPersist getMethod(int index){
-		return methods.get(index);
+		Objectify o=ObjectifyService.begin();
+		return o.get(methods.get(index));
 	}
 	public void removeMethod(int index){
-		methods.remove(index);
+		Objectify o=ObjectifyService.begin();
+		o.delete(methods.remove(index));
 	}
 	public int getNumMethods(){
-		return methods.size();
+		if(methods!=null)
+			return methods.size();
+		return -1;
 	}
 	public boolean isDone(){
 		return isDone;
@@ -50,19 +50,30 @@ public class EntryPointPersist implements IsSerializable, PersistObject{
 		isDone=bool;
 	}
 	
-	public Key getKey(){
-		return key;
+	
+	public Long getId(){
+		return id;
 	}
-	public String getKeyString(){
-		return KeyFactory.keyToString(key);
+	
+	public Collection<EntryMethodPersist> getAllMethods(){
+		Objectify o=ObjectifyService.begin();
+		return o.get(methods).values();
 	}
 	
 	//from parent
 	
-		public void setStory(String s){
-			this.story=s;
-		}
-		public String getStory(){
-			return story;
-		}
+	public void setStory(String s){
+		this.story=s;
+	}
+	public String getStory(){
+		return story;
+	}
+	
+	//for testing
+	public String info(){
+		String a="Story is: "+story;
+		for(int x=0; x<methods.size(); x++)
+			a+="\nDescription is: "+ObjectifyService.begin().get(methods.get(x)).getDescription();
+		return a;
+	}
 }

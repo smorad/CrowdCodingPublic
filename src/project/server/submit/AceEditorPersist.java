@@ -1,23 +1,11 @@
 package project.server.submit;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-@PersistenceCapable
-public class AceEditorPersist implements IsSerializable, PersistObject{
-	@Persistent
+public class AceEditorPersist implements PersistObject{
 	private String code;
 	
-	@Persistent
 	private boolean isDone;
-	
-	@PrimaryKey
-    private String key;
-	
+		
 	public void setCode(String code){
 		this.code=code;
 	}
@@ -31,8 +19,15 @@ public class AceEditorPersist implements IsSerializable, PersistObject{
 		isDone=bool;
 	}
 	@Override
-	public Key getKey() {
+	public Long getId() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public String info() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

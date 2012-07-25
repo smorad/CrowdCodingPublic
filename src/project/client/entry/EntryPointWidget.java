@@ -26,7 +26,6 @@ public class EntryPointWidget extends ScreenWidget{
 		setSize("1150px", "768px");
 		
 		this.story=eInfo.getStory();
-		System.out.println("Story is: "+story);
 		this.eInfo=eInfo;
 
 		UI();
@@ -80,7 +79,6 @@ public class EntryPointWidget extends ScreenWidget{
 	public void submit(){
 		Iterator<Widget> i=tabs.iterator();
 		
-		System.out.println("Num Methods before: "+eInfo.getNumMethods());
 		for(int x=0; x<numTabs; x++){
 			EntryPointTab info=(EntryPointTab)i.next();
 			EntryMethodInfo e=new EntryMethodInfo();
@@ -91,7 +89,6 @@ public class EntryPointWidget extends ScreenWidget{
 			eInfo.addMethod(e);
 			
 		}
-		System.out.println("Num Methods after: "+eInfo.getNumMethods());
 		eInfo.setDone(true);
 	}
 	public void addTab(){

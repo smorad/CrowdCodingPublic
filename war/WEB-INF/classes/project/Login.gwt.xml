@@ -13,6 +13,7 @@
 
   <!-- Other module inherits                                      -->
 	<inherits name='edu.ycp.cs.dh.acegwt.AceGWT'/>
+	<inherits name="com.google.gwt.logging.Logging"/>
   <!-- Specify the app entry point class.                         -->
   <entry-point class='project.client.AceProject'/>
 

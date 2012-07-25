@@ -15,7 +15,7 @@ public class EntryMethodInfo implements IsSerializable, InfoObject{
 	
 	private String methodName;
 	
-	private String keyString;
+	private Long keyString;
 	
 	private ArrayList<String> parameters;
 	
@@ -78,11 +78,17 @@ public class EntryMethodInfo implements IsSerializable, InfoObject{
 		isDone=bool;
 	}
 	
-	public void setKeyString(String s){
+	public void setKeyString(Long s){
 		keyString=s;
 	}
-	public String getKeyString(){
+	public Long getKeyString(){
 		return keyString;
+	}
+	
+	//for testing
+	public String info(){
+		return "methodDescription is: "+methodDescription
+				+"\nmethodName is: "+methodName;
 	}
 	
 	

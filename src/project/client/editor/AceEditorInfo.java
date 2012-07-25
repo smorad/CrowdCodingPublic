@@ -22,12 +22,17 @@ public class AceEditorInfo implements IsSerializable, InfoObject{
 		isDone=bool;
 	}
 	@Override
-	public void setKeyString(String s) {
+	public void setKeyString(Long s) {
 		// TODO Auto-generated method stub
 		
 	}
 	@Override
-	public String getKeyString() {
+	public Long getKeyString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String info() {
 		// TODO Auto-generated method stub
 		return null;
 	}

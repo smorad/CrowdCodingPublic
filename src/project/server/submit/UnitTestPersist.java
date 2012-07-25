@@ -1,30 +1,19 @@
 package project.server.submit;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Id;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-@PersistenceCapable
-public class UnitTestPersist implements IsSerializable, PersistObject{
-	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
+import com.googlecode.objectify.annotation.Unindexed;
+@Unindexed
+public class UnitTestPersist implements PersistObject{
+	@Id 
+	private Long id;
 	
-	@Persistent
 	private String code;
 	
-	@Persistent
 	private boolean isDone;
 	
-	@Persistent
 	private String methodDesc;
 	
-	@Persistent
 	private String testDesc;//from parent
 	
 	public UnitTestPersist(){
@@ -43,13 +32,10 @@ public class UnitTestPersist implements IsSerializable, PersistObject{
 	public void setDone(boolean bool){
 		isDone=bool;
 	}
+	public Long getId(){
+		return id;
+	}
 	
-	public Key getKey(){
-		return key;
-	}
-	public String getKeyString(){
-		return KeyFactory.keyToString(key);
-	}
 	
 	//from parent
 	public String getMethodDesc(){
@@ -65,4 +51,11 @@ public class UnitTestPersist implements IsSerializable, PersistObject{
 	public void setTestDesc(String s){
 		testDesc=s;
 	}
+	
+	//for testing
+		public String info(){
+			return "methodDesc is: "+methodDesc
+					+"\ntestDesc is: "+testDesc
+					+"\ncode is: "+code;
+		}
 }

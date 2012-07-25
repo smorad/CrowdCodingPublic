@@ -4,6 +4,9 @@ public interface InfoObject {
 	void setDone(boolean b);
 	boolean isDone();
 	
-	void setKeyString(String s);
-	String getKeyString();
+	void setKeyString(Long s);
+	Long getKeyString();
+	
+	//for testing
+	String info();
 }

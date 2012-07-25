@@ -2,11 +2,12 @@ package project.server.submit;
 
 import java.util.ArrayList;
 
-import javax.jdo.PersistenceManager;
-
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
 
 import project.client.InfoObject;
 import project.client.entry.EntryMethodInfo;
@@ -15,22 +16,24 @@ import project.client.submission.SubmitService;
 import project.client.tests.TestCaseInfo;
 import project.client.tests.UnitTestInfo;
 import project.client.userstory.UserStoryInfo;
-import project.shared.PMF;
 
+@SuppressWarnings("serial")
 public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitService {	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	
+	private Logger logger = Logger.getLogger("NameOfYourLogger");
+	//private DAO d=new DAO();
 
 	public InfoObject retrieve(String name){
-		PersistenceManager pm=PMF.get().getPersistenceManager();
+		Objectify o=ObjectifyService.begin();		
 		try{
-			Key key=KeyFactory.createKey(UserStoryPersist.class.getSimpleName(), name);
-			UserStoryPersist story=pm.getObjectById(UserStoryPersist.class, key);
 			
-			PersistObject pInfo=story;//chooseRandomly(story);
+			UserStoryPersist story=o.query(UserStoryPersist.class).filter("name", name).get();
+			logger.log(Level.SEVERE, ""+story.isDone());
 			
+			PersistObject pInfo=chooseRandomly(story);
 			if(pInfo instanceof UserStoryPersist)
 				return transferToClient((UserStoryPersist)pInfo);
 			if(pInfo instanceof EntryPointPersist)
@@ -39,11 +42,15 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 				return transferToClient((TestCasePersist)pInfo);
 			if(pInfo instanceof UnitTestPersist)
 				return transferToClient((UnitTestPersist)pInfo);
+			//o.getTxn().commit();
 			return null;
-			
 		}
 		finally{
-			pm.close();
+			/*if(o.getTxn().isActive()){
+				o.getTxn().rollback();
+				logger.log(Level.SEVERE, "Put failed, rolling back");
+			}*/
+			
 		}
 	}
 	
@@ -56,17 +63,19 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		if(!ePoint.isDone())
 			list.add(ePoint);  //add entry point
 		
-		for(int i= 0; i<ePoint.getNumMethods(); i++){
-			EntryMethodPersist e=ePoint.getMethod(i);
+		for(EntryMethodPersist e:ePoint.getAllMethods()){
 			TestCasePersist t=e.getTest();
 			if(!t.isDone())
 				list.add(t);
-			for(int x=0; x<t.getNumTests(); x++){
-				UnitTestPersist u=t.getTestInfo(x);
+			
+			for(UnitTestPersist u:t.getAllUnitTests()){
 				if(!u.isDone())
 					list.add(u);
 			}
 		}
+		
+		if(list.size()==0)
+			return null;
 		int a=(int)(Math.random()*list.size());
 		PersistObject p=list.get(a);
 		return p;
@@ -76,23 +85,22 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		UserStoryInfo result=new UserStoryInfo();
 		result.setStory(pInfo.getStory());
 		result.setName(pInfo.getName());
-		result.setKeyString(KeyFactory.keyToString(pInfo.getKey()));
+		result.setKeyString(pInfo.getId());
 		result.setDone(pInfo.isDone());
 		return result;
 	}
 	private EntryPointInfo transferToClient(EntryPointPersist pInfo){
 		EntryPointInfo result=new EntryPointInfo();
 		result.setStory(pInfo.getStory());
-		for(int x=0; x<pInfo.getNumMethods();x++){
+		for(EntryMethodPersist p:pInfo.getAllMethods()){
 			EntryMethodInfo e=new EntryMethodInfo();
-			EntryMethodPersist p=pInfo.getMethod(x);
 			e.setMethodDescription(p.getDescription());
 			e.setMethodName(p.getName());
 			for(int i=0; i<p.getNumParameters(); i++)
 				e.addParameter(p.getParameter(i));
 			result.addMethod(e);
 		}
-		result.setKeyString(KeyFactory.keyToString(pInfo.getKey()));
+		result.setKeyString(pInfo.getId());
 		result.setDone(pInfo.isDone());
 		return result;
 	}
@@ -102,7 +110,7 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		for(int x=0; x<pInfo.getNumTests(); x++){
 			result.addTest(pInfo.getTest(x));
 		}
-		result.setKeyString(KeyFactory.keyToString(pInfo.getKey()));
+		result.setKeyString(pInfo.getId());
 		result.setDone(pInfo.isDone());
 		return result;
 	}
@@ -111,57 +119,67 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		result.setCode(pInfo.getCode());
 		result.setMethodDesc(pInfo.getMethodDesc());
 		result.setTestDesc(pInfo.getMethodDesc());
-		result.setKeyString(KeyFactory.keyToString(pInfo.getKey()));
+		result.setKeyString(pInfo.getId());
 		result.setDone(pInfo.isDone());
 		return result;
 	}
 	
 
 	public void submit(InfoObject info) {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		try{			
-			Key key=KeyFactory.stringToKey(info.getKeyString());
-			//PersistObject pInfo=(PersistObject)pm.getUserObject(key);
-			
+		Objectify o = ObjectifyService.begin();
+		try{					
 			if(info instanceof UserStoryInfo)
-				transferToServer(pm,  key, (UserStoryInfo)info);
+				transferToServer(o, (UserStoryInfo)info);
 			else if(info instanceof EntryPointInfo)
-				transferToServer(pm, key,(EntryPointInfo)info);
+				transferToServer(o,(EntryPointInfo)info);
 			else if(info instanceof TestCaseInfo)
-				transferToServer(pm, key, (TestCaseInfo)info);
+				transferToServer(o, (TestCaseInfo)info);
 			else if(info instanceof UnitTestInfo)
-				transferToServer(pm, key, (UnitTestInfo)info);
+				transferToServer(o, (UnitTestInfo)info);
+			//o.getTxn().commit();
 		}
 		finally{
-			pm.close();
+			/*if(o.getTxn().isActive()){
+				o.getTxn().rollback();
+				logger.log(Level.SEVERE, "Commit failed, rolling back");
+			}*/
 		}
 	}
 	
-	private void transferToServer(PersistenceManager pm,Key key, UserStoryInfo info){
-		UserStoryPersist pInfo=pm.getObjectById(UserStoryPersist.class, key);
+	private void transferToServer(Objectify o, UserStoryInfo info){
+		UserStoryPersist pInfo=o.get(new Key<UserStoryPersist>(UserStoryPersist.class, info.getKeyString()));
+
 		pInfo.setStory(info.getStory());
 		pInfo.getChild().setStory(info.getStory());
+
 		pInfo.setDone(info.isDone());
+		o.put(pInfo);
+
 	}
-	private void transferToServer(PersistenceManager pm,Key key, EntryPointInfo info){
-		EntryPointPersist pInfo=pm.getObjectById(EntryPointPersist.class, key);
+	private void transferToServer(Objectify o, EntryPointInfo info){
+		EntryPointPersist pInfo=o.get(new Key<EntryPointPersist>(EntryPointPersist.class, info.getKeyString()));
 		pInfo.setStory(info.getStory());
 		
 		for(int x=pInfo.getNumMethods()-1; x>=0; x--)
 			pInfo.removeMethod(x);
+		
 		for(int x=0; x<info.getNumMethods(); x++){
 			EntryMethodPersist e=new EntryMethodPersist();
 			EntryMethodInfo p=info.getMethod(x);
+			e.newTest();
 			e.setMethodDescription(p.getDescription());
 			e.setMethodName(p.getName());
 			for(int i=0; i<p.getNumParameters(); i++)
 				e.addParameter(p.getParameter(i));
 			pInfo.addMethod(e);
+
 		}
 		pInfo.setDone(info.isDone());
+		o.put(pInfo);
+
 	}
-	private void transferToServer(PersistenceManager pm,Key key, TestCaseInfo info){
-		TestCasePersist pInfo=pm.getObjectById(TestCasePersist.class, key);
+	private void transferToServer(Objectify o, TestCaseInfo info){
+		TestCasePersist pInfo=o.get(new Key<TestCasePersist>(TestCasePersist.class, info.getKeyString()));
 		pInfo.setDescription(info.getDescription());
 		
 		for(int x=pInfo.getNumTests()-1; x>=0; x--)
@@ -170,31 +188,46 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 			pInfo.addTest(info.getTest(x));
 		}
 		pInfo.setDone(info.isDone());
+		o.put(pInfo);
 	}
-	private void transferToServer(PersistenceManager pm,Key key, UnitTestInfo info){
-		UnitTestPersist pInfo=pm.getObjectById(UnitTestPersist.class, key);
+	private void transferToServer(Objectify o, UnitTestInfo info){
+		UnitTestPersist pInfo=o.get(new Key<UnitTestPersist>(UnitTestPersist.class, info.getKeyString()));
 		pInfo.setCode(info.getCode());
 		pInfo.setMethodDesc(info.getMethodDesc());
 		pInfo.setTestDesc(info.getMethodDesc());
 		pInfo.setDone(info.isDone());
+		o.put(pInfo);
 	}
 	
 	public UserStoryInfo create(UserStoryInfo info){
-		PersistenceManager pm=PMF.get().getPersistenceManager();
+		Objectify o=ObjectifyService.begin();
 		try{
-			UserStoryPersist pInfo=new UserStoryPersist();
-			pInfo.setName(info.getName());
+			UserStoryPersist pInfo=new UserStoryPersist();					
+			pInfo.newChild();
 			pInfo.setStory(info.getStory());
-			Key key=KeyFactory.createKey(UserStoryPersist.class.getSimpleName(), info.getName());
-			pInfo.setKey(key);
-			pm.makePersistent(pInfo);
-			info.setKeyString(KeyFactory.keyToString(pInfo.getKey()));
+			pInfo.setName(info.getName());
+			o.put(pInfo);
+			info.setKeyString(pInfo.getId());
+			//o.getTxn().commit();
 			return info;
-		}
-		finally{
-			pm.close();
+		} finally{
+			//if(o.getTxn().isActive()){
+				//o.getTxn().rollback();
+				//logger.log(Level.SEVERE, "Transmission still active, rolling back");
+			//}
 		}
 		
+	}
+	
+	public void register(){
+		Register a=new Register();
+		//clears memory
+		Objectify o=ObjectifyService.begin();
+		o.delete(o.query(UserStoryPersist.class).fetchKeys());
+		o.delete(o.query(UnitTestPersist.class).fetchKeys());
+		o.delete(o.query(TestCasePersist.class).fetchKeys());
+		o.delete(o.query(EntryPointPersist.class).fetchKeys());
+		o.delete(o.query(EntryMethodPersist.class).fetchKeys());
 	}
 
 }

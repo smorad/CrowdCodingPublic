@@ -12,7 +12,7 @@ public class UserStoryInfo implements IsSerializable, InfoObject{
 	private String name;
 
 	private EntryPointInfo childInfo;//child
-	private String keyString;
+	private Long keyString;
 	
 	public UserStoryInfo(){
 		story="story";
@@ -52,11 +52,17 @@ public class UserStoryInfo implements IsSerializable, InfoObject{
 	public void setDone(boolean bool){
 		isDone=bool;
 	}
-	public void setKeyString(String s){
+	public void setKeyString(Long s){
 		keyString=s;
 	}
-	public String getKeyString(){
+	public Long getKeyString(){
 		return keyString;
+	}
+	
+	//for testing
+	public String info(){
+		return "name is: "+name
+				+"\nstory is: "+story;
 	}
 	
 	

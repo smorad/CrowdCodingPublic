@@ -166,7 +166,6 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 	}
 	
 	private AceEditorInfo transferToClient(AceEditorPersist pInfo) {
-		Logger.getGlobal().log(Level.SEVERE, "transfer to client begin");
 		AceEditorInfo result = new AceEditorInfo();
 		result.setDescription(pInfo.getDescription());
 		result.setMethodName(pInfo.getMethodName());
@@ -175,7 +174,6 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		result.setCode(pInfo.getCode());
 		result.setKeyString(pInfo.getId());
 		result.setDone(pInfo.isDone());
-		Logger.getGlobal().log(Level.SEVERE, "preparing to return");
 		return result;
 	}
 	

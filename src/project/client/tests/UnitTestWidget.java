@@ -18,7 +18,6 @@ public class UnitTestWidget extends ScreenWidget implements EditorContainer{
 	
 	public UnitTestWidget(LoginInfo info, UnitTestInfo uInfo) {
 		super(info);
-		setSize("1150px", "768px");
 		this.uInfo=uInfo;
 		this.description=uInfo.getMethodDesc();
 		this.testCase=uInfo.getTestDesc();
@@ -27,6 +26,7 @@ public class UnitTestWidget extends ScreenWidget implements EditorContainer{
 	}
 	
 	public void UI(){
+		setSize("1150px", "768px");
 		Label lblWriteAUnit = new Label("Write a Unit Test");
 		mainPanel.add(lblWriteAUnit);
 		mainPanel.setWidgetLeftWidth(lblWriteAUnit, 324.0, Unit.PX, 319.0, Unit.PX);
@@ -47,6 +47,8 @@ public class UnitTestWidget extends ScreenWidget implements EditorContainer{
 		mainPanel.setWidgetTopHeight(txtbxTestCase, 202.0, Unit.PX, 32.0, Unit.PX);
 		
 		aceEditor = new AceEditor(true);
+		aceEditor.setWidth("652px");
+		aceEditor.setHeight("300px");
 		mainPanel.add(aceEditor);
 		mainPanel.setWidgetLeftWidth(aceEditor, 86.0, Unit.PX, 631.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(aceEditor, 240.0, Unit.PX, 343.0, Unit.PX);

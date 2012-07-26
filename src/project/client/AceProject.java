@@ -1,6 +1,8 @@
 package project.client;
 
 
+import project.client.editor.AceEditorInfo;
+import project.client.editor.AceEditorWidget;
 import project.client.entry.EntryPointInfo;
 import project.client.entry.EntryPointWidget;
 import project.client.login.LoginInfo;
@@ -120,6 +122,8 @@ public class AceProject implements EntryPoint {
 					editor=new UnitTestWidget(loginInfo, (UnitTestInfo)info);
 				else if(info instanceof UserStoryInfo)
 					editor=new UserStoryWidget(loginInfo, (UserStoryInfo)info);
+				else if (info instanceof AceEditorInfo)
+					editor=new AceEditorWidget(loginInfo, (AceEditorInfo)info);
 				
 				RootLayoutPanel.get().add(new ScrollPanel(editor));
 				if(editor instanceof EditorContainer)
@@ -131,7 +135,8 @@ public class AceProject implements EntryPoint {
 	
 	public static void submit(){
 		editor.submit();
-		System.out.println(storyInfo.isDone());
+		//System.out.println(storyInfo.isDone());
+		RootLayoutPanel.get().clear();
 		callSubmit();
 		
 	}

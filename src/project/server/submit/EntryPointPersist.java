@@ -9,15 +9,16 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Subclass;
+import com.googlecode.objectify.annotation.Unindexed;
 
-@Entity
-public class EntryPointPersist implements PersistObject{	
-	@Id
-	private Long id;
+@Unindexed
+@Subclass
+public class EntryPointPersist extends PersistObject{	
+
 	
 	private ArrayList<Key<EntryMethodPersist>> methods=new ArrayList<Key<EntryMethodPersist>>();
 	
-	private boolean isDone;
 	
 	private String story;//from parent
 	
@@ -43,17 +44,7 @@ public class EntryPointPersist implements PersistObject{
 			return methods.size();
 		return -1;
 	}
-	public boolean isDone(){
-		return isDone;
-	}
-	public void setDone(boolean bool){
-		isDone=bool;
-	}
-	
-	
-	public Long getId(){
-		return id;
-	}
+
 	
 	public Collection<EntryMethodPersist> getAllMethods(){
 		Objectify o=ObjectifyService.begin();

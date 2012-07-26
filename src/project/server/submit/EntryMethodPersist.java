@@ -13,20 +13,16 @@ import com.googlecode.objectify.annotation.Unindexed;
 
 
 @Unindexed
-public class EntryMethodPersist implements PersistObject{
+public class EntryMethodPersist{
 	@Id
 	private Long id;
-	
-	
-	private String methodDescription;
-	
-	private String methodName;
-	
-	private ArrayList<String> parameters;
-	
-	private Key<TestCasePersist> test;//child
-	
+	private String methodDescription;	
+	private String methodName;	
+	private ArrayList<String> parameters;	//causing oom error
+	private Key<TestCasePersist> test;//child	
+	private Key<AceEditorPersist> code; //child	
 	private boolean isDone;
+	private String returnType;
 	
 	/*public EntryMethodPersist(){
 		methodDescription="description";
@@ -53,6 +49,9 @@ public class EntryMethodPersist implements PersistObject{
 		methodName=name;
 	}
 	public void addParameter(String parameter){
+		if(parameters==null){
+			parameters = new ArrayList<String>();
+		}
 		parameters.add(parameter);
 	}
 	public void setParameters(ArrayList<String> parameters){
@@ -82,9 +81,35 @@ public class EntryMethodPersist implements PersistObject{
 		Objectify o=ObjectifyService.begin();
 		if(test!=null)
 			o.delete(test);
-		test=o.put(new TestCasePersist());
-		TestCasePersist t=o.get(test);
-		//t.setDescription(methodDescription);
+		TestCasePersist t=new TestCasePersist();
+		t.setDescription(methodDescription);
+		test=o.put(t);
+		
+		
+	}
+	
+	public void newCode(){  //WORK HERE!
+		Objectify o = ObjectifyService.begin();
+		if(code!=null)
+			o.delete(code);
+		AceEditorPersist a = new AceEditorPersist();
+		//code=o.put(a);
+		a.setDescription(methodDescription);
+		a.setMethodName(methodName);
+		Logger.getGlobal().log(Level.INFO, "AceEditorPersist a is: " + a.getDescription());
+		if(parameters!=null)
+			a.setParameters(parameters);
+		else{ addParameter("");
+			a.addParameter(getParameter(0));
+		}
+		a.setReturnType(returnType);
+		code=o.put(a);
+		Logger.getGlobal().log(Level.INFO, "AceEditorPersist a is: " + (o.get(code)).getDescription());
+	}
+	
+	public AceEditorPersist getCode(){
+		Objectify o = ObjectifyService.begin();
+		return o.get(code);
 	}
 	public TestCasePersist getTest(){
 		Objectify o=ObjectifyService.begin();

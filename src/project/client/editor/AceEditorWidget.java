@@ -1,5 +1,7 @@
 package project.client.editor;
 
+import java.util.ArrayList;
+
 import project.client.EditorContainer;
 import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
@@ -15,30 +17,42 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 	private AceEditor editor1;
 	private String methodDescription
 									;
-	private  String[] parameters;
+	private  ArrayList<String> parameters;
 	private String methodName, methodType;
 	private TextArea description;
-	private AceEditorInfo eInfo;
+	private AceEditorInfo aInfo;
+	private static boolean stubCreated = false;
 
-	public AceEditorWidget(LoginInfo info,  AceEditorInfo eInfo, String methodDescription, String[] parameters,
+	
+	public AceEditorWidget(LoginInfo info, AceEditorInfo aInfo ){
+		super(info);
+		this.aInfo = aInfo;
+		this.methodDescription = aInfo.getDescription();
+		this.methodName = aInfo.getMethodName();
+		this.methodType = aInfo.getReturnType();
+		this.parameters = aInfo.getParameters();
+		UI();
+	}
+	/*public AceEditorWidget(LoginInfo info,  AceEditorInfo aInfo, String methodDescription, ArrayList<String> parameters,
 							String methodName, String methodType) {
 		super(info);
-		this.eInfo=eInfo;
+		this.aInfo=aInfo;
 		this.methodDescription=methodDescription;
 		this.parameters=parameters;
 		this.methodName=methodName;
 		this.methodType=methodType;
 		
 		UI();
-	}
+		buildEditor();
+	}*/
 	
 	/**
 	 * @wbp.parser.constructor
 	 */
 
-	public AceEditorWidget(LoginInfo info){
-		this(info, new AceEditorInfo(), "Description", new String[0], "methodName", "type");
-	}
+	/*public AceEditorWidget(LoginInfo info){
+		this(info, new AceEditorInfo(), "Description", new ArrayList<String>(), "methodName", "type");
+	}*/
 	
 	public void UI(){
 		setSize("1150px", "768px");
@@ -48,12 +62,13 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 		editor1.setHeight("300px");
 		mainPanel.add(editor1);
 		mainPanel.setWidgetLeftWidth(editor1, 21.0, Unit.PX, 652.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(editor1, 195.0, Unit.PX, 300.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(editor1, 334.0, Unit.PX, 300.0, Unit.PX);
 						
 		description=new TextArea();
-		description.setReadOnly(true);
-		description.setEnabled(false);
+		//description.setReadOnly(true);
 		description.setText(methodDescription);
+		description.setEnabled(false);
+		System.out.println("adding txtbox with text: "+ methodDescription);
 		mainPanel.add(description);
 		mainPanel.setWidgetLeftWidth(description, 21.0, Unit.PX, 652.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(description, 10.0, Unit.PX, 162.0, Unit.PX);
@@ -66,14 +81,19 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 								// setTheme/setMode/etc.
 		editor1.setTheme(AceEditorTheme.ECLIPSE);
 		editor1.setMode(AceEditorMode.JAVA);
+		editor1.setText(aInfo.getCode());
+		System.out.println("aInfo code is: " +aInfo.getCode());
 		
+		if(!stubCreated){
 		editor1.setText(method());  //autogenerates method stub
+		stubCreated=true;
+		}
 	}
 	
 	private String method(){  //used to autogenerate method stub
 		String s="public "+methodType+" "+methodName+"(";
-		for(int x=0; x<parameters.length; x++)
-			s+=parameters[x]+", ";
+		for(int x=0; x<parameters.size(); x++)
+			s+=parameters.get(x)+", ";
 		s=s.trim()+"){\n\treturn";
 		if(methodType.equals("void"))
 			;
@@ -91,25 +111,24 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 		return s+";\n}";
 	}
 	
-	public String getCode() {  //Recieves code in editor
-		return editor1.getText();
-	}
-
-	public String getMethodDescription(){
-		return methodDescription;
-	}
-	public String getMethodName(){
-		return methodName;
-	}
-	public String[] getParameters(){
-		return parameters;
-	}
-	public String getMethodType(){
-		return methodType;
-	}	
+	
 	
 	public void submit(){
-		eInfo.setCode(editor1.getText());
-		eInfo.setDone(true);
+		boolean tempIsDone = true;
+	/*	String text = ">> denote pseudo code with the '>>' notation \n" +
+				editor1.getText();
+		aInfo.setCode(text);*/
+		String text = editor1.getText();
+		aInfo.setCode(text);
+		System.out.println("text in submit is "+ text);
+		System.out.println("aInfo code in submit is " + aInfo.getCode());
+		String lines[] = text.split("[\\r\\n]+");
+		for(int i=0; i<lines.length; i++ ){
+			if(lines[i].contains("#")){
+				aInfo.setDone(false);
+				return;
+			}
+			aInfo.setDone(tempIsDone);
 	}
+}
 }

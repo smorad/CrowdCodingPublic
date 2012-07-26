@@ -10,19 +10,14 @@ import javax.persistence.Id;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.annotation.Subclass;
 import com.googlecode.objectify.annotation.Unindexed;
 
 @Unindexed
-public class TestCasePersist implements PersistObject{
-	@Id
-	private Long id;
-	
+@Subclass
+public class TestCasePersist extends PersistObject{	
 	private ArrayList<String> tests=new ArrayList<String>();
-	
 	private ArrayList<Key<UnitTestPersist>> testInfos=new ArrayList<Key<UnitTestPersist>>(); //child
-	
-	private boolean isDone;
-	
 	private String description;//from parent
 
 
@@ -60,16 +55,7 @@ public class TestCasePersist implements PersistObject{
 	public int getNumTests(){
 		return tests.size();
 	}
-	public boolean isDone(){
-		return isDone;
-	}
-	public void setDone(boolean bool){
-		isDone=bool;
-	}
-	
-	public Long getId(){
-		return id;
-	}
+
 	
 	public Collection<UnitTestPersist> getAllUnitTests(){
 		Objectify o=ObjectifyService.begin();

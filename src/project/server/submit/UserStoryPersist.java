@@ -10,13 +10,13 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.annotation.Subclass;
 import com.googlecode.objectify.annotation.Unindexed;
 
 @Unindexed
-public class UserStoryPersist implements PersistObject{
-	@Id 
-	private Long id;
-	
+@Subclass
+public class UserStoryPersist extends PersistObject{
+
 	private String story;
 	@Indexed
 	private String name;
@@ -24,8 +24,6 @@ public class UserStoryPersist implements PersistObject{
 	@Indexed
 	private Key<EntryPointPersist> childInfo;//child
 	
-	private boolean isDone;
-			
 	public void setStory(String story){
 		this.story=story;
 		Objectify o=ObjectifyService.begin();
@@ -58,16 +56,6 @@ public class UserStoryPersist implements PersistObject{
 	}
 	public String getName(){
 		return name;
-	}
-	public boolean isDone(){
-		return isDone;
-	}
-	public void setDone(boolean bool){
-		isDone=bool;
-	}
-	
-	public Long getId(){
-		return id;
 	}
 	
 	

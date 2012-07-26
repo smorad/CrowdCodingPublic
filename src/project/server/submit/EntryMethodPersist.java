@@ -96,7 +96,6 @@ public class EntryMethodPersist{
 		//code=o.put(a);
 		a.setDescription(methodDescription);
 		a.setMethodName(methodName);
-		Logger.getGlobal().log(Level.INFO, "AceEditorPersist a is: " + a.getDescription());
 		if(parameters!=null)
 			a.setParameters(parameters);
 		else{ addParameter("");
@@ -104,7 +103,6 @@ public class EntryMethodPersist{
 		}
 		a.setReturnType(returnType);
 		code=o.put(a);
-		Logger.getGlobal().log(Level.INFO, "AceEditorPersist a is: " + (o.get(code)).getDescription());
 	}
 	
 	public AceEditorPersist getCode(){

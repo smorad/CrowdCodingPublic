@@ -84,7 +84,11 @@ public class EntryMethodPersist{
 		TestCasePersist t=new TestCasePersist();
 		t.setDescription(methodDescription);
 		test=o.put(t);
+<<<<<<< HEAD
 		o.get(test);
+=======
+		
+>>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 		
 	}
 	
@@ -103,7 +107,10 @@ public class EntryMethodPersist{
 		}
 		a.setReturnType(returnType);
 		code=o.put(a);
+<<<<<<< HEAD
 		o.get(code);
+=======
+>>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 	}
 	
 	public AceEditorPersist getCode(){

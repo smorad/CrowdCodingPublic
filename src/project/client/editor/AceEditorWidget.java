@@ -68,13 +68,21 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 		editor1.setHeight("300px");
 		mainPanel.add(editor1);
 		mainPanel.setWidgetLeftWidth(editor1, 21.0, Unit.PX, 652.0, Unit.PX);
+<<<<<<< HEAD
 		mainPanel.setWidgetTopHeight(editor1, 274.0, Unit.PX, 300.0, Unit.PX);
+=======
+		mainPanel.setWidgetTopHeight(editor1, 334.0, Unit.PX, 300.0, Unit.PX);
+>>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 						
 		description=new TextArea();
 		//description.setReadOnly(true);
 		description.setText(methodDescription);
 		description.setEnabled(false);
+<<<<<<< HEAD
 		//System.out.println("adding txtbox with text: "+ methodDescription);
+=======
+		System.out.println("adding txtbox with text: "+ methodDescription);
+>>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 		mainPanel.add(description);
 		mainPanel.setWidgetLeftWidth(description, 21.0, Unit.PX, 652.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(description, 80.0, Unit.PX, 162.0, Unit.PX);
@@ -88,11 +96,19 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 		editor1.setTheme(AceEditorTheme.ECLIPSE);
 		editor1.setMode(AceEditorMode.JAVA);
 		editor1.setText(aInfo.getCode());
+<<<<<<< HEAD
 		//System.out.println("aInfo code is: " +aInfo.getCode());
 		
 		if(!aInfo.getStubCreated()){
 			editor1.setText(method());  //autogenerates method stub
 			aInfo.setStubCreated(true);
+=======
+		System.out.println("aInfo code is: " +aInfo.getCode());
+		
+		if(!stubCreated){
+		editor1.setText(method());  //autogenerates method stub
+		stubCreated=true;
+>>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 		}
 	}
 	
@@ -129,8 +145,13 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 		aInfo.setCode(text);*/
 		String text = editor1.getText();
 		aInfo.setCode(text);
+<<<<<<< HEAD
 		//System.out.println("text in submit is "+ text);
 		//System.out.println("aInfo code in submit is " + aInfo.getCode());
+=======
+		System.out.println("text in submit is "+ text);
+		System.out.println("aInfo code in submit is " + aInfo.getCode());
+>>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 		String lines[] = text.split("[\\r\\n]+");
 		for(int i=0; i<lines.length; i++ ){
 			if(lines[i].contains("#")){

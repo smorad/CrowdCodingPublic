@@ -54,6 +54,8 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 					logger.log(Level.SEVERE,"Pull " + (count++)+" failed rolling back");
 				}
 			}
+<<<<<<< HEAD
+=======
 		}
 		if(pInfo instanceof UserStoryPersist)
 			return transferToClient((UserStoryPersist)pInfo);
@@ -67,7 +69,51 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 			return transferToClient((UnitTestPersist)pInfo);
 		return null;
 	}
+/*		try{
+			
+			UserStoryPersist story=o.query(UserStoryPersist.class).filter("name", name).get();
+			logger.log(Level.SEVERE, ""+story.isDone());
+			
+			PersistObject pInfo=chooseRandomly(story);
+			if(pInfo instanceof UserStoryPersist)
+				return transferToClient((UserStoryPersist)pInfo);
+			if(pInfo instanceof EntryPointPersist)
+				return transferToClient((EntryPointPersist)pInfo);
+			if(pInfo instanceof AceEditorPersist)
+				return transferToClient((AceEditorPersist)pInfo);
+			if(pInfo instanceof TestCasePersist)
+				return transferToClient((TestCasePersist)pInfo);
+			if(pInfo instanceof UnitTestPersist)
+				return transferToClient((UnitTestPersist)pInfo);
 
+			//o.getTxn().commit();
+			return null;
+		}
+		finally{
+			if(o.getTxn().isActive()){
+				o.getTxn().rollback();
+				logger.log(Level.SEVERE, "Put failed, rolling back");
+			}
+			
+>>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
+		}
+		if(pInfo instanceof UserStoryPersist)
+			return transferToClient((UserStoryPersist)pInfo);
+		if(pInfo instanceof EntryPointPersist)
+			return transferToClient((EntryPointPersist)pInfo);
+		if(pInfo instanceof AceEditorPersist)
+			return transferToClient((AceEditorPersist)pInfo);
+		if(pInfo instanceof TestCasePersist)
+			return transferToClient((TestCasePersist)pInfo);
+		if(pInfo instanceof UnitTestPersist)
+			return transferToClient((UnitTestPersist)pInfo);
+		return null;
+	}
+<<<<<<< HEAD
+
+=======
+	*/
+>>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 
 	/*@Deprecated
 	private PersistObject chooseRandomly(UserStoryPersist story){
@@ -146,7 +192,10 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		result.setCode(pInfo.getCode());
 		result.setKeyString(pInfo.getId());
 		result.setDone(pInfo.isDone());
+<<<<<<< HEAD
 		result.setStubCreated(pInfo.getStubCreated());
+=======
+>>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 		return result;
 	}
 	
@@ -173,6 +222,7 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 
 	public void submit(InfoObject info) {
 		Objectify o = ObjectifyService.begin();
+<<<<<<< HEAD
 		
 		Query<PersistObject> q = o.query(PersistObject.class);//.filter("isDone", false).filter("checkedOut", false);
 		List<PersistObject> l=q.list();
@@ -200,6 +250,35 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 
 	}
 	
+=======
+		try{					
+			if(info instanceof UserStoryInfo)
+				transferToServer(o, (UserStoryInfo)info);
+			else if(info instanceof EntryPointInfo)
+				transferToServer(o,(EntryPointInfo)info);
+			else if(info instanceof TestCaseInfo)
+				transferToServer(o, (TestCaseInfo)info);
+			else if(info instanceof UnitTestInfo)
+				transferToServer(o, (UnitTestInfo)info);
+			else if(info instanceof AceEditorInfo)
+				transferToServer(o, (AceEditorInfo)info);
+			//o.getTxn().commit();
+		}
+		finally{
+			/*if(o.getTxn().isActive()){
+				o.getTxn().rollback();
+				logger.log(Level.SEVERE, "Commit failed, rolling back");
+			}*/
+		}
+	}
+	
+
+
+
+
+	private void transferToServer(Objectify o, UserStoryInfo info){
+		UserStoryPersist pInfo=o.get(new Key<UserStoryPersist>(UserStoryPersist.class, info.getKeyString()));
+>>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 
 
 
@@ -272,15 +351,20 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 	}
 	
 	private void transferToServer(Objectify o, AceEditorInfo info) {
+<<<<<<< HEAD
 		Key k=new Key<AceEditorPersist>(AceEditorPersist.class, info.getKeyString());
 		AceEditorPersist pInfo = o.get(k);  //nullpointer
 
+=======
+		AceEditorPersist pInfo = o.get(new Key<AceEditorPersist>(AceEditorPersist.class, info.getKeyString()));  //nullpointer
+>>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 		pInfo.setDescription(info.getDescription());
 		pInfo.setCode(info.getCode());
 		pInfo.setMethodName(info.getMethodName());
 		pInfo.setParameters(info.getParameters());
 		pInfo.setDone(info.isDone());
 		pInfo.setCheckedOut(false);
+<<<<<<< HEAD
 		pInfo.setStubCreated(info.getStubCreated());
 		o.put(pInfo);
 		logger.log(Level.SEVERE, ""+o.get(new Key<AceEditorPersist>(AceEditorPersist.class, pInfo.getId())).getCode());
@@ -288,6 +372,11 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		pInfo=o.get(k);
 		logger.log(Level.SEVERE, ""+pInfo.isDone());
 		
+=======
+		o.put(pInfo);
+		logger.log(Level.SEVERE, ""+o.get(new Key<AceEditorPersist>(AceEditorPersist.class, pInfo.getId())).getCode());
+		
+>>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 	}
 	
 	private void transferToServer(Objectify o, UnitTestInfo info){

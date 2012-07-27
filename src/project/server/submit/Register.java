@@ -11,7 +11,7 @@ public class Register {
 				ObjectifyService.register(TestCasePersist.class);
 				ObjectifyService.register(UnitTestPersist.class);
 				ObjectifyService.register(UserStoryPersist.class);
-				
-				
+				ObjectifyService.register(AceEditorPersist.class);
+				ObjectifyService.register(PersistObject.class);			
 	}
 }

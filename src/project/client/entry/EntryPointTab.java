@@ -50,7 +50,7 @@ public class EntryPointTab extends VerticalPanel{
 			public void onClick(ClickEvent event) {
 				parameters.add(new TextBox());
 				TextBox t=parameters.get(parameters.size()-1);
-				t.setText("Parameter goes here");
+				t.setText("Parameter goes here ex. int count");
 				panel.add(t);
 				panel.setWidgetLeftWidth(t, 0.0, Unit.PX, labelWidth, Unit.PX);
 				panel.setWidgetTopHeight(t, labelHeight*(parameters.size()+3)+5, Unit.PX, labelHeight, Unit.PX);

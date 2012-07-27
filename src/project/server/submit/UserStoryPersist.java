@@ -10,13 +10,13 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.annotation.Subclass;
 import com.googlecode.objectify.annotation.Unindexed;
 
 @Unindexed
-public class UserStoryPersist implements PersistObject{
-	@Id 
-	private Long id;
-	
+@Subclass
+public class UserStoryPersist extends PersistObject{
+
 	private String story;
 	@Indexed
 	private String name;
@@ -24,14 +24,13 @@ public class UserStoryPersist implements PersistObject{
 	@Indexed
 	private Key<EntryPointPersist> childInfo;//child
 	
-	private boolean isDone;
-			
 	public void setStory(String story){
 		this.story=story;
 		Objectify o=ObjectifyService.begin();
 		EntryPointPersist e=o.get(childInfo);
 		e.setStory(story);
 		o.put(e);
+		o.get(childInfo);
 	}
 	
 	public String getStory(){
@@ -44,12 +43,14 @@ public class UserStoryPersist implements PersistObject{
 	public void setChild(EntryPointPersist c){
 		Objectify o=ObjectifyService.begin();
 		childInfo=o.put(c);
+		o.get(childInfo);
 	}
 	public Key<EntryPointPersist> newChild(){
 		Objectify o=ObjectifyService.begin();
 		if(childInfo!=null)
 			o.delete(childInfo);
 		childInfo=o.put(new EntryPointPersist());
+		o.get(childInfo);
 		return childInfo;
 	}
 	
@@ -58,16 +59,6 @@ public class UserStoryPersist implements PersistObject{
 	}
 	public String getName(){
 		return name;
-	}
-	public boolean isDone(){
-		return isDone;
-	}
-	public void setDone(boolean bool){
-		isDone=bool;
-	}
-	
-	public Long getId(){
-		return id;
 	}
 	
 	

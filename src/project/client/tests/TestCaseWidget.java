@@ -22,7 +22,6 @@ public class TestCaseWidget extends ScreenWidget {
 		setSize("1150px", "768px");
 		this.tInfo=tInfo;
 		this.methodDescription=tInfo.getDescription();
-		
 		UI();
 	}
 

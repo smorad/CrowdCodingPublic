@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 import project.client.InfoObject;
+import project.client.editor.AceEditorInfo;
 import project.client.tests.TestCaseInfo;
 
 
@@ -17,20 +18,28 @@ public class EntryMethodInfo implements IsSerializable, InfoObject{
 	
 	private Long keyString;
 	
+	private String returnType;
+	
 	private ArrayList<String> parameters;
 	
 	private TestCaseInfo test;//child
 	
+	private AceEditorInfo code; //child  //causing problems
+	
 	public EntryMethodInfo(){
 		methodDescription="description";
 		methodName="name";
+		returnType="type";
 		parameters=new ArrayList<String>();
 		test=new TestCaseInfo();
+		code = new AceEditorInfo(); //causing problems
 	}
 	
 	public void setMethodDescription(String description){
 		methodDescription=description;
 		test.setDescription(description);
+		code.setDescription(description);
+		System.out.println("editor object created with desc: "+ description);
 	}
 	public void setMethodName(String name){
 		methodName=name;
@@ -89,6 +98,18 @@ public class EntryMethodInfo implements IsSerializable, InfoObject{
 	public String info(){
 		return "methodDescription is: "+methodDescription
 				+"\nmethodName is: "+methodName;
+	}
+
+	public String[] getParametersAsArray() {
+		return (String[]) parameters.toArray();
+	}
+
+	public String getReturnType() {
+		return returnType;
+	}
+
+	public ArrayList<String> getParameters() {
+	return parameters;
 	}
 	
 	

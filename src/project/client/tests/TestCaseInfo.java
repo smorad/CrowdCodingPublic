@@ -12,10 +12,19 @@ public class TestCaseInfo implements IsSerializable, InfoObject{
 	private ArrayList<UnitTestInfo> testInfos=new ArrayList<UnitTestInfo>();
 	private Long keyString;
 	private String description;//from parent
+	private String testDescription;
 	
 	public TestCaseInfo(){
 		testInfos=new ArrayList<UnitTestInfo>();
 		tests=new ArrayList<String>();
+	}
+	
+	public void setTestDescription(String s){
+		testDescription = s;
+	}
+	
+	public String getTestDescription(){
+		return testDescription;
 	}
 	
 	public void addTest(String test){

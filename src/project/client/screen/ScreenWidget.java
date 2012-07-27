@@ -28,7 +28,7 @@ public abstract class ScreenWidget extends LayoutPanel{
 	private PointUpdateServiceAsync pointUpdater;
 	private SubmitServiceAsync submitService;	
 	private LoginInfo loginInfo;
-	private Long points=100L;
+	private Long points=0L;
 	public AceEditorWidget a;
 	
 	public ScreenWidget(LoginInfo loginInfo){
@@ -111,7 +111,7 @@ public abstract class ScreenWidget extends LayoutPanel{
 			}
 
 			public void onSuccess(String result) {
-				Window.alert("Success");
+				//Window.alert("Success");
 			}
 		});
 	}

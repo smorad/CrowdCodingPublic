@@ -10,20 +10,16 @@ import javax.persistence.Id;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.annotation.Subclass;
 import com.googlecode.objectify.annotation.Unindexed;
 
 @Unindexed
-public class TestCasePersist implements PersistObject{
-	@Id
-	private Long id;
-	
+@Subclass
+public class TestCasePersist extends PersistObject{	
 	private ArrayList<String> tests=new ArrayList<String>();
-	
 	private ArrayList<Key<UnitTestPersist>> testInfos=new ArrayList<Key<UnitTestPersist>>(); //child
-	
-	private boolean isDone;
-	
 	private String description;//from parent
+	private String caseDescription;
 
 
 	
@@ -34,6 +30,7 @@ public class TestCasePersist implements PersistObject{
 		u.setTestDesc(test);
 		Objectify o=ObjectifyService.begin();
 		testInfos.add(o.put(u));
+		o.get(testInfos.get(testInfos.size()-1));
 	}
 	public void removeTest(String test){
 		int i=tests.indexOf(test);
@@ -46,8 +43,10 @@ public class TestCasePersist implements PersistObject{
 		Objectify o=ObjectifyService.begin();
 		o.delete(testInfos);
 		testInfos=new ArrayList<Key<UnitTestPersist>>();
-		for(int x=0; x<tests.size(); x++)
+		for(int x=0; x<tests.size(); x++){
 			testInfos.add(o.put(new UnitTestPersist()));
+			o.get(testInfos.get(x));
+		}
 	}
 	
 	public String getTest(int index){
@@ -60,16 +59,7 @@ public class TestCasePersist implements PersistObject{
 	public int getNumTests(){
 		return tests.size();
 	}
-	public boolean isDone(){
-		return isDone;
-	}
-	public void setDone(boolean bool){
-		isDone=bool;
-	}
-	
-	public Long getId(){
-		return id;
-	}
+
 	
 	public Collection<UnitTestPersist> getAllUnitTests(){
 		Objectify o=ObjectifyService.begin();

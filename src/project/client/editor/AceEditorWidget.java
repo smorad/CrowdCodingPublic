@@ -92,8 +92,11 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 	
 	private String method(){  //used to autogenerate method stub
 		String s="public "+methodType+" "+methodName+"(";
-		for(int x=0; x<parameters.size(); x++)
-			s+=parameters.get(x)+", ";
+		for(int x=0; x<parameters.size(); x++){
+			s+=parameters.get(x);
+		if(parameters.size()>1)
+			s+=", ";
+		}
 		s=s.trim()+"){\n\treturn";
 		if(methodType.equals("void"))
 			;

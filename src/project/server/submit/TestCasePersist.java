@@ -19,6 +19,7 @@ public class TestCasePersist extends PersistObject{
 	private ArrayList<String> tests=new ArrayList<String>();
 	private ArrayList<Key<UnitTestPersist>> testInfos=new ArrayList<Key<UnitTestPersist>>(); //child
 	private String description;//from parent
+	private String caseDescription;
 
 
 	

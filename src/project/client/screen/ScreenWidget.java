@@ -28,7 +28,7 @@ public abstract class ScreenWidget extends LayoutPanel{
 	private PointUpdateServiceAsync pointUpdater;
 	private SubmitServiceAsync submitService;	
 	private LoginInfo loginInfo;
-	private Long points=0L;
+	private Long points=100L;
 	public AceEditorWidget a;
 	
 	public ScreenWidget(LoginInfo loginInfo){
@@ -42,6 +42,11 @@ public abstract class ScreenWidget extends LayoutPanel{
 		add(mainPanel);
 		setWidgetTopHeight(mainPanel, 28.0, Unit.PX, 650.0, Unit.PX);
 		setWidgetLeftWidth(mainPanel, 224.0, Unit.PX, 750.0, Unit.PX);
+		
+		Label lblPreferencesWillGo = new Label("Preferences will go here");
+		add(lblPreferencesWillGo);
+		setWidgetLeftWidth(lblPreferencesWillGo, 498.0, Unit.PX, 285.0, Unit.PX);
+		setWidgetTopHeight(lblPreferencesWillGo, 743.0, Unit.PX, 16.0, Unit.PX);
 		
 		//UI();
 	}
@@ -111,7 +116,7 @@ public abstract class ScreenWidget extends LayoutPanel{
 			}
 
 			public void onSuccess(String result) {
-				//Window.alert("Success");
+				Window.alert("Success");
 			}
 		});
 	}
@@ -120,19 +125,19 @@ public abstract class ScreenWidget extends LayoutPanel{
 		Button button = new Button("Submit");
 		add(button);
 		button.setWidth("100px");
-		setWidgetLeftWidth(button, 1001.0, Unit.PX, 119.0, Unit.PX);
-		setWidgetTopHeight(button, 136.0, Unit.PX, 28.0, Unit.PX);
+		setWidgetLeftWidth(button, 860.0, Unit.PX, 119.0, Unit.PX);
+		setWidgetTopHeight(button, 684.0, Unit.PX, 28.0, Unit.PX);
 		add(signOutLink);
 		
-		setWidgetLeftWidth(signOutLink, 1001.0, Unit.PX, 100.0, Unit.PX);
-		setWidgetTopHeight(signOutLink, 194.0, Unit.PX, 32.0,
+		setWidgetLeftWidth(signOutLink, 860.0, Unit.PX, 63.0, Unit.PX);
+		setWidgetTopHeight(signOutLink, 743.0, Unit.PX, 18.0,
 				Unit.PX);
 
 		
 		
 		Label label = new Label("Editor by daveho@Github");
 		add(label);
-		setWidgetLeftWidth(label, 1001.0, Unit.PX, 154.0, Unit.PX);
+		setWidgetLeftWidth(label, 224.0, Unit.PX, 172.0, Unit.PX);
 		setWidgetTopHeight(label, 743.0, Unit.PX, 25.0, Unit.PX);
 	
 		button.addClickHandler(new ClickHandler() {
@@ -160,47 +165,4 @@ public abstract class ScreenWidget extends LayoutPanel{
 	public abstract void UI();
 	
 	public abstract void submit();
-
-
-	
-	/*private void addInitialEditor(){
-		add(panel);
-		setWidgetTopHeight(panel, 27.0, Unit.PX, 650.0, Unit.PX);
-		setWidgetLeftWidth(panel, 227.0, Unit.PX, 750.0, Unit.PX);
-			
-		String methodDescription="This is a description.\n"
-				+"Parameters:\n"
-				+"\ta-some int\n"
-				+"\tb-some int\n"
-				;
-		String[] parameters={"int a", "int b"};
-		String methodName="helloWorld", methodType="String";
-		AceEditorWidget a=new AceEditorWidget(1L, methodDescription, parameters, methodName, methodType);
-		a.setSize("697px", "496px");
-		panel.add(a, methodName, false);
-		panel.selectTab(0);
-	}
-	
-	
-	public void addMethod(long points, String methodDescription, String[] parameters, 
-							String methodName, String methodType){
-		addMethod(new AceEditorWidget(loginInfo, points, methodDescription, parameters,
-					methodName, methodType));
-	}
-	public void addMethod(AceEditorWidget a){
-		panel.add(a, a.getMethodName(), false);
-		numTabs++;
-	}
-	
-	public void startEditor(){
-		Iterator<Widget> i=panel.iterator();
-		while(i.hasNext())
-			((AceEditorWidget)i.next()).buildEditor();
-	}
-	
-	public void onTabSelected(SourcesTabEvents s, int tabIndex){
-		currentIndex=tabIndex;
-	}*/
-
-
 }

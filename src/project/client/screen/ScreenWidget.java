@@ -26,9 +26,9 @@ public abstract class ScreenWidget extends LayoutPanel{
 	private VerticalPanel pointRank=new VerticalPanel();
 	private Anchor signOutLink = new Anchor("Sign Out");
 	private PointUpdateServiceAsync pointUpdater;
-	private SubmitServiceAsync submitService;	
+	protected SubmitServiceAsync submitService;	//temporary
 	private LoginInfo loginInfo;
-	private Long points=100L;
+	private Long points=1L;
 	public AceEditorWidget a;
 	
 	public ScreenWidget(LoginInfo loginInfo){
@@ -55,6 +55,15 @@ public abstract class ScreenWidget extends LayoutPanel{
 		if (submitService == null)
 			submitService = (SubmitServiceAsync) GWT
 					.create(SubmitService.class);
+		
+		submitService.instantiate(new AsyncCallback(){
+			public void onFailure(Throwable t){
+				t.printStackTrace();
+			}
+			public void onSuccess(Object o){
+				
+			}
+		});
 		
 		if(pointUpdater==null)
 			pointUpdater=(PointUpdateServiceAsync) GWT
@@ -116,7 +125,7 @@ public abstract class ScreenWidget extends LayoutPanel{
 			}
 
 			public void onSuccess(String result) {
-				Window.alert("Success");
+				//Window.alert("Success");
 			}
 		});
 	}

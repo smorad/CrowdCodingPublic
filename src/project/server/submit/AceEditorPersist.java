@@ -17,7 +17,6 @@ public class AceEditorPersist extends PersistObject{
 	private String returnType;
 	private ArrayList<String> parameters = new ArrayList<String>();
 	private String methodName;
-<<<<<<< HEAD
 	private boolean stubCreated;
 	
 	
@@ -30,13 +29,6 @@ public class AceEditorPersist extends PersistObject{
 	
 
 	
-=======
-	private TestCaseInfo child; 
-	
-	
-
-	
->>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 	public String getCode(){
 		return code;
 	}

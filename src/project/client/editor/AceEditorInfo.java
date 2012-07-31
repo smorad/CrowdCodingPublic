@@ -17,7 +17,6 @@ public class AceEditorInfo implements IsSerializable, InfoObject{
 	private ArrayList<String> parameters = new ArrayList<String>();
 	private String methodName;
 	private TestCaseInfo child; 
-<<<<<<< HEAD
 	private boolean stubCreated;
 	
 	
@@ -29,11 +28,6 @@ public class AceEditorInfo implements IsSerializable, InfoObject{
 	}
 	
 	
-=======
-	
-	
-
->>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 	@Override
 	public void setDone(boolean b) {
 		isDone=b;	
@@ -64,21 +58,12 @@ public class AceEditorInfo implements IsSerializable, InfoObject{
 	@Override
 	public String info() {
 		return code;
-<<<<<<< HEAD
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-=======
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
->>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 	public ArrayList<String> getParameters() {
 		return parameters;
 	}

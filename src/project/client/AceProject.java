@@ -143,6 +143,8 @@ public class AceProject implements EntryPoint {
 	public static void submit() {
 		editor.submit();
 		// System.out.println(storyInfo.isDone());
+		if(editor instanceof EditorContainer)
+			((EditorContainer) editor).clearTimer();
 		RootLayoutPanel.get().clear();
 		callSubmit();
 	}

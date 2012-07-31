@@ -11,8 +11,7 @@ import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorMode;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
 
-public class UnitTestWidget extends ScreenWidget implements EditorContainer{
-	private AceEditor aceEditor;
+public class UnitTestWidget extends  EditorContainer{
 	private UnitTestInfo uInfo;
 	private String description, testCase;
 	
@@ -46,23 +45,13 @@ public class UnitTestWidget extends ScreenWidget implements EditorContainer{
 		mainPanel.setWidgetLeftWidth(txtbxTestCase, 86.0, Unit.PX, 631.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(txtbxTestCase, 202.0, Unit.PX, 32.0, Unit.PX);
 		
-		aceEditor = new AceEditor(true);
 		aceEditor.setWidth("652px");
 		aceEditor.setHeight("300px");
 		mainPanel.add(aceEditor);
 		mainPanel.setWidgetLeftWidth(aceEditor, 86.0, Unit.PX, 631.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(aceEditor, 240.0, Unit.PX, 343.0, Unit.PX);
 	}
-	public void buildEditor() {
-		// start the first editor and set its theme and mode
-		aceEditor.startEditor(); // must be called before calling
-								// setTheme/setMode/etc.
-		aceEditor.setTheme(AceEditorTheme.ECLIPSE);
-		aceEditor.setMode(AceEditorMode.JAVASCRIPT);
 
-		
-		//aceEditor.setText(method());  //autogenerates method stub
-	}
 	
 	public void submit(){
 		uInfo.setCode(aceEditor.getText());

@@ -6,6 +6,8 @@ import project.client.EditorContainer;
 import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
@@ -13,16 +15,21 @@ import edu.ycp.cs.dh.acegwt.client.ace.AceEditorMode;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
 
 import com.google.gwt.dom.client.Style.Unit;
+import com.googlecode.jslint4java.JSLint;
+import com.googlecode.jslint4java.JSLintBuilder;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 
-public class AceEditorWidget extends ScreenWidget implements EditorContainer{
-	private AceEditor editor1;
-	private String methodDescription
-									;
+public class AceEditorWidget  extends EditorContainer{
+	
+	private String methodDescription;
 	private  ArrayList<String> parameters;
 	private String methodName, methodType;
 	private TextArea description;
 	private AceEditorInfo aInfo;
-	private static boolean stubCreated = false;
+	
+	//JSLint j=new JSLintBuilder().fromDefault();
+	
 
 	
 	public AceEditorWidget(LoginInfo info, AceEditorInfo aInfo ){
@@ -34,26 +41,8 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 		this.parameters = aInfo.getParameters();
 		UI();
 	}
-	/*public AceEditorWidget(LoginInfo info,  AceEditorInfo aInfo, String methodDescription, ArrayList<String> parameters,
-							String methodName, String methodType) {
-		super(info);
-		this.aInfo=aInfo;
-		this.methodDescription=methodDescription;
-		this.parameters=parameters;
-		this.methodName=methodName;
-		this.methodType=methodType;
-		
-		UI();
-		buildEditor();
-	}*/
-	
-	/**
-	 * @wbp.parser.constructor
-	 */
 
-	/*public AceEditorWidget(LoginInfo info){
-		this(info, new AceEditorInfo(), "Description", new ArrayList<String>(), "methodName", "type");
-	}*/
+	
 	
 	public void UI(){
 		setSize("1150px", "768px");
@@ -63,52 +52,50 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 		mainPanel.setWidgetTopHeight(title, 23.0, Unit.PX, 38.0, Unit.PX);
 		
 		// create first AceEditor widget
-		editor1 = new AceEditor(true);
-		editor1.setWidth("652px");
-		editor1.setHeight("300px");
-		mainPanel.add(editor1);
-		mainPanel.setWidgetLeftWidth(editor1, 21.0, Unit.PX, 652.0, Unit.PX);
-<<<<<<< HEAD
-		mainPanel.setWidgetTopHeight(editor1, 274.0, Unit.PX, 300.0, Unit.PX);
-=======
-		mainPanel.setWidgetTopHeight(editor1, 334.0, Unit.PX, 300.0, Unit.PX);
->>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
+		
+		aceEditor.setWidth("652px");
+		aceEditor.setHeight("300px");
+		mainPanel.add(aceEditor);
+		mainPanel.setWidgetLeftWidth(aceEditor, 21.0, Unit.PX, 652.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(aceEditor, 274.0, Unit.PX, 300.0, Unit.PX);
 						
 		description=new TextArea();
 		//description.setReadOnly(true);
 		description.setText(methodDescription);
 		description.setEnabled(false);
-<<<<<<< HEAD
 		//System.out.println("adding txtbox with text: "+ methodDescription);
-=======
-		System.out.println("adding txtbox with text: "+ methodDescription);
->>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 		mainPanel.add(description);
 		mainPanel.setWidgetLeftWidth(description, 21.0, Unit.PX, 652.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(description, 80.0, Unit.PX, 162.0, Unit.PX);
+		
+		Button b=new Button("button");
+		b.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				//System.out.println(j.report(aceEditor.getText()));
+				
+				/*submitService.doCheck(aceEditor.getText(), new AsyncCallback(){
+					public void onFailure(Throwable t){
+						System.out.println("no check");
+					}
+					public void onSuccess(Object r){
+						
+					}
+				});*/
+				//setAnnotations();
+			}
+		});
+		mainPanel.add(b);
+		mainPanel.setWidgetLeftWidth(b, 609.0, Unit.PX, 86.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(b, 612.0, Unit.PX, 38.0, Unit.PX);
 	}
 
 
-	public void buildEditor() {
-		// start the first editor and set its theme and mode
-		editor1.startEditor(); // must be called before calling
-								// setTheme/setMode/etc.
-		editor1.setTheme(AceEditorTheme.ECLIPSE);
-		editor1.setMode(AceEditorMode.JAVA);
-		editor1.setText(aInfo.getCode());
-<<<<<<< HEAD
-		//System.out.println("aInfo code is: " +aInfo.getCode());
-		
+	public void buildEditor(){
+		super.buildEditor();
+		aceEditor.setText(aInfo.getCode());
 		if(!aInfo.getStubCreated()){
-			editor1.setText(method());  //autogenerates method stub
+			aceEditor.setText(method());  //autogenerates method stub
 			aInfo.setStubCreated(true);
-=======
-		System.out.println("aInfo code is: " +aInfo.getCode());
-		
-		if(!stubCreated){
-		editor1.setText(method());  //autogenerates method stub
-		stubCreated=true;
->>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 		}
 	}
 	
@@ -141,17 +128,12 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 	public void submit(){
 		boolean tempIsDone = true;
 	/*	String text = ">> denote pseudo code with the '>>' notation \n" +
-				editor1.getText();
+				aceEditor.getText();
 		aInfo.setCode(text);*/
-		String text = editor1.getText();
+		String text = aceEditor.getText();
 		aInfo.setCode(text);
-<<<<<<< HEAD
 		//System.out.println("text in submit is "+ text);
 		//System.out.println("aInfo code in submit is " + aInfo.getCode());
-=======
-		System.out.println("text in submit is "+ text);
-		System.out.println("aInfo code in submit is " + aInfo.getCode());
->>>>>>> aefeed3037bc25266915a3f15d05ed40d0b07888
 		String lines[] = text.split("[\\r\\n]+");
 		for(int i=0; i<lines.length; i++ ){
 			if(lines[i].contains("#")){

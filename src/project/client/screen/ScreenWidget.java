@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 public abstract class ScreenWidget extends LayoutPanel{
 	protected LayoutPanel mainPanel = new LayoutPanel();
@@ -47,6 +48,13 @@ public abstract class ScreenWidget extends LayoutPanel{
 		add(lblPreferencesWillGo);
 		setWidgetLeftWidth(lblPreferencesWillGo, 498.0, Unit.PX, 285.0, Unit.PX);
 		setWidgetTopHeight(lblPreferencesWillGo, 743.0, Unit.PX, 16.0, Unit.PX);
+		
+		Label lblCrowdcoding = new Label("Crowd Coding");
+		lblCrowdcoding.setStyleName("gwt-Title");
+		lblCrowdcoding.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		add(lblCrowdcoding);
+		setWidgetLeftWidth(lblCrowdcoding, 224.0, Unit.PX, 750.0, Unit.PX);
+		setWidgetTopHeight(lblCrowdcoding, 0.0, Unit.PX, 28.0, Unit.PX);
 		
 		//UI();
 	}

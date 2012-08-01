@@ -5,6 +5,7 @@ import java.util.Iterator;
 import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -35,7 +36,9 @@ public class EntryPointWidget extends ScreenWidget{
 		text=new TextArea();
 		
 		text.setText(story);
-		text.setEnabled(false);
+		text.setReadOnly(true);
+		DOM.setStyleAttribute(text.getElement(), "border", "1px");
+		//text.setEnabled(false);
 		mainPanel.add(text);
 		mainPanel.setWidgetLeftWidth(text, 76.0, Unit.PX, 597.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(text, 77.0, Unit.PX, 82.0, Unit.PX);
@@ -71,7 +74,7 @@ public class EntryPointWidget extends ScreenWidget{
 			}
 		});
 		
-		tabs.add(new EntryPointTab(), "Nothing");
+		tabs.add(new EntryPointTab(), "Method 1");
 		tabs.selectTab(0);
 		numTabs++;
 	}
@@ -92,7 +95,7 @@ public class EntryPointWidget extends ScreenWidget{
 		eInfo.setDone(true);
 	}
 	public void addTab(){
-		tabs.add(new EntryPointTab(), "Nothing more");
+		tabs.add(new EntryPointTab(), "Method " + (numTabs+1));
 		tabs.selectTab(numTabs);
 		numTabs++;	
 	}

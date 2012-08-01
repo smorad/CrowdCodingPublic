@@ -6,6 +6,7 @@ import project.client.screen.ScreenWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 public class UserStoryWidget extends ScreenWidget{
 	
@@ -23,9 +24,10 @@ public class UserStoryWidget extends ScreenWidget{
 	public void UI(){
 	
 		Label l=new Label("User Story");
+		l.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		mainPanel.add(l);
-		mainPanel.setWidgetLeftWidth(l, 290.0, Unit.PX, 73.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(l, 29.0, Unit.PX, 54.0, Unit.PX);
+		mainPanel.setWidgetLeftWidth(l, 0.0, Unit.PX, 750.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(l, 29.0, Unit.PX, 21.0, Unit.PX);
 		
 		area=new TextArea();
 		mainPanel.add(area);

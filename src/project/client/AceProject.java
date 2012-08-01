@@ -8,6 +8,8 @@ import project.client.login.LoginInfo;
 import project.client.login.LoginService;
 import project.client.login.LoginServiceAsync;
 import project.client.login.LoginWidget;
+import project.client.profile.ProfileWidget;
+import project.client.profile.SliderWidget;
 import project.client.screen.ScreenWidget;
 import project.client.submission.SubmitService;
 import project.client.submission.SubmitServiceAsync;
@@ -63,7 +65,6 @@ public class AceProject implements EntryPoint {
 									loadLogin();
 								}
 
-								// Window.alert("Worked");
 							}
 
 							public void onFailure(Throwable t) {
@@ -92,7 +93,7 @@ public class AceProject implements EntryPoint {
 				new AsyncCallback<UserStoryInfo>() {
 			
 					public void onFailure(Throwable t) {
-						Window.alert("bad luck");
+						t.printStackTrace();
 					}
 
 					public void onSuccess(UserStoryInfo info) {
@@ -109,13 +110,13 @@ public class AceProject implements EntryPoint {
 		RootLayoutPanel.get().clear();
 		service.retrieve(name, new AsyncCallback<InfoObject>() {
 			public void onFailure(Throwable t) {
-				Window.alert("Nope");
+				t.printStackTrace();
 			}
 
 			public void onSuccess(InfoObject info) {
 				storyInfo = info;
 				if (info == null) {
-					Window.alert("No more");
+					Window.alert("There are no more tasks available at this time.");
 					return;
 				}
 				if (info instanceof EntryPointInfo)
@@ -153,7 +154,7 @@ public class AceProject implements EntryPoint {
 	private static void callSubmit() {
 		service.submit(storyInfo, new AsyncCallback() {
 			public void onFailure(Throwable t) {
-				Window.alert("failure");
+				t.printStackTrace();
 			}
 
 			public void onSuccess(Object result) {

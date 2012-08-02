@@ -37,7 +37,8 @@ public class EntryPointWidget extends ScreenWidget{
 		
 		text.setText(story);
 		text.setReadOnly(true);
-		DOM.setStyleAttribute(text.getElement(), "border", "1px");
+		DOM.setStyleAttribute(text.getElement(), "border", "1px");  //removes border
+		DOM.setStyleAttribute(text.getElement(), "minHeight","100px");
 		//text.setEnabled(false);
 		mainPanel.add(text);
 		mainPanel.setWidgetLeftWidth(text, 76.0, Unit.PX, 597.0, Unit.PX);
@@ -55,7 +56,7 @@ public class EntryPointWidget extends ScreenWidget{
 			}
 		});
 		mainPanel.add(nextButton);
-		mainPanel.setWidgetLeftWidth(nextButton, 227.0, Unit.PX, 77.0, Unit.PX);
+		mainPanel.setWidgetLeftWidth(nextButton, 422.0, Unit.PX, 77.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(nextButton, 611.0, Unit.PX, 28.0, Unit.PX);
 		
 		tabs=new TabPanel();
@@ -74,11 +75,30 @@ public class EntryPointWidget extends ScreenWidget{
 			}
 		});
 		
+		Button delMethodButton = new Button("Delete Method");
+		mainPanel.add(delMethodButton);
+		mainPanel.setWidgetLeftWidth(delMethodButton, 207.0, Unit.PX, 119.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(delMethodButton, 611.0, Unit.PX, 28.0, Unit.PX);
+		delMethodButton.setSize("119px", "28px");
+		delMethodButton.addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				delTab();
+			}
+		});
+		
 		tabs.add(new EntryPointTab(), "Method 1");
 		tabs.selectTab(0);
 		numTabs++;
 	}
 	
+	public void delTab() {
+		int curTab = tabs.getTabBar().getSelectedTab();
+		tabs.remove(curTab);
+		tabs.selectTab(curTab-1);
+		numTabs--;
+	}
+
 	public void submit(){
 		Iterator<Widget> i=tabs.iterator();
 		
@@ -88,6 +108,7 @@ public class EntryPointWidget extends ScreenWidget{
 			e.setMethodName(info.getName());
 			e.setMethodDescription(info.getDesc());
 			e.setParameters(info.getParameters());
+			e.setParamTypes(info.getParamType());
 			e.addTest();
 			eInfo.addMethod(e);
 			
@@ -95,7 +116,7 @@ public class EntryPointWidget extends ScreenWidget{
 		eInfo.setDone(true);
 	}
 	public void addTab(){
-		tabs.add(new EntryPointTab(), "Method " + (numTabs+1));
+		tabs.add(new EntryPointTab(), "Method " + (tabs.getWidgetCount()+1));
 		tabs.selectTab(numTabs);
 		numTabs++;	
 	}

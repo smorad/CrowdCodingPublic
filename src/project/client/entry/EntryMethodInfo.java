@@ -16,6 +16,8 @@ public class EntryMethodInfo implements IsSerializable, InfoObject{
 	
 	private String methodName;
 	
+	private ArrayList<String> paramType;
+	
 	private Long keyString;
 	
 	private String returnType;
@@ -46,6 +48,15 @@ public class EntryMethodInfo implements IsSerializable, InfoObject{
 	}
 	public void addParameter(String parameter){
 		parameters.add(parameter);
+	}
+	public void addParamType(String type){
+		paramType.add(type);
+	}
+	public void setParamTypes(ArrayList<String> type){
+		paramType = type;
+	}
+	public void removeParamType(int index){
+		paramType.remove(index);
 	}
 	public void setParameters(ArrayList<String> parameters){
 		this.parameters=parameters;

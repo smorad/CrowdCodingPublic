@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.dom.client.Style.Unit;
@@ -36,10 +37,13 @@ public class TestCaseWidget extends ScreenWidget {
 		
 		TextArea methodBox=new TextArea();
 		methodBox.setText(methodDescription);
-		methodBox.setEnabled(false);
+		methodBox.setReadOnly(true);
 		mainPanel.add(methodBox);
 		mainPanel.setWidgetLeftWidth(methodBox, 79.0, Unit.PX, 604.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(methodBox, 44.0, Unit.PX, 189.0, Unit.PX);
+		DOM.setStyleAttribute(methodBox.getElement(), "border", "1px");  //removes border
+		DOM.setStyleAttribute(methodBox.getElement(), "width", "600px");  //fixes size error on firefox
+		DOM.setStyleAttribute(methodBox.getElement(), "height", "80px");
 
 
 		Label lblTestCaseDescription = new Label("Test case description");

@@ -4,6 +4,7 @@ import project.client.EditorContainer;
 import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.TextArea;
@@ -32,15 +33,18 @@ public class UnitTestWidget extends  EditorContainer{
 		mainPanel.setWidgetTopHeight(lblWriteAUnit, 26.0, Unit.PX, 58.0, Unit.PX);
 		
 		TextArea txtrMethodDescription = new TextArea();
-		txtrMethodDescription.setEnabled(false);
+		txtrMethodDescription.setReadOnly(true);
 		txtrMethodDescription.setText(description);
 		mainPanel.add(txtrMethodDescription);
 		mainPanel.setWidgetLeftWidth(txtrMethodDescription, 86.0, Unit.PX, 631.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(txtrMethodDescription, 90.0, Unit.PX, 106.0, Unit.PX);
+		DOM.setStyleAttribute(txtrMethodDescription.getElement(), "border", "1px");  //removes border
+		DOM.setStyleAttribute(txtrMethodDescription.getElement(), "width", "600px");  //fixes size error on firefox
+		DOM.setStyleAttribute(txtrMethodDescription.getElement(), "height", "80px");
 		
 		TextArea txtbxTestCase = new TextArea();
 		txtbxTestCase.setText(testCase);
-		txtbxTestCase.setEnabled(false);
+		txtbxTestCase.setReadOnly(true);
 		mainPanel.add(txtbxTestCase);
 		mainPanel.setWidgetLeftWidth(txtbxTestCase, 86.0, Unit.PX, 631.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(txtbxTestCase, 202.0, Unit.PX, 32.0, Unit.PX);

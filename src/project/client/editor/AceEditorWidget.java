@@ -6,6 +6,7 @@ import project.client.EditorContainer;
 import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
@@ -62,11 +63,15 @@ public class AceEditorWidget  extends EditorContainer{
 		description=new TextArea();
 		//description.setReadOnly(true);
 		description.setText(methodDescription);
-		description.setEnabled(false);
+		description.setReadOnly(true);
 		//System.out.println("adding txtbox with text: "+ methodDescription);
 		mainPanel.add(description);
 		mainPanel.setWidgetLeftWidth(description, 21.0, Unit.PX, 652.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(description, 80.0, Unit.PX, 162.0, Unit.PX);
+		DOM.setStyleAttribute(description.getElement(), "border", "1px");  //removes border
+		DOM.setStyleAttribute(description.getElement(), "minHeight","100px");
+		DOM.setStyleAttribute(description.getElement(), "width", "600px");  //fixes size error on firefox
+		DOM.setStyleAttribute(description.getElement(), "height", "80px");
 		
 		Button b=new Button("button");
 		b.addClickHandler(new ClickHandler() {

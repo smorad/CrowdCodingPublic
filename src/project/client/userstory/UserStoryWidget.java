@@ -3,6 +3,7 @@ package project.client.userstory;
 import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.dom.client.Style.Unit;
@@ -30,6 +31,9 @@ public class UserStoryWidget extends ScreenWidget{
 		mainPanel.setWidgetTopHeight(l, 29.0, Unit.PX, 21.0, Unit.PX);
 		
 		area=new TextArea();
+		DOM.setStyleAttribute(area.getElement(), "width", "600px");
+		DOM.setStyleAttribute(area.getElement(), "height", "350px");
+				
 		mainPanel.add(area);
 		mainPanel.setWidgetLeftWidth(area, 49.0, Unit.PX, 630.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(area, 165.0, Unit.PX, 347.0, Unit.PX);

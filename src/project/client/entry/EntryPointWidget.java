@@ -37,8 +37,11 @@ public class EntryPointWidget extends ScreenWidget{
 		
 		text.setText(story);
 		text.setReadOnly(true);
+		text.setSize("600px", "80px");
 		DOM.setStyleAttribute(text.getElement(), "border", "1px");  //removes border
 		DOM.setStyleAttribute(text.getElement(), "minHeight","100px");
+		DOM.setStyleAttribute(text.getElement(), "width", "600px");  //fixes size error on firefox
+		DOM.setStyleAttribute(text.getElement(), "height", "80px");
 		//text.setEnabled(false);
 		mainPanel.add(text);
 		mainPanel.setWidgetLeftWidth(text, 76.0, Unit.PX, 597.0, Unit.PX);

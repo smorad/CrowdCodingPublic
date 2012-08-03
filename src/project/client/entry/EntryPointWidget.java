@@ -111,7 +111,6 @@ public class EntryPointWidget extends ScreenWidget{
 			e.setMethodName(info.getName());
 			e.setMethodDescription(info.getDesc());
 			e.setParameters(info.getParameters());
-			e.setParamTypes(info.getParamType());
 			e.addTest();
 			eInfo.addMethod(e);
 			

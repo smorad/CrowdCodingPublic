@@ -47,12 +47,6 @@ public class EntryPointTab extends VerticalPanel{
 		HorizontalPanel h=new HorizontalPanel();
 		h.setSpacing(5);
 		add(h);
-/*		TextBox type = new TextBox();
-		type.setText("(type) int");
-		panel.setWidgetLeftWidth(type, 0.0, Unit.PX, 685.0, Unit.PX);
-		panel.setWidgetTopHeight(type, 404.0, Unit.PX, 165.0, Unit.PX);
-		panel.add(type);
-		type.setSize("400px", "28px");*/
 		
 		Button addParButton=new Button("Add Parameter");
 		addParButton.setSize("150px", "30px");
@@ -62,15 +56,14 @@ public class EntryPointTab extends VerticalPanel{
 				paramType.add(new TextBox());
 				TextBox t=parameters.get(parameters.size()-1);
 				TextBox type = paramType.get(paramType.size()-1);
-				type = new TextBox();
-				t.setText("(Parameter) maxCount");
-				type.setText("(type) int");
-				type.setSize("400px", "28px");
+				t.setText("varName");
+				type.setText("String");
+				//type.setSize("400px", "28px");
 				panel.add(t);
 				panel.add(type);
-				panel.setWidgetLeftWidth(t, 0.0, Unit.PX, labelWidth, Unit.PX);
+				panel.setWidgetLeftWidth(t, 0.0, Unit.PX, 200, Unit.PX);
 				panel.setWidgetTopHeight(t, labelHeight*(parameters.size()+3)+5, Unit.PX, labelHeight, Unit.PX);
-				panel.setWidgetLeftWidth(type, 404.0, Unit.PX, 165.0, Unit.PX);
+				panel.setWidgetLeftWidth(type, 200, Unit.PX, 200, Unit.PX);
 				panel.setWidgetTopHeight(type, labelHeight*(parameters.size()+3)+5, Unit.PX, labelHeight, Unit.PX);
 			}
 		});
@@ -83,7 +76,7 @@ public class EntryPointTab extends VerticalPanel{
 				if(!parameters.isEmpty())
 					panel.remove(parameters.remove(parameters.size()-1));
 				if(!paramType.isEmpty())
-					panel.remove(paramType.remove(parameters.size()-1));
+					panel.remove(paramType.remove(paramType.size()-1));
 			}
 		});
 		h.add(removeParButton);
@@ -98,13 +91,7 @@ public class EntryPointTab extends VerticalPanel{
 	public ArrayList<String> getParameters(){
 		ArrayList<String> result=new ArrayList<String>();
 		for(int x=0; x<parameters.size(); x++)
-			result.add(parameters.get(x).getText());
-		return result;
-	}
-	public ArrayList<String> getParamType(){
-		ArrayList<String> result = new ArrayList<String>();
-		for(int x=0; x<paramType.size(); x++)
-			result.add(paramType.get(x).getText());
+			result.add(paramType.get(x).getText()+ " " +parameters.get(x).getText());
 		return result;
 	}
 }

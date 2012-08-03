@@ -46,7 +46,7 @@ public abstract class ScreenWidget extends LayoutPanel{
 		
 		Label lblPreferencesWillGo = new Label("Preferences will go here");
 		add(lblPreferencesWillGo);
-		setWidgetLeftWidth(lblPreferencesWillGo, 498.0, Unit.PX, 285.0, Unit.PX);
+		setWidgetLeftWidth(lblPreferencesWillGo, 394.0, Unit.PX, 285.0, Unit.PX);
 		setWidgetTopHeight(lblPreferencesWillGo, 743.0, Unit.PX, 16.0, Unit.PX);
 		
 		Label lblCrowdcoding = new Label("Crowd Coding");
@@ -55,6 +55,11 @@ public abstract class ScreenWidget extends LayoutPanel{
 		add(lblCrowdcoding);
 		setWidgetLeftWidth(lblCrowdcoding, 224.0, Unit.PX, 750.0, Unit.PX);
 		setWidgetTopHeight(lblCrowdcoding, 0.0, Unit.PX, 28.0, Unit.PX);
+		
+		Label lblYouAreSigned = new Label("You are signed in as "+loginInfo.getNickname());
+		add(lblYouAreSigned);
+		setWidgetLeftWidth(lblYouAreSigned, 575.0, Unit.PX, 373.0, Unit.PX);
+		setWidgetTopHeight(lblYouAreSigned, 743.0, Unit.PX, 16.0, Unit.PX);
 		
 		//UI();
 	}

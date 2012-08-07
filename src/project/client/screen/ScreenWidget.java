@@ -20,8 +20,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 
-public abstract class ScreenWidget extends LayoutPanel{
+public abstract class ScreenWidget extends HorizontalPanel{
 	protected LayoutPanel mainPanel = new LayoutPanel();
 	private Label userPoints=new Label("0");
 	private VerticalPanel pointRank=new VerticalPanel();
@@ -30,41 +32,97 @@ public abstract class ScreenWidget extends LayoutPanel{
 	protected SubmitServiceAsync submitService;	//temporary
 	private LoginInfo loginInfo;
 	private Long points=1L;
+	private VerticalPanel verticalPanel_1;
 	public AceEditorWidget a;
 	
 	public ScreenWidget(LoginInfo loginInfo){
 		this.loginInfo=loginInfo;
-		setSize("1150px", "768px");
-		
-		buildPointDisplays();
+		setSize("1150px", "768px");		
 		buildButtonUI();
-		startService();
-		
-		add(mainPanel);
-		setWidgetTopHeight(mainPanel, 28.0, Unit.PX, 650.0, Unit.PX);
-		setWidgetLeftWidth(mainPanel, 224.0, Unit.PX, 750.0, Unit.PX);
-		
-		Label lblPreferencesWillGo = new Label("Preferences will go here");
-		add(lblPreferencesWillGo);
-		setWidgetLeftWidth(lblPreferencesWillGo, 394.0, Unit.PX, 285.0, Unit.PX);
-		setWidgetTopHeight(lblPreferencesWillGo, 743.0, Unit.PX, 16.0, Unit.PX);
-		
-		Label lblCrowdcoding = new Label("Crowd Coding");
-		lblCrowdcoding.setStyleName("gwt-Title");
-		lblCrowdcoding.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		add(lblCrowdcoding);
-		setWidgetLeftWidth(lblCrowdcoding, 224.0, Unit.PX, 750.0, Unit.PX);
-		setWidgetTopHeight(lblCrowdcoding, 0.0, Unit.PX, 28.0, Unit.PX);
-		
-		Label lblYouAreSigned = new Label("You are signed in as "+loginInfo.getNickname());
-		add(lblYouAreSigned);
-		setWidgetLeftWidth(lblYouAreSigned, 575.0, Unit.PX, 373.0, Unit.PX);
-		setWidgetTopHeight(lblYouAreSigned, 743.0, Unit.PX, 16.0, Unit.PX);
+		buildUI();
+		buildPointDisplays();
+		//startService();
 		
 		//UI();
 	}
 	
+	private void buildUI() {
+								
+								verticalPanel_1 = new VerticalPanel();
+								add(verticalPanel_1);
+								verticalPanel_1.setSize("250px", "40px");
+								
+								
+								Label lab=new Label("Your current total points:");
+								verticalPanel_1.add(lab);
+								lab.setStyleName("gwt-DialogBox");
+								lab.setSize("150px", "40px");
+								
+								VerticalPanel verticalPanel_2 = new VerticalPanel();
+								add(verticalPanel_2);
+								verticalPanel_2.setSize("750", "750");
+								
+								Label lblCrowdcoding = new Label("Crowd Coding");
+								verticalPanel_2.add(lblCrowdcoding);
+								lblCrowdcoding.setStyleName("gwt-Title");
+								lblCrowdcoding.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+								verticalPanel_2.add(mainPanel);
+								mainPanel.setSize("750px", "650px");
+								
+								VerticalPanel verticalPanel = new VerticalPanel();
+								verticalPanel_2.add(verticalPanel);
+								verticalPanel.setSize("750px", "80px");
+								
+								HorizontalPanel horizontalPanel = new HorizontalPanel();
+								verticalPanel.add(horizontalPanel);
+								horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+								horizontalPanel.setSize("750px", "40px");
+								Button button = new Button("Submit");
+								button.addClickHandler(new ClickHandler() {
+									@Override
+									public void onClick(ClickEvent event) {
+										try {
+											/*callSubmitService();
+											callRankUpdateService();
+											callPointUpdateService();
+											AceProject.submit();*/
+										}
+										catch (Exception e) {
+											System.out.println(e.getMessage());
+										}
+									}
+								});
+								
+											horizontalPanel.add(button);
+											button.setWidth("100px");
+											
+											HorizontalPanel horizontalPanel_1 = new HorizontalPanel();
+											verticalPanel.add(horizontalPanel_1);
+											horizontalPanel_1.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+											horizontalPanel_1.setSpacing(5);
+											horizontalPanel_1.setSize("750px", "40px");
+											
+													
+													
+													Label label = new Label("Editor by daveho@Github");
+													horizontalPanel_1.add(label);
+													label.setSize("180px", "23px");
+													
+													Label lblPreferencesWillGo = new Label("Preferences will go here");
+													horizontalPanel_1.add(lblPreferencesWillGo);
+													lblPreferencesWillGo.setSize("170px", "20px");
+													horizontalPanel_1.add(signOutLink);
+				
+
+		
+	}
+
 	private void startService(){
+		//Current user
+		Label lblYouAreSigned = new Label("You are signed in as "+loginInfo.getNickname());
+		add(lblYouAreSigned);
+		
+		
 		if (submitService == null)
 			submitService = (SubmitServiceAsync) GWT
 					.create(SubmitService.class);
@@ -89,21 +147,13 @@ public abstract class ScreenWidget extends LayoutPanel{
 	
 	private void buildPointDisplays(){  //displays player points
 		pointRank.setStyleName("gwt-DialogBox");
-		add(pointRank);
-		setWidgetLeftWidth(pointRank, 18.0, Unit.PX, 119.0+30, Unit.PX);
-		setWidgetTopHeight(pointRank, 53.0, Unit.PX, 500.0, Unit.PX);
-		
-		
-		Label lab=new Label("Your current total points:");
-		lab.setStyleName("gwt-DialogBox");
-		add(lab);
-		setWidgetLeftWidth(lab, 1001.0, Unit.PX, 147.0, Unit.PX);
-		setWidgetTopHeight(lab, 53.0, Unit.PX, 18.0, Unit.PX);
+		if(pointRank!=null)
+			add(pointRank);
+		pointRank.setSize("200px", "28px");
 		userPoints.setStyleName("gwt-DialogBox");
 		
-		add(userPoints);
-		setWidgetLeftWidth(userPoints, 1001.0, Unit.PX, 119.0+50, Unit.PX);
-		setWidgetTopHeight(userPoints, 79.0, Unit.PX, 18.0, Unit.PX);
+		verticalPanel_1.add(userPoints);
+		userPoints.setSize("150px", "20px");
 		
 	}
 	
@@ -144,43 +194,6 @@ public abstract class ScreenWidget extends LayoutPanel{
 	}
 	
 	private void buildButtonUI(){
-		Button button = new Button("Submit");
-		add(button);
-		button.setWidth("100px");
-		setWidgetLeftWidth(button, 860.0, Unit.PX, 119.0, Unit.PX);
-		setWidgetTopHeight(button, 684.0, Unit.PX, 28.0, Unit.PX);
-		add(signOutLink);
-		
-		setWidgetLeftWidth(signOutLink, 860.0, Unit.PX, 63.0, Unit.PX);
-		setWidgetTopHeight(signOutLink, 743.0, Unit.PX, 18.0,
-				Unit.PX);
-
-		
-		
-		Label label = new Label("Editor by daveho@Github");
-		add(label);
-		setWidgetLeftWidth(label, 224.0, Unit.PX, 172.0, Unit.PX);
-		setWidgetTopHeight(label, 743.0, Unit.PX, 25.0, Unit.PX);
-	
-		button.addClickHandler(new ClickHandler() {
-			@Override
-			/**
-			 * Code to be overridden
-			 */
-			public void onClick(ClickEvent event) {
-				try {
-					callSubmitService();
-					callRankUpdateService();
-					callPointUpdateService();
-					AceProject.submit();
-				}
-
-				catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
-
-			}
-		});
 	}
 	
 

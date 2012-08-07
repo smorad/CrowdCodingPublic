@@ -9,7 +9,6 @@ import project.client.login.LoginService;
 import project.client.login.LoginServiceAsync;
 import project.client.login.LoginWidget;
 import project.client.profile.ProfileWidget;
-import project.client.profile.SliderWidget;
 import project.client.screen.ScreenWidget;
 import project.client.submission.SubmitService;
 import project.client.submission.SubmitServiceAsync;
@@ -24,6 +23,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -46,7 +46,7 @@ public class AceProject implements EntryPoint {
 	 * @wbp.parser.entryPoint
 	 */
 	@SuppressWarnings("rawtypes")
-	public void onModuleLoad() {
+	public void onModuleLoad() {		
 		// Check login status using login service.
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 		loginService.login(GWT.getHostPageBaseURL(),
@@ -78,11 +78,11 @@ public class AceProject implements EntryPoint {
 	private void loadLogin() {
 		if (loginPanel == null)
 			loginPanel = new LoginWidget(loginInfo); // make sure only 1 service is running
-		RootLayoutPanel.get().add(new ScrollPanel(loginPanel));// see the html file for id
+		RootPanel.get().add(new ScrollPanel(loginPanel));// see the html file for id
 	}
 
 	private void loadEditorAndService() {
-		RootLayoutPanel.get().clear();
+		RootPanel.get().clear();
 		storyInfo = new UserStoryInfo();
 		((UserStoryInfo) storyInfo).setName(name);
 		callCreate();
@@ -100,15 +100,17 @@ public class AceProject implements EntryPoint {
 						storyInfo = info;
 						editor = new UserStoryWidget(loginInfo,
 								(UserStoryInfo) storyInfo);
-						RootLayoutPanel.get().add(new ScrollPanel(editor));
+						//RootPanel.get().add(new ScrollPanel(editor));
+						RootPanel.get().add(new ProfileWidget(loginInfo));
 						System.out.println("Success");
 					}
 				});
 	}
 
 	public static void instantiateRandomly(final LoginInfo loginInfo) {
-		RootLayoutPanel.get().clear();
-		service.retrieve(name, new AsyncCallback<InfoObject>() {
+		RootPanel.get().clear();
+		
+		/*service.retrieve(name, new AsyncCallback<InfoObject>() {
 			public void onFailure(Throwable t) {
 				t.printStackTrace();
 			}
@@ -133,12 +135,12 @@ public class AceProject implements EntryPoint {
 					editor = new AceEditorWidget(loginInfo,
 							(AceEditorInfo) info);
 
-				RootLayoutPanel.get().add(new ScrollPanel(editor));
+				RootPanel.get().add(new ScrollPanel(editor));
 				if (editor instanceof EditorContainer)
 					((EditorContainer) editor).buildEditor();
 			}
 		});
-
+*/
 	}
 
 	public static void submit() {
@@ -146,7 +148,7 @@ public class AceProject implements EntryPoint {
 		// System.out.println(storyInfo.isDone());
 		if(editor instanceof EditorContainer)
 			((EditorContainer) editor).clearTimer();
-		RootLayoutPanel.get().clear();
+		RootPanel.get().clear();
 		callSubmit();
 	}
 

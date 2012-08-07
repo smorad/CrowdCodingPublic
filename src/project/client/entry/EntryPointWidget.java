@@ -52,16 +52,6 @@ public class EntryPointWidget extends ScreenWidget{
 		mainPanel.setWidgetLeftWidth(title, 207.0, Unit.PX, 311.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(title, 0.0, Unit.PX, 49.0, Unit.PX);
 		
-		Button nextButton=new Button("Done");
-		nextButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				;
-			}
-		});
-		mainPanel.add(nextButton);
-		mainPanel.setWidgetLeftWidth(nextButton, 422.0, Unit.PX, 77.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(nextButton, 611.0, Unit.PX, 28.0, Unit.PX);
-		
 		tabs=new TabPanel();
 		tabs.setSize("450px", "320px");
 		mainPanel.add(tabs);

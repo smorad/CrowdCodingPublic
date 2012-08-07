@@ -73,25 +73,6 @@ public class AceEditorWidget  extends EditorContainer{
 		DOM.setStyleAttribute(description.getElement(), "width", "600px");  //fixes size error on firefox
 		DOM.setStyleAttribute(description.getElement(), "height", "80px");
 		
-		Button b=new Button("button");
-		b.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				//System.out.println(j.report(aceEditor.getText()));
-				
-				/*submitService.doCheck(aceEditor.getText(), new AsyncCallback(){
-					public void onFailure(Throwable t){
-						System.out.println("no check");
-					}
-					public void onSuccess(Object r){
-						
-					}
-				});*/
-				//setAnnotations();
-			}
-		});
-		mainPanel.add(b);
-		mainPanel.setWidgetLeftWidth(b, 609.0, Unit.PX, 86.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(b, 612.0, Unit.PX, 38.0, Unit.PX);
 	}
 
 

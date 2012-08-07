@@ -52,11 +52,6 @@ public class TestCaseWidget extends ScreenWidget {
 				Unit.PX);
 		mainPanel.setWidgetTopHeight(lblTestCaseDescription, 239.0, Unit.PX, 42.0,
 				Unit.PX);
-
-		Button btnDone = new Button("Done");
-		mainPanel.add(btnDone);
-		mainPanel.setWidgetLeftWidth(btnDone, 124.0, Unit.PX, 81.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(btnDone, 730.0, Unit.PX, 28.0, Unit.PX);
 								
 		Button btnNewTestCase = new Button("New test case");
 		mainPanel.add(btnNewTestCase);

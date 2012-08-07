@@ -41,7 +41,7 @@ public abstract class ScreenWidget extends HorizontalPanel{
 		buildButtonUI();
 		buildUI();
 		buildPointDisplays();
-		//startService();
+		startService();
 		
 		//UI();
 	}
@@ -82,10 +82,10 @@ public abstract class ScreenWidget extends HorizontalPanel{
 									@Override
 									public void onClick(ClickEvent event) {
 										try {
-											/*callSubmitService();
+											callSubmitService();
 											callRankUpdateService();
 											callPointUpdateService();
-											AceProject.submit();*/
+											AceProject.submit();
 										}
 										catch (Exception e) {
 											System.out.println(e.getMessage());
@@ -112,15 +112,16 @@ public abstract class ScreenWidget extends HorizontalPanel{
 													horizontalPanel_1.add(lblPreferencesWillGo);
 													lblPreferencesWillGo.setSize("170px", "20px");
 													horizontalPanel_1.add(signOutLink);
-				
+													
+													//Current user
+													Label lblYouAreSigned = new Label("You are signed in as "+loginInfo.getNickname());
+													horizontalPanel_1.add(lblYouAreSigned);
 
 		
 	}
 
 	private void startService(){
-		//Current user
-		Label lblYouAreSigned = new Label("You are signed in as "+loginInfo.getNickname());
-		add(lblYouAreSigned);
+
 		
 		
 		if (submitService == null)

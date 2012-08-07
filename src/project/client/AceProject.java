@@ -2,6 +2,7 @@ package project.client;
 
 import project.client.editor.AceEditorInfo;
 import project.client.editor.AceEditorWidget;
+import project.client.endpage.EndPageWidget;
 import project.client.entry.EntryPointInfo;
 import project.client.entry.EntryPointWidget;
 import project.client.login.LoginInfo;
@@ -100,8 +101,8 @@ public class AceProject implements EntryPoint {
 						storyInfo = info;
 						editor = new UserStoryWidget(loginInfo,
 								(UserStoryInfo) storyInfo);
-						//RootPanel.get().add(new ScrollPanel(editor));
-						RootPanel.get().add(new ProfileWidget(loginInfo));
+						RootPanel.get().add(new ScrollPanel(editor));
+						//RootPanel.get().add(new ProfileWidget(loginInfo));
 						System.out.println("Success");
 					}
 				});
@@ -110,7 +111,7 @@ public class AceProject implements EntryPoint {
 	public static void instantiateRandomly(final LoginInfo loginInfo) {
 		RootPanel.get().clear();
 		
-		/*service.retrieve(name, new AsyncCallback<InfoObject>() {
+		service.retrieve(name, new AsyncCallback<InfoObject>() {
 			public void onFailure(Throwable t) {
 				t.printStackTrace();
 			}
@@ -118,7 +119,8 @@ public class AceProject implements EntryPoint {
 			public void onSuccess(InfoObject info) {
 				storyInfo = info;
 				if (info == null) {
-					Window.alert("There are no more tasks available at this time.");
+					RootPanel.get().clear();
+					RootPanel.get().add(new EndPageWidget(loginInfo));
 					return;
 				}
 				if (info instanceof EntryPointInfo)
@@ -140,7 +142,7 @@ public class AceProject implements EntryPoint {
 					((EditorContainer) editor).buildEditor();
 			}
 		});
-*/
+
 	}
 
 	public static void submit() {

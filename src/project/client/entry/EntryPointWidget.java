@@ -23,7 +23,7 @@ public class EntryPointWidget extends ScreenWidget{
 	private EntryPointInfo eInfo;
 	
 	public EntryPointWidget(LoginInfo info, EntryPointInfo eInfo){
-		super(new LoginInfo());
+		super(info);
 		setSize("1150px", "768px");
 		
 		this.story=eInfo.getStory();

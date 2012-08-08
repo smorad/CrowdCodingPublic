@@ -1,12 +1,33 @@
 package project.client.profile;
 
-public class ProfileInfo {
+import project.client.InfoObject;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class ProfileInfo implements IsSerializable, InfoObject {
 	private int userStory;
 	private int ePoint;
 	private int sketch;
 	private int testCase;
 	private int unit;
+	private boolean isDone;
+	private Long key;
 	
+	
+	@Override
+	public boolean isDone() {
+	return isDone;
+	}
+
+	@Override
+	public void setKeyString(Long s) {
+		key=s;
+	}
+
+	@Override
+	public Long getKeyString() {
+		return key;
+	}
 	public int getUserStory() {
 		return userStory;
 	}
@@ -36,6 +57,18 @@ public class ProfileInfo {
 	}
 	public void setUnit(int unit) {
 		this.unit = unit;
+	}
+
+	@Override
+	public void setDone(boolean b) {
+		isDone = b;
+		
+	}
+
+	@Override
+	public String info() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

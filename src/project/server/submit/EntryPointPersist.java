@@ -3,12 +3,9 @@ package project.server.submit;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.persistence.Id;
-
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
-import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Subclass;
 import com.googlecode.objectify.annotation.Unindexed;
 

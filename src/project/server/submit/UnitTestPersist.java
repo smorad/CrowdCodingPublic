@@ -1,7 +1,5 @@
 package project.server.submit;
 
-import javax.persistence.Id;
-
 import com.googlecode.objectify.annotation.Subclass;
 import com.googlecode.objectify.annotation.Unindexed;
 @Unindexed

@@ -3,7 +3,6 @@ package project.client;
 import java.util.List;
 
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import edu.ycp.cs.dh.acegwt.client.ace.AceAnnotationType;

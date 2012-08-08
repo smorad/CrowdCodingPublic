@@ -1,14 +1,11 @@
 package project.server.submit;
 
-import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.googlecode.jslint4java.JSLint;
-import com.googlecode.jslint4java.JSLintBuilder;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;

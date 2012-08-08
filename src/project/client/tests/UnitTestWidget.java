@@ -2,15 +2,10 @@ package project.client.tests;
 
 import project.client.EditorContainer;
 import project.client.login.LoginInfo;
-import project.client.screen.ScreenWidget;
-
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.TextArea;
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditorMode;
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
 
 public class UnitTestWidget extends  EditorContainer{
 	private UnitTestInfo uInfo;

@@ -4,22 +4,10 @@ import java.util.ArrayList;
 
 import project.client.EditorContainer;
 import project.client.login.LoginInfo;
-import project.client.screen.ScreenWidget;
-
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditorMode;
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
-
 import com.google.gwt.dom.client.Style.Unit;
-import com.googlecode.jslint4java.JSLint;
-import com.googlecode.jslint4java.JSLintBuilder;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
 
 public class AceEditorWidget  extends EditorContainer{
 	
@@ -47,7 +35,7 @@ public class AceEditorWidget  extends EditorContainer{
 	
 	public void UI(){
 		setSize("1150px", "768px");
-		Label title=new Label("Sketch and Implement the Method");
+		Label title=new Label("Sketch and Implement the Method. Use # to denote a line of pseudocode");
 		mainPanel.add(title);
 		mainPanel.setWidgetLeftWidth(title, 229.0, Unit.PX, 213.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(title, 23.0, Unit.PX, 38.0, Unit.PX);

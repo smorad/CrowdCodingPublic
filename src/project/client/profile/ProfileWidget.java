@@ -1,26 +1,7 @@
 package project.client.profile;
 
-import gwtquery.plugins.ui.Ui;
-import gwtquery.plugins.ui.widgets.Slider;
-
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.DragEvent;
-import com.google.gwt.event.dom.client.DragHandler;
 import com.google.gwt.gen2.picker.client.SliderBar;
-import com.google.gwt.query.client.GQuery;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
-
-
-import static com.google.gwt.query.client.GQuery.$;
-import static gwtquery.plugins.ui.Ui.Ui;
-
-
-
-
-
 import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
@@ -30,9 +11,6 @@ public class ProfileWidget extends ScreenWidget {
 	private SliderBar sketch = createSlider("Sketch/Impl");
 	private SliderBar testCase = createSlider("Test Case");
 	private SliderBar unit = createSlider("Unit Test");
-	private VerticalPanel panel = new VerticalPanel();
-	
-	private int pos;
 	public ProfileWidget(LoginInfo loginInfo) {
 		super(loginInfo);
 		setSize("1150px", "768px");
@@ -42,19 +20,6 @@ public class ProfileWidget extends ScreenWidget {
 
 	@Override
 	public void UI() {
-		 //add((IsWidget) GQuery.$("slider").as(Ui).slider());
-		 //add((IsWidget) ((Ui) GQuery.$("#slider")).slider());
-		/* $("#slider").as(Ui).slider();
-		 $(".slider").as(Enhance).slider(0, 2);
-		 ((Ui) $("#slider")).slider();*/
-		/*	
-		  SliderBar slider = new SliderBar(0.0, 100.0);
-		  slider.setStepSize(2.0);
-		  slider.setCurrentValue(50.0);
-		  slider.setNumTicks(0);
-		  slider.setNumLabels(0);
-		  slider.setTitle("Current value: " + slider.getValue());
-		  mainPanel.add(slider);*/
 
 		
 		mainPanel.add(main);

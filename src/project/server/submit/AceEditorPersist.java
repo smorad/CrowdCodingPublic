@@ -2,12 +2,8 @@ package project.server.submit;
 
 import java.util.ArrayList;
 
-import javax.persistence.Id;
-
 import com.googlecode.objectify.annotation.Subclass;
 import com.googlecode.objectify.annotation.Unindexed;
-
-import project.client.tests.TestCaseInfo;
 
 @Unindexed
 @Subclass

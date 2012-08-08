@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
+
 public class TestCasePanel extends HorizontalPanel{
 	private TextBox textBox;
 
@@ -21,8 +22,8 @@ public class TestCasePanel extends HorizontalPanel{
 		final Button delete = new Button();
 		delete.setText("Delete");
 		delete.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				((TestCaseWidget)delete.getParent().getParent().getParent()).removeFromList(((TestCasePanel)delete.getParent()));
+			public void onClick(ClickEvent event) {				
+				((TestCaseWidget)delete.getParent().getParent().getParent().getParent()).removeFromList(((TestCasePanel)delete.getParent()));
 			}
 		});
 		add(delete);

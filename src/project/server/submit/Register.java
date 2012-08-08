@@ -1,6 +1,5 @@
 package project.server.submit;
 
-import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 
 public class Register {

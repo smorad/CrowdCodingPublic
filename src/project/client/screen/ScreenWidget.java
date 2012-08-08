@@ -9,15 +9,18 @@ import project.client.points.PointUpdateService;
 import project.client.points.PointUpdateServiceAsync;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -36,17 +39,39 @@ public abstract class ScreenWidget extends HorizontalPanel{
 	public AceEditorWidget a;
 	
 	public ScreenWidget(LoginInfo loginInfo){
+		//setSize(Window.getClientHeight() + "px",Window.getClientWidth()+"px");
+		setHeight(Window.getClientHeight()+"px");
+		setWidth(Window.getClientWidth()+"px");
 		this.loginInfo=loginInfo;
-		setSize("1150px", "768px");		
+		//setSize("100%", "100%");		
 		buildButtonUI();
 		buildUI();
 		buildPointDisplays();
 		startService();
 		
+		Window.addResizeHandler(new ResizeHandler() {
+			 public void onResize(ResizeEvent event) {
+			   int height = event.getHeight();  
+			   setHeight(height + "px");
+			   int width = event.getWidth();
+			   setWidth(width + "px");
+			   System.out.println(height + ":" + width);
+			 }
+			});
+		//RootPanel.get().getElement().setAttribute("align", "center");
+		//DOM.setStyleAttribute(RootPanel.get().getElement(), "marginLeft", "auto");  //removes border
+		//DOM.setStyleAttribute(RootPanel.get().getElement(), "marginRight", "auto");  //removes border
+		//RootPanel.get().getElement().setAttribute("alig")
+		/*HorizontalPanel.ALIGN_MIDDLE;
+		HorizontalPanel.ALIGN_CENTER;*/
 		//UI();
+		System.out.println("resized to "+ (Window.getClientHeight()-1));
 	}
 	
+
+
 	private void buildUI() {
+
 								
 								verticalPanel_1 = new VerticalPanel();
 								add(verticalPanel_1);
@@ -58,7 +83,7 @@ public abstract class ScreenWidget extends HorizontalPanel{
 								lab.setStyleName("gwt-DialogBox");
 								lab.setSize("150px", "40px");
 								
-								VerticalPanel verticalPanel_2 = new VerticalPanel();
+								final VerticalPanel verticalPanel_2 = new VerticalPanel();
 								add(verticalPanel_2);
 								verticalPanel_2.setSize("750", "750");
 								
@@ -116,9 +141,30 @@ public abstract class ScreenWidget extends HorizontalPanel{
 													//Current user
 													Label lblYouAreSigned = new Label("You are signed in as "+loginInfo.getNickname());
 													horizontalPanel_1.add(lblYouAreSigned);
+													
+													Window.addResizeHandler(new ResizeHandler() {
+														 public void onResize(ResizeEvent event) {  
+														  int width = event.getWidth();
+														   verticalPanel_1.setWidth(width/5 + "px");  //makes vertpan1 20% of total screen real estate
+														   System.out.println("buildUI width is: "+ width);
+														 }
+														});
+													setInitialSize(); //causes window to center without resizing
+													  
+	}
 
+	private void setInitialSize() {
+		setHeight(Window.getClientHeight()+"px");
+		setWidth(Window.getClientWidth()+"px");
+		verticalPanel_1.setWidth(Window.getClientWidth()/5 + "px");
+		System.out.println("Client width is: "+ Window.getClientWidth());
+		Window.resizeTo(Window.getClientWidth()-1,Window.getClientHeight()-1);
+		System.out.println("initial resize");
+		
 		
 	}
+
+
 
 	private void startService(){
 

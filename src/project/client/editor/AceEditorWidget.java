@@ -7,7 +7,9 @@ import project.client.login.LoginInfo;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 public class AceEditorWidget  extends EditorContainer{
 	
@@ -16,6 +18,7 @@ public class AceEditorWidget  extends EditorContainer{
 	private String methodName, methodType;
 	private TextArea description;
 	private AceEditorInfo aInfo;
+	private VerticalPanel panel = new VerticalPanel();
 	
 	//JSLint j=new JSLintBuilder().fromDefault();
 	
@@ -36,41 +39,60 @@ public class AceEditorWidget  extends EditorContainer{
 	public void UI(){
 		setSize("1150px", "768px");
 		Label title=new Label("Sketch and Implement the Method. Use # to denote a line of pseudocode");
-		mainPanel.add(title);
-		mainPanel.setWidgetLeftWidth(title, 229.0, Unit.PX, 213.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(title, 23.0, Unit.PX, 38.0, Unit.PX);
+		title.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		/*mainPanel.add(title);
+		mainPanel.setWidgetLeftWidth(title, 21.0, Unit.PX, 652.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(title, 23.0, Unit.PX, 38.0, Unit.PX);*/
+		mainPanel.add(panel);
+	
 		
 		// create first AceEditor widget
 		
 		aceEditor.setWidth("652px");
 		aceEditor.setHeight("300px");
-		mainPanel.add(aceEditor);
+		/*mainPanel.add(aceEditor);
 		mainPanel.setWidgetLeftWidth(aceEditor, 21.0, Unit.PX, 652.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(aceEditor, 274.0, Unit.PX, 300.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(aceEditor, 274.0, Unit.PX, 300.0, Unit.PX);*/
 						
 		description=new TextArea();
 		//description.setReadOnly(true);
 		description.setText(methodDescription);
 		description.setReadOnly(true);
 		//System.out.println("adding txtbox with text: "+ methodDescription);
-		mainPanel.add(description);
+	/*	mainPanel.add(description);
 		mainPanel.setWidgetLeftWidth(description, 21.0, Unit.PX, 652.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(description, 80.0, Unit.PX, 162.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(description, 80.0, Unit.PX, 162.0, Unit.PX);*/
+		
+		TextArea textArea = new TextArea();
+	/*	mainPanel.add(textArea);
+		mainPanel.setWidgetLeftWidth(textArea, 21.0, Unit.PX, 652.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(textArea, 248.0, Unit.PX, 86.0, Unit.PX);*/
+		textArea.setText("Method signature:\n " + "method name: " + aInfo.getMethodName()+ "\n" +  "parameters: " + aInfo.getParameters() + "\n" + "method return type: " + aInfo.getReturnType());
 		DOM.setStyleAttribute(description.getElement(), "border", "1px");  //removes border
 		DOM.setStyleAttribute(description.getElement(), "minHeight","100px");
-		DOM.setStyleAttribute(description.getElement(), "width", "600px");  //fixes size error on firefox
+		DOM.setStyleAttribute(description.getElement(), "width", "652px");  //fixes size error on firefox
 		DOM.setStyleAttribute(description.getElement(), "height", "80px");
-		
+		DOM.setStyleAttribute(textArea.getElement(), "border", "1px");  //removes border
+		DOM.setStyleAttribute(textArea.getElement(), "minHeight","100px");
+		DOM.setStyleAttribute(textArea.getElement(), "width", "652px");  //fixes size error on firefox
+		DOM.setStyleAttribute(textArea.getElement(), "height", "80px");
+		DOM.setStyleAttribute(textArea.getElement(), "resize", "none");
+		DOM.setStyleAttribute(description.getElement(), "resize", "none");
+		textArea.setReadOnly(true);
+		panel.add(title);
+		panel.add(description);
+		panel.add(textArea);
+		panel.add(aceEditor);
 	}
 
 
 	public void buildEditor(){
 		super.buildEditor();
 		aceEditor.setText(aInfo.getCode());
-		if(!aInfo.getStubCreated()){
+/*		if(!aInfo.getStubCreated()){
 			aceEditor.setText(method());  //autogenerates method stub
 			aInfo.setStubCreated(true);
-		}
+		}*/
 	}
 	
 	private String method(){  //used to autogenerate method stub

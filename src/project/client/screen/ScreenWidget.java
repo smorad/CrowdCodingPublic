@@ -39,17 +39,19 @@ public abstract class ScreenWidget extends HorizontalPanel{
 	public AceEditorWidget a;
 	
 	public ScreenWidget(LoginInfo loginInfo){
-		//setSize(Window.getClientHeight() + "px",Window.getClientWidth()+"px");
-		setHeight(Window.getClientHeight()+"px");
-		setWidth(Window.getClientWidth()+"px");
+		setSize(Window.getClientHeight() + "px",Window.getClientWidth()+"px");
+/*		setHeight(Window.getClientHeight()+"px");
+		setWidth(Window.getClientWidth()+"px");*/
 		this.loginInfo=loginInfo;
 		//setSize("100%", "100%");		
 		buildButtonUI();
 		buildUI();
 		buildPointDisplays();
 		startService();
+		setHorizontalAlignment(ALIGN_CENTER);
+		setVerticalAlignment(ALIGN_MIDDLE);
 		
-		Window.addResizeHandler(new ResizeHandler() {
+	/*	Window.addResizeHandler(new ResizeHandler() {
 			 public void onResize(ResizeEvent event) {
 			   int height = event.getHeight();  
 			   setHeight(height + "px");
@@ -57,7 +59,7 @@ public abstract class ScreenWidget extends HorizontalPanel{
 			   setWidth(width + "px");
 			   System.out.println(height + ":" + width);
 			 }
-			});
+			});*/
 		//RootPanel.get().getElement().setAttribute("align", "center");
 		//DOM.setStyleAttribute(RootPanel.get().getElement(), "marginLeft", "auto");  //removes border
 		//DOM.setStyleAttribute(RootPanel.get().getElement(), "marginRight", "auto");  //removes border
@@ -139,7 +141,7 @@ public abstract class ScreenWidget extends HorizontalPanel{
 													horizontalPanel_1.add(signOutLink);
 													
 													//Current user
-													Label lblYouAreSigned = new Label("You are signed in as "+loginInfo.getNickname());
+												Label lblYouAreSigned = new Label("You are signed in as "+loginInfo.getNickname());
 													horizontalPanel_1.add(lblYouAreSigned);
 													
 													Window.addResizeHandler(new ResizeHandler() {
@@ -153,6 +155,8 @@ public abstract class ScreenWidget extends HorizontalPanel{
 														});
 													setInitialSize(); //causes window to center without resizing
 													  
+													verticalPanel_1.setHorizontalAlignment(ALIGN_CENTER);
+													verticalPanel_2.setHorizontalAlignment(ALIGN_CENTER);
 	}
 
 	private void setInitialSize() {

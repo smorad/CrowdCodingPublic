@@ -54,6 +54,7 @@ public class EntryPointWidget extends ScreenWidget{
 		
 		tabs=new TabPanel();
 		tabs.setSize("450px", "320px");
+		tabs.setAnimationEnabled(true);
 		mainPanel.add(tabs);
 		mainPanel.setWidgetLeftWidth(tabs, 40.0, Unit.PX, 685.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(tabs, 190.0, Unit.PX, 320.0, Unit.PX);

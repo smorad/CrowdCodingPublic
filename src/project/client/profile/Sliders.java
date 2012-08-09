@@ -1,6 +1,6 @@
 package project.client.profile;
-//import static gwtquery.plugins.ui.Ui.Ui;
-//import static com.google.gwt.query.client.GQuery.$;
+import static gwtquery.plugins.ui.Ui.Ui;
+import static com.google.gwt.query.client.GQuery.$;
 import com.google.gwt.dom.client.Element;
 
 public class Sliders {
@@ -11,6 +11,6 @@ public class Sliders {
 	  }
 
 	  public void setupDemoElement(Element demo) {
-	   // $("#slider", demo).as(Ui).slider();
+	    $("#slider", demo).as(Ui).slider();
 	  }
 	}

@@ -145,7 +145,9 @@ public abstract class ScreenWidget extends HorizontalPanel{
 													Window.addResizeHandler(new ResizeHandler() {
 														 public void onResize(ResizeEvent event) {  
 														  int width = event.getWidth();
+														  int height = event.getHeight();
 														   verticalPanel_1.setWidth(width/5 + "px");  //makes vertpan1 20% of total screen real estate
+														   verticalPanel_1.setHeight(height/5 + "px");
 														   System.out.println("buildUI width is: "+ width);
 														 }
 														});

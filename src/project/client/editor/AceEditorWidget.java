@@ -110,7 +110,7 @@ public class AceEditorWidget  extends EditorContainer{
 		//System.out.println("aInfo code in submit is " + aInfo.getCode());
 		String lines[] = text.split("[\\r\\n]+");
 		for(int i=0; i<lines.length; i++ ){
-			if(lines[i].contains("#")){
+			if(lines[i].trim().startsWith("#")){
 				aInfo.setDone(false);
 				return;
 			}

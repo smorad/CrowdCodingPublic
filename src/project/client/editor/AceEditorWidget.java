@@ -1,81 +1,85 @@
 package project.client.editor;
 
+import java.util.ArrayList;
+
 import project.client.EditorContainer;
 import project.client.login.LoginInfo;
-import project.client.screen.ScreenWidget;
-
-import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditorCallback;
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditorMode;
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
-
 import com.google.gwt.dom.client.Style.Unit;
 
-public class AceEditorWidget extends ScreenWidget implements EditorContainer{
-	private AceEditor editor1;
-	private String methodDescription
-									;
-	private  String[] parameters;
+public class AceEditorWidget  extends EditorContainer{
+	
+	private String methodDescription;
+	private  ArrayList<String> parameters;
 	private String methodName, methodType;
 	private TextArea description;
-	private AceEditorInfo eInfo;
+	private AceEditorInfo aInfo;
+	
+	//JSLint j=new JSLintBuilder().fromDefault();
+	
 
-	public AceEditorWidget(LoginInfo info,  AceEditorInfo eInfo, String methodDescription, String[] parameters,
-							String methodName, String methodType) {
+	
+	public AceEditorWidget(LoginInfo info, AceEditorInfo aInfo ){
 		super(info);
-		this.eInfo=eInfo;
-		this.methodDescription=methodDescription;
-		this.parameters=parameters;
-		this.methodName=methodName;
-		this.methodType=methodType;
-		
+		this.aInfo = aInfo;
+		this.methodDescription = aInfo.getDescription();
+		this.methodName = aInfo.getMethodName();
+		this.methodType = aInfo.getReturnType();
+		this.parameters = aInfo.getParameters();
 		UI();
 	}
-	
-	/**
-	 * @wbp.parser.constructor
-	 */
 
-	public AceEditorWidget(LoginInfo info){
-		this(info, new AceEditorInfo(), "Description", new String[0], "methodName", "type");
-	}
+	
 	
 	public void UI(){
 		setSize("1150px", "768px");
+		Label title=new Label("Sketch and Implement the Method. Use # to denote a line of pseudocode");
+		mainPanel.add(title);
+		mainPanel.setWidgetLeftWidth(title, 229.0, Unit.PX, 235.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(title, 23.0, Unit.PX, 38.0, Unit.PX);
+		
 		// create first AceEditor widget
-		editor1 = new AceEditor(true);
-		editor1.setWidth("652px");
-		editor1.setHeight("300px");
-		mainPanel.add(editor1);
-		mainPanel.setWidgetLeftWidth(editor1, 21.0, Unit.PX, 652.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(editor1, 195.0, Unit.PX, 300.0, Unit.PX);
+		
+		aceEditor.setWidth("652px");
+		aceEditor.setHeight("300px");
+		mainPanel.add(aceEditor);
+		mainPanel.setWidgetLeftWidth(aceEditor, 21.0, Unit.PX, 652.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(aceEditor, 274.0, Unit.PX, 300.0, Unit.PX);
 						
 		description=new TextArea();
-		description.setReadOnly(true);
-		description.setEnabled(false);
+		//description.setReadOnly(true);
 		description.setText(methodDescription);
+		description.setReadOnly(true);
+		//System.out.println("adding txtbox with text: "+ methodDescription);
 		mainPanel.add(description);
 		mainPanel.setWidgetLeftWidth(description, 21.0, Unit.PX, 652.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(description, 10.0, Unit.PX, 162.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(description, 80.0, Unit.PX, 162.0, Unit.PX);
+		DOM.setStyleAttribute(description.getElement(), "border", "1px");  //removes border
+		DOM.setStyleAttribute(description.getElement(), "minHeight","100px");
+		DOM.setStyleAttribute(description.getElement(), "width", "600px");  //fixes size error on firefox
+		DOM.setStyleAttribute(description.getElement(), "height", "80px");
+		
 	}
 
 
-	public void buildEditor() {
-		// start the first editor and set its theme and mode
-		editor1.startEditor(); // must be called before calling
-								// setTheme/setMode/etc.
-		editor1.setTheme(AceEditorTheme.ECLIPSE);
-		editor1.setMode(AceEditorMode.JAVA);
-		
-		editor1.setText(method());  //autogenerates method stub
+	public void buildEditor(){
+		super.buildEditor();
+		aceEditor.setText(aInfo.getCode());
+		if(!aInfo.getStubCreated()){
+			aceEditor.setText(method());  //autogenerates method stub
+			aInfo.setStubCreated(true);
+		}
 	}
 	
 	private String method(){  //used to autogenerate method stub
 		String s="public "+methodType+" "+methodName+"(";
-		for(int x=0; x<parameters.length; x++)
-			s+=parameters[x]+", ";
+		for(int x=0; x<parameters.size(); x++){
+			s+=parameters.get(x);
+		if(parameters.size()>1)
+			s+=", ";
+		}
 		s=s.trim()+"){\n\treturn";
 		if(methodType.equals("void"))
 			;
@@ -93,25 +97,24 @@ public class AceEditorWidget extends ScreenWidget implements EditorContainer{
 		return s+";\n}";
 	}
 	
-	public String getCode() {  //Recieves code in editor
-		return editor1.getText();
-	}
-
-	public String getMethodDescription(){
-		return methodDescription;
-	}
-	public String getMethodName(){
-		return methodName;
-	}
-	public String[] getParameters(){
-		return parameters;
-	}
-	public String getMethodType(){
-		return methodType;
-	}	
+	
 	
 	public void submit(){
-		eInfo.setCode(editor1.getText());
-		eInfo.setDone(true);
+		boolean tempIsDone = true;
+	/*	String text = ">> denote pseudo code with the '>>' notation \n" +
+				aceEditor.getText();
+		aInfo.setCode(text);*/
+		String text = aceEditor.getText();
+		aInfo.setCode(text);
+		//System.out.println("text in submit is "+ text);
+		//System.out.println("aInfo code in submit is " + aInfo.getCode());
+		String lines[] = text.split("[\\r\\n]+");
+		for(int i=0; i<lines.length; i++ ){
+			if(lines[i].trim().startsWith("#")){
+				aInfo.setDone(false);
+				return;
+			}
+			aInfo.setDone(tempIsDone);
 	}
+}
 }

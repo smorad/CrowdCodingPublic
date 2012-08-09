@@ -1,32 +1,79 @@
 package project.server.submit;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import java.util.ArrayList;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+import com.googlecode.objectify.annotation.Subclass;
+import com.googlecode.objectify.annotation.Unindexed;
 
-@PersistenceCapable
-public class AceEditorPersist implements IsSerializable{
-	@Persistent
+@Unindexed
+@Subclass
+public class AceEditorPersist extends PersistObject{
 	private String code;
+	private String description; //from parent
+	private String returnType;
+	private ArrayList<String> parameters = new ArrayList<String>();
+	private String methodName;
+	private boolean stubCreated;
 	
-	@Persistent
-	private boolean isDone;
 	
-	@PrimaryKey
-    private String key;
-	
-	public void setCode(String code){
-		this.code=code;
+	public boolean getStubCreated(){
+		return stubCreated;
 	}
+	public void setStubCreated(boolean b){
+		stubCreated=b;
+	}
+	
+
+	
 	public String getCode(){
 		return code;
 	}
-	public boolean isDone(){
-		return isDone;
+	public void setCode(String c){
+		code=c;
 	}
-	public void setDone(boolean bool){
-		isDone=bool;
+
+
+
+
+	@Override
+	public String info() {
+		return code;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public ArrayList<String> getParameters() {
+		return parameters;
+	}
+	public String getParameter(int index){
+		return parameters.get(index);
+	}
+
+	public String getMethodName() {
+		return methodName;
+	}
+
+	public String getReturnType() {
+		return returnType;
+	}
+	public void setDescription(String s){
+		description = s;
+	}
+	public void setParameters(ArrayList<String> s){
+		parameters=s;
+	}
+	public void setMethodName(String s){
+		methodName = s;
+	}
+	public void setReturnType(String s){
+		returnType = s;
+	}
+
+	public void addParameter(String parameter) {
+		parameters.add(parameter);
+		
+	}
+	
 }

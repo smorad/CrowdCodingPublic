@@ -2,24 +2,37 @@ package project.client.tests;
 
 import java.util.ArrayList;
 
-import project.server.submit.UnitTestPersist;
-
+import project.client.InfoObject;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
-public class TestCaseInfo implements IsSerializable{
+public class TestCaseInfo implements IsSerializable, InfoObject{
 	private boolean isDone;
 	private ArrayList<String> tests=new ArrayList<String>();
 	private ArrayList<UnitTestInfo> testInfos=new ArrayList<UnitTestInfo>();
+	private Long keyString;
+	private String description;//from parent
+	private String testDescription;
 	
 	public TestCaseInfo(){
 		testInfos=new ArrayList<UnitTestInfo>();
 		tests=new ArrayList<String>();
 	}
 	
+	public void setTestDescription(String s){
+		testDescription = s;
+	}
+	
+	public String getTestDescription(){
+		return testDescription;
+	}
+	
 	public void addTest(String test){
 		tests.add(test);
-		testInfos.add(new UnitTestInfo());
+		UnitTestInfo u=new UnitTestInfo();
+		u.setMethodDesc(getDescription());
+		u.setTestDesc(test);
+		testInfos.add(u);
 	}
 	public void removeTest(String test){
 		int i=tests.indexOf(test);
@@ -47,6 +60,26 @@ public class TestCaseInfo implements IsSerializable{
 	}
 	public void setDone(boolean bool){
 		isDone=bool;
+	}
+	
+	public void setKeyString(Long s){
+		keyString=s;
+	}
+	public Long getKeyString(){
+		return keyString;
+	}
+	
+	//from parent
+	public void setDescription(String s){
+		description=s;
+	}
+	public String getDescription(){
+		return description;
+	}
+	
+	//for testing
+	public String info(){
+		return "testDescription is: "+description;
 	}
 	
 	

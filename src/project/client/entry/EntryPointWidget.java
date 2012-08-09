@@ -5,6 +5,7 @@ import java.util.Iterator;
 import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -21,11 +22,11 @@ public class EntryPointWidget extends ScreenWidget{
 	private String story;
 	private EntryPointInfo eInfo;
 	
-	public EntryPointWidget(LoginInfo info, EntryPointInfo eInfo, String story){
-		super(new LoginInfo());
+	public EntryPointWidget(LoginInfo info, EntryPointInfo eInfo){
+		super(info);
 		setSize("1150px", "768px");
-		System.out.println(story);
-		this.story=story;
+		
+		this.story=eInfo.getStory();
 		this.eInfo=eInfo;
 
 		UI();
@@ -35,7 +36,13 @@ public class EntryPointWidget extends ScreenWidget{
 		text=new TextArea();
 		
 		text.setText(story);
-		text.setEnabled(false);
+		text.setReadOnly(true);
+		text.setSize("600px", "80px");
+		DOM.setStyleAttribute(text.getElement(), "border", "1px");  //removes border
+		DOM.setStyleAttribute(text.getElement(), "minHeight","100px");
+		DOM.setStyleAttribute(text.getElement(), "width", "600px");  //fixes size error on firefox
+		DOM.setStyleAttribute(text.getElement(), "height", "80px");
+		//text.setEnabled(false);
 		mainPanel.add(text);
 		mainPanel.setWidgetLeftWidth(text, 76.0, Unit.PX, 597.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(text, 77.0, Unit.PX, 82.0, Unit.PX);
@@ -44,16 +51,6 @@ public class EntryPointWidget extends ScreenWidget{
 		mainPanel.add(title);
 		mainPanel.setWidgetLeftWidth(title, 207.0, Unit.PX, 311.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(title, 0.0, Unit.PX, 49.0, Unit.PX);
-		
-		Button nextButton=new Button("Done");
-		nextButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				;
-			}
-		});
-		mainPanel.add(nextButton);
-		mainPanel.setWidgetLeftWidth(nextButton, 227.0, Unit.PX, 77.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(nextButton, 611.0, Unit.PX, 28.0, Unit.PX);
 		
 		tabs=new TabPanel();
 		tabs.setSize("450px", "320px");
@@ -71,15 +68,33 @@ public class EntryPointWidget extends ScreenWidget{
 			}
 		});
 		
-		tabs.add(new EntryPointTab(), "Nothing");
+		Button delMethodButton = new Button("Delete Method");
+		mainPanel.add(delMethodButton);
+		mainPanel.setWidgetLeftWidth(delMethodButton, 207.0, Unit.PX, 119.0, Unit.PX);
+		mainPanel.setWidgetTopHeight(delMethodButton, 611.0, Unit.PX, 28.0, Unit.PX);
+		delMethodButton.setSize("119px", "28px");
+		delMethodButton.addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				delTab();
+			}
+		});
+		
+		tabs.add(new EntryPointTab(), "Method 1");
 		tabs.selectTab(0);
 		numTabs++;
 	}
 	
+	public void delTab() {
+		int curTab = tabs.getTabBar().getSelectedTab();
+		tabs.remove(curTab);
+		tabs.selectTab(curTab-1);
+		numTabs--;
+	}
+
 	public void submit(){
 		Iterator<Widget> i=tabs.iterator();
 		
-		System.out.println(eInfo.getNumMethods());
 		for(int x=0; x<numTabs; x++){
 			EntryPointTab info=(EntryPointTab)i.next();
 			EntryMethodInfo e=new EntryMethodInfo();
@@ -90,11 +105,10 @@ public class EntryPointWidget extends ScreenWidget{
 			eInfo.addMethod(e);
 			
 		}
-		System.out.println(eInfo.getNumMethods());
 		eInfo.setDone(true);
 	}
 	public void addTab(){
-		tabs.add(new EntryPointTab(), "Nothing more");
+		tabs.add(new EntryPointTab(), "Method " + (tabs.getWidgetCount()+1));
 		tabs.selectTab(numTabs);
 		numTabs++;	
 	}

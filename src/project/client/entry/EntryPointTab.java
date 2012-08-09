@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
@@ -16,6 +17,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class EntryPointTab extends VerticalPanel{
 	private static double labelWidth=680.0, labelHeight=25.0;
 	private ArrayList<TextBox> parameters=new ArrayList<TextBox>();
+	private ArrayList<TextBox> paramType = new ArrayList<TextBox>();
 	private TextArea methodDesc;
 	private TextBox methodName;
 	public EntryPointTab(){
@@ -33,12 +35,14 @@ public class EntryPointTab extends VerticalPanel{
 		panel.add(methodDesc);
 		panel.setWidgetLeftWidth(methodDesc, 0.0, Unit.PX, 685.0, Unit.PX);
 		panel.setWidgetTopHeight(methodDesc, 0.0, Unit.PX, 75.0, Unit.PX);
+		DOM.setStyleAttribute(methodDesc.getElement(), "width", "600px");
 		
 		methodName=new TextBox();
 		methodName.setText("Method name goes here.");
 		panel.add(methodName);
-		panel.setWidgetLeftWidth(methodName, 0.0, Unit.PX, labelWidth, Unit.PX);
-		panel.setWidgetTopHeight(methodName, labelHeight*3+5, Unit.PX, labelHeight, Unit.PX);
+		panel.setWidgetLeftWidth(methodName, 0.0, Unit.PX, 385.0, Unit.PX);
+		panel.setWidgetTopHeight(methodName, labelHeight*3+5, Unit.PX, 25.0, Unit.PX);
+		
 		
 		HorizontalPanel h=new HorizontalPanel();
 		h.setSpacing(5);
@@ -49,11 +53,18 @@ public class EntryPointTab extends VerticalPanel{
 		addParButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				parameters.add(new TextBox());
+				paramType.add(new TextBox());
 				TextBox t=parameters.get(parameters.size()-1);
-				t.setText("Parameter goes here");
+				TextBox type = paramType.get(paramType.size()-1);
+				t.setText("varName");
+				type.setText("String");
+				//type.setSize("400px", "28px");
 				panel.add(t);
-				panel.setWidgetLeftWidth(t, 0.0, Unit.PX, labelWidth, Unit.PX);
+				panel.add(type);
+				panel.setWidgetLeftWidth(t, 0.0, Unit.PX, 200, Unit.PX);
 				panel.setWidgetTopHeight(t, labelHeight*(parameters.size()+3)+5, Unit.PX, labelHeight, Unit.PX);
+				panel.setWidgetLeftWidth(type, 200, Unit.PX, 200, Unit.PX);
+				panel.setWidgetTopHeight(type, labelHeight*(parameters.size()+3)+5, Unit.PX, labelHeight, Unit.PX);
 			}
 		});
 		h.add(addParButton);
@@ -64,6 +75,8 @@ public class EntryPointTab extends VerticalPanel{
 			public void onClick(ClickEvent event){
 				if(!parameters.isEmpty())
 					panel.remove(parameters.remove(parameters.size()-1));
+				if(!paramType.isEmpty())
+					panel.remove(paramType.remove(paramType.size()-1));
 			}
 		});
 		h.add(removeParButton);
@@ -78,7 +91,7 @@ public class EntryPointTab extends VerticalPanel{
 	public ArrayList<String> getParameters(){
 		ArrayList<String> result=new ArrayList<String>();
 		for(int x=0; x<parameters.size(); x++)
-			result.add(parameters.get(x).getText());
+			result.add(paramType.get(x).getText()+ " " +parameters.get(x).getText());
 		return result;
 	}
 }

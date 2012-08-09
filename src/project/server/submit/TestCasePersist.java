@@ -1,69 +1,78 @@
 package project.server.submit;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.annotation.Subclass;
+import com.googlecode.objectify.annotation.Unindexed;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+@Unindexed
+@Subclass
+public class TestCasePersist extends PersistObject{	
+	private ArrayList<String> tests=new ArrayList<String>();
+	private ArrayList<Key<UnitTestPersist>> testInfos=new ArrayList<Key<UnitTestPersist>>(); //child
+	private String description;//from parent
+	private String caseDescription;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-import project.client.tests.UnitTestInfo;
-
-@PersistenceCapable
-public class TestCasePersist implements IsSerializable{
-	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
-	
-	@Persistent
-	private ArrayList<String> tests;
-	
-	@Persistent
-	private ArrayList<UnitTestPersist> testInfos;
-	
-	@Persistent
-	private boolean isDone;
-	
-	public TestCasePersist(){
-		testInfos=new ArrayList<UnitTestPersist>();
-		tests=new ArrayList<String>();
-	}
 
 	
 	public void addTest(String test){
 		tests.add(test);
-		testInfos.add(new UnitTestPersist());
+		UnitTestPersist u=new UnitTestPersist();
+		u.setMethodDesc(getDescription());
+		u.setTestDesc(test);
+		Objectify o=ObjectifyService.begin();
+		testInfos.add(o.put(u));
+		o.get(testInfos.get(testInfos.size()-1));
 	}
 	public void removeTest(String test){
 		int i=tests.indexOf(test);
 		tests.remove(test);
-		testInfos.remove(i);
+		Objectify o=ObjectifyService.begin();
+		o.delete(testInfos.remove(i));
 	}
 	public void setTests(ArrayList<String> tests){
 		this.tests=tests;
-		testInfos=new ArrayList<UnitTestPersist>();
-		for(int x=0; x<tests.size(); x++)
-			testInfos.add(new UnitTestPersist());
+		Objectify o=ObjectifyService.begin();
+		o.delete(testInfos);
+		testInfos=new ArrayList<Key<UnitTestPersist>>();
+		for(int x=0; x<tests.size(); x++){
+			testInfos.add(o.put(new UnitTestPersist()));
+			o.get(testInfos.get(x));
+		}
 	}
 	
 	public String getTest(int index){
 		return tests.get(index);
 	}
 	public UnitTestPersist getTestInfo(int index){
-		return testInfos.get(index);
+		Objectify o=ObjectifyService.begin();
+		return o.get(testInfos.get(index));
 	}
 	public int getNumTests(){
 		return tests.size();
 	}
-	public boolean isDone(){
-		return isDone;
+
+	
+	public Collection<UnitTestPersist> getAllUnitTests(){
+		Objectify o=ObjectifyService.begin();
+		return o.get(testInfos).values();
 	}
-	public void setDone(boolean bool){
-		isDone=bool;
+	
+	//from parent
+	public void setDescription(String s){
+		description=s;
 	}
+	public String getDescription(){
+		return description;
+	}
+	
+	//for testing
+		public String info(){
+			return "description is: "+description;
+		}
 	
 	
 }

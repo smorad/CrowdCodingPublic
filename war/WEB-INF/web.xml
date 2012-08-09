@@ -21,9 +21,10 @@
     <servlet-class>project.server.points.PointUpdateServiceImpl</servlet-class>
   </servlet>
   
-    <servlet>
-    <servlet-name>CodeIdentifierService</servlet-name>
-    <servlet-class>project.server.editor.CodeIdentifierServiceImpl</servlet-class>
+
+  <servlet>
+    <servlet-name>SubmissionService</servlet-name>
+    <servlet-class>project.server.submit.SubmitServiceImpl</servlet-class>
   </servlet>
   
   
@@ -42,9 +43,10 @@
     <url-pattern>/aceproject/points</url-pattern>
   </servlet-mapping>
   
+  
   <servlet-mapping>
-    <servlet-name>CodeIdentifierService</servlet-name>
-    <url-pattern>/aceproject/CodeIdentifierPath</url-pattern>
+    <servlet-name>SubmissionService</servlet-name>
+    <url-pattern>/aceproject/submit</url-pattern>
   </servlet-mapping>
   
   

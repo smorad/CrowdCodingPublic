@@ -9,47 +9,181 @@ import project.client.points.PointUpdateService;
 import project.client.points.PointUpdateServiceAsync;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 
-public abstract class ScreenWidget extends LayoutPanel{
+public abstract class ScreenWidget extends HorizontalPanel{
 	protected LayoutPanel mainPanel = new LayoutPanel();
 	private Label userPoints=new Label("0");
 	private VerticalPanel pointRank=new VerticalPanel();
 	private Anchor signOutLink = new Anchor("Sign Out");
 	private PointUpdateServiceAsync pointUpdater;
-	private SubmitServiceAsync submitService;	
+	protected SubmitServiceAsync submitService;	//temporary
 	private LoginInfo loginInfo;
-	private Long points=100L;
+	private Long points=1L;
+	private VerticalPanel verticalPanel_1;
 	public AceEditorWidget a;
 	
 	public ScreenWidget(LoginInfo loginInfo){
+		setSize(Window.getClientHeight() + "px",Window.getClientWidth()+"px");
+		/*setHeight(Window.getClientHeight()+"px");
+		setWidth(Window.getClientWidth()+"px");*/
 		this.loginInfo=loginInfo;
-		setSize("1150px", "768px");
-		
-		buildPointDisplays();
+		//setSize("100%", "100%");		
 		buildButtonUI();
+		buildUI();
+		buildPointDisplays();
 		startService();
 		
-		add(mainPanel);
-		setWidgetTopHeight(mainPanel, 28.0, Unit.PX, 650.0, Unit.PX);
-		setWidgetLeftWidth(mainPanel, 224.0, Unit.PX, 750.0, Unit.PX);
-		
-		//UI();
+		/*Window.addResizeHandler(new ResizeHandler() {
+			 public void onResize(ResizeEvent event) {
+			   int height = event.getHeight();  
+			  // setHeight(height + "px");
+			   int width = event.getWidth();
+			   //setWidth(width + "px");
+			   System.out.println(height + ":" + width);
+			 }
+			});*/
+		RootPanel.get("ace").getElement().setAttribute("align", "center");
+		DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginLeft", "auto");  //removes border
+		DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginRight", "auto");  //removes border
+
+		System.out.println("resized to "+ (Window.getClientHeight()-1));
 	}
 	
+
+
+	private void buildUI() {
+
+								
+		verticalPanel_1 = new VerticalPanel();
+		add(verticalPanel_1);
+		verticalPanel_1.setSize("250px", "40px");
+		
+		
+		Label lab=new Label("Your current total points:");
+		verticalPanel_1.add(lab);
+		lab.setStyleName("gwt-DialogBox");
+		lab.setSize("150px", "40px");
+		
+		final VerticalPanel verticalPanel_2 = new VerticalPanel();
+		add(verticalPanel_2);
+		verticalPanel_2.setSize("750", "750");
+		
+		Label lblCrowdcoding = new Label("Crowd Coding");
+		verticalPanel_2.add(lblCrowdcoding);
+		lblCrowdcoding.setStyleName("gwt-Title");
+		lblCrowdcoding.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		verticalPanel_2.add(mainPanel);
+		mainPanel.setSize("750px", "650px");
+		
+		VerticalPanel verticalPanel = new VerticalPanel();
+		verticalPanel_2.add(verticalPanel);
+		verticalPanel.setSize("750px", "80px");
+		
+		HorizontalPanel horizontalPanel = new HorizontalPanel();
+		verticalPanel.add(horizontalPanel);
+		horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		horizontalPanel.setSize("750px", "40px");
+		Button button = new Button("Submit");
+		button.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					callSubmitService();
+					callRankUpdateService();
+					callPointUpdateService();
+					AceProject.submit();
+				}
+				catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+			}
+		});
+		
+		horizontalPanel.add(button);
+		button.setWidth("100px");
+		
+		HorizontalPanel horizontalPanel_1 = new HorizontalPanel();
+		verticalPanel.add(horizontalPanel_1);
+		horizontalPanel_1.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		horizontalPanel_1.setSpacing(5);
+		horizontalPanel_1.setSize("750px", "40px");
+		
+				
+				
+		Label label = new Label("Editor by daveho@Github");
+		horizontalPanel_1.add(label);
+		label.setSize("180px", "23px");
+		
+		Label lblPreferencesWillGo = new Label("Preferences will go here");
+		horizontalPanel_1.add(lblPreferencesWillGo);
+		lblPreferencesWillGo.setSize("170px", "20px");
+		horizontalPanel_1.add(signOutLink);
+		
+		//Current user
+		if(loginInfo!=null){
+			Label lblYouAreSigned = new Label("You are signed in as "+loginInfo.getNickname());
+			horizontalPanel_1.add(lblYouAreSigned);
+		}
+		
+		/*Window.addResizeHandler(new ResizeHandler() {
+			 public void onResize(ResizeEvent event) {  
+			  int width = event.getWidth();
+			  int height = event.getHeight();
+			  //verticalPanel_1.setWidth(width/5 + "px");  //makes vertpan1 20% of total screen real estate
+			  //verticalPanel_1.setHeight(height/5 + "px");
+			  System.out.println("buildUI width is: "+ width);
+			 }
+			});*/
+		setInitialSize(); //causes window to center without resizing
+							  
+	}
+
+	private void setInitialSize() {
+		setHeight(Window.getClientHeight()+"px");
+		setWidth(Window.getClientWidth()+"px");
+		verticalPanel_1.setWidth(Window.getClientWidth()/5 + "px");
+		System.out.println("Client width is: "+ Window.getClientWidth());
+		Window.resizeTo(Window.getClientWidth()-1,Window.getClientHeight()-1);
+		System.out.println("initial resize");
+		
+		
+	}
+
+
+
 	private void startService(){
+
+		
+		
 		if (submitService == null)
 			submitService = (SubmitServiceAsync) GWT
 					.create(SubmitService.class);
+		
+		submitService.instantiate(new AsyncCallback(){
+			public void onFailure(Throwable t){
+				t.printStackTrace();
+			}
+			public void onSuccess(Object o){
+				
+			}
+		});
 		
 		if(pointUpdater==null)
 			pointUpdater=(PointUpdateServiceAsync) GWT
@@ -62,21 +196,13 @@ public abstract class ScreenWidget extends LayoutPanel{
 	
 	private void buildPointDisplays(){  //displays player points
 		pointRank.setStyleName("gwt-DialogBox");
-		add(pointRank);
-		setWidgetLeftWidth(pointRank, 18.0, Unit.PX, 119.0+30, Unit.PX);
-		setWidgetTopHeight(pointRank, 53.0, Unit.PX, 500.0, Unit.PX);
-		
-		
-		Label lab=new Label("Your current total points:");
-		lab.setStyleName("gwt-DialogBox");
-		add(lab);
-		setWidgetLeftWidth(lab, 1001.0, Unit.PX, 147.0, Unit.PX);
-		setWidgetTopHeight(lab, 53.0, Unit.PX, 18.0, Unit.PX);
+		if(pointRank!=null)
+			add(pointRank);
+		pointRank.setSize("200px", "28px");
 		userPoints.setStyleName("gwt-DialogBox");
 		
-		add(userPoints);
-		setWidgetLeftWidth(userPoints, 1001.0, Unit.PX, 119.0+50, Unit.PX);
-		setWidgetTopHeight(userPoints, 79.0, Unit.PX, 18.0, Unit.PX);
+		verticalPanel_1.add(userPoints);
+		userPoints.setSize("150px", "20px");
 		
 	}
 	
@@ -111,96 +237,16 @@ public abstract class ScreenWidget extends LayoutPanel{
 			}
 
 			public void onSuccess(String result) {
-				Window.alert("Success");
+				//Window.alert("Success");
 			}
 		});
 	}
 	
 	private void buildButtonUI(){
-		Button button = new Button("Submit");
-		add(button);
-		button.setWidth("100px");
-		setWidgetLeftWidth(button, 1001.0, Unit.PX, 119.0, Unit.PX);
-		setWidgetTopHeight(button, 136.0, Unit.PX, 28.0, Unit.PX);
-		add(signOutLink);
-		
-		setWidgetLeftWidth(signOutLink, 1001.0, Unit.PX, 100.0, Unit.PX);
-		setWidgetTopHeight(signOutLink, 194.0, Unit.PX, 32.0,
-				Unit.PX);
-
-		
-		
-		Label label = new Label("Editor by daveho@Github");
-		add(label);
-		setWidgetLeftWidth(label, 1001.0, Unit.PX, 154.0, Unit.PX);
-		setWidgetTopHeight(label, 743.0, Unit.PX, 25.0, Unit.PX);
-	
-		button.addClickHandler(new ClickHandler() {
-			@Override
-			/**
-			 * Code to be overridden
-			 */
-			public void onClick(ClickEvent event) {
-				try {
-					callSubmitService();
-					callRankUpdateService();
-					callPointUpdateService();
-					AceProject.submit();
-				}
-
-				catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
-
-			}
-		});
 	}
 	
 
 	public abstract void UI();
 	
 	public abstract void submit();
-
-
-	
-	/*private void addInitialEditor(){
-		add(panel);
-		setWidgetTopHeight(panel, 27.0, Unit.PX, 650.0, Unit.PX);
-		setWidgetLeftWidth(panel, 227.0, Unit.PX, 750.0, Unit.PX);
-			
-		String methodDescription="This is a description.\n"
-				+"Parameters:\n"
-				+"\ta-some int\n"
-				+"\tb-some int\n"
-				;
-		String[] parameters={"int a", "int b"};
-		String methodName="helloWorld", methodType="String";
-		AceEditorWidget a=new AceEditorWidget(1L, methodDescription, parameters, methodName, methodType);
-		a.setSize("697px", "496px");
-		panel.add(a, methodName, false);
-		panel.selectTab(0);
-	}
-	
-	
-	public void addMethod(long points, String methodDescription, String[] parameters, 
-							String methodName, String methodType){
-		addMethod(new AceEditorWidget(loginInfo, points, methodDescription, parameters,
-					methodName, methodType));
-	}
-	public void addMethod(AceEditorWidget a){
-		panel.add(a, a.getMethodName(), false);
-		numTabs++;
-	}
-	
-	public void startEditor(){
-		Iterator<Widget> i=panel.iterator();
-		while(i.hasNext())
-			((AceEditorWidget)i.next()).buildEditor();
-	}
-	
-	public void onTabSelected(SourcesTabEvents s, int tabIndex){
-		currentIndex=tabIndex;
-	}*/
-
-
 }

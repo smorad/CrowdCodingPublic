@@ -1,6 +1,9 @@
 package project.server.editor;
 
+import java.util.ArrayList;
+import java.util.List;
 import project.client.screen.SubmitService;
+import project.shared.JSIssue;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -12,6 +15,10 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.jslint4java.Issue;
+import com.googlecode.jslint4java.JSLint;
+import com.googlecode.jslint4java.JSLintBuilder;
+import com.googlecode.jslint4java.JSLintResult;
 
 public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitService {
 
@@ -19,6 +26,7 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static JSLint j;
 
 	@Override
 	public String sendCode(String string, Long points) {
@@ -53,6 +61,25 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		datastore.put(user);	//puts code in datastore
 		
 	}
+	
+	public List<JSIssue> doCheck(String s){
+		
+		ArrayList<JSIssue> issues=new ArrayList<JSIssue>();
+		
+		JSLintResult result=j.lint(null,s);
+		for (Issue i : result.getIssues()) {
+			JSIssue jsIssue=new JSIssue(i.getLine(), i.getCharacter(), i.getReason());
+			issues.add(jsIssue);
+	    }
+		return issues;
+	}
+	
+	public void instantiate(){
+		if(j==null)
+			j=new JSLintBuilder().fromDefault();
+			
+	}
+
 	
 	
 

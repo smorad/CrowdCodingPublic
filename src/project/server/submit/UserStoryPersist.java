@@ -1,65 +1,51 @@
 package project.server.submit;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.annotation.Subclass;
+import com.googlecode.objectify.annotation.Unindexed;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.gwt.user.client.rpc.IsSerializable;
+@Unindexed
+@Subclass
+public class UserStoryPersist extends PersistObject{
 
-@PersistenceCapable
-public class UserStoryPersist implements IsSerializable{
-	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
-	
-	@Persistent
 	private String story;
-	
-	@Persistent
+	@Indexed
 	private String name;
 	
-	@Persistent
-	private EntryPointPersist childInfo;//child
+	@Indexed
+	private Key<EntryPointPersist> childInfo;//child
 	
-	@Persistent
-	private boolean isDone;
-	
-	public UserStoryPersist(){
-		story="story";
-		name="name";
-		childInfo=new EntryPointPersist();
-	}
-		
 	public void setStory(String story){
 		this.story=story;
-	}
-	
-	public Key getKey(){
-		return key;
+		Objectify o=ObjectifyService.begin();
+		EntryPointPersist e=o.get(childInfo);
+		e.setStory(story);
+		o.put(e);
+		o.get(childInfo);
 	}
 	
 	public String getStory(){
 		return story;
 	}
-	
-	public void createEntryChild(){
-		childInfo=new EntryPointPersist();
-	}
-	public void deleteChild(){
-		childInfo=new EntryPointPersist();
-	}
-	
 	public EntryPointPersist getChild(){
-		return childInfo;
+		Objectify o=ObjectifyService.begin();
+		return o.find(childInfo);
 	}
 	public void setChild(EntryPointPersist c){
-		childInfo=c;
+		Objectify o=ObjectifyService.begin();
+		childInfo=o.put(c);
+		o.get(childInfo);
 	}
-	
-	public void setKey(Key key){
-		this.key=key;
+	public Key<EntryPointPersist> newChild(){
+		Objectify o=ObjectifyService.begin();
+		if(childInfo!=null)
+			o.delete(childInfo);
+		childInfo=o.put(new EntryPointPersist());
+		o.get(childInfo);
+		return childInfo;
 	}
 	
 	public void setName(String name){
@@ -68,14 +54,12 @@ public class UserStoryPersist implements IsSerializable{
 	public String getName(){
 		return name;
 	}
-	public boolean isDone(){
-		return isDone;
-	}
-	public void setDone(boolean bool){
-		isDone=bool;
-	}
 	
 	
-	
+	//for testing
+		public String info(){
+			return "name is: "+name
+					+"\nstory is: "+story;
+		}
 	
 }

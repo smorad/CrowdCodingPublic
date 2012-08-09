@@ -1,0 +1,2 @@
+serviceClass: com.google.gwt.gen2.logging.handler.client.RemoteLogHandler.Service
+path: CB6011C3122C25CB5209108BFFF191A0.gwt.rpc

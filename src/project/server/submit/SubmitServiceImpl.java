@@ -1,158 +1,340 @@
 package project.server.submit;
 
-import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.List;
 
-import javax.jdo.PersistenceManager;
-
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Query;
 
+import project.client.InfoObject;
+import project.client.editor.AceEditorInfo;
 import project.client.entry.EntryMethodInfo;
 import project.client.entry.EntryPointInfo;
 import project.client.submission.SubmitService;
 import project.client.tests.TestCaseInfo;
 import project.client.tests.UnitTestInfo;
 import project.client.userstory.UserStoryInfo;
-import project.shared.PMF;
 
-public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitService {
+@SuppressWarnings("serial")
+public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitService {	
+	/**
+	 * 
+	 */
+	
+	private Logger logger = Logger.getLogger("NameOfYourLogger");
+	//private DAO d=new DAO();
 
-	public void retrieve(UserStoryInfo storyInfo) {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		try {
-			Key key = KeyFactory.createKey(UserStoryPersist.class.getSimpleName(), storyInfo.getName());
-
-			// retrieve userstory
-			//UserStoryPersist pInfo = pm.getObjectById(UserStoryPersist.class,
-			//		key);
-			UserStoryPersist pInfo=new UserStoryPersist();
-			pInfo.setStory("sdifuhsf");//temporary testing demo thing
-			
-			
-			
-			storyInfo.setStory(pInfo.getStory());
-			storyInfo.setChild(new EntryPointInfo());
-			
-
-			// retrieve entrypoint
-			EntryPointPersist pChild1 = pInfo.getChild();
-			if (pChild1==null||pChild1.getNumMethods() == 0) {
-				pm.close();
-				return;
+	public InfoObject retrieve(String name){
+		Objectify o=ObjectifyService.beginTransaction();	
+		PersistObject pInfo=null;
+		int count = 0; //debugging
+		while(true){
+			try{
+				pInfo=chooseRandomly();
+				pInfo.setCheckedOut(true);
+				o.getTxn().commit();
+				logger.log(Level.SEVERE, "Successful pull");
+				break;
 			}
-			EntryPointInfo child1 = storyInfo.getChild();
-			for (int x = 0; x < pChild1.getNumMethods(); x++)
-				child1.addMethod(new EntryMethodInfo());
-
-			// retrieve entrymethods
-			for (int x = 0; x < pChild1.getNumMethods(); x++) {
-				EntryMethodInfo child2 = child1.getMethod(x);
-				EntryMethodPersist pChild2 = pChild1.getMethod(x);
-				child2.setMethodDescription(pChild2.getDescription());
-				child2.setMethodName(pChild2.getName());
-				for (int y = 0; y < pChild2.getNumParameters(); y++)
-					child2.addParameter(pChild2.getParameter(y));
-				if (pChild2.getTest() != null)
-					child2.addTest();
+			catch(ConcurrentModificationException e){
+				
 			}
-
-			// retrieve unittests
-			ArrayList<TestCaseInfo> children3 = new ArrayList<TestCaseInfo>();
-			ArrayList<TestCasePersist> pChildren3 = new ArrayList<TestCasePersist>();
-			for (int x = 0; x < pChild1.getNumMethods(); x++) {
-				EntryMethodPersist pChild2 = pChild1.getMethod(x);
-				if (pChild2.getTest() == null)
-					continue;
-				TestCasePersist pChild3 = pChild2.getTest();
-				TestCaseInfo child3 = child1.getMethod(x).getTest();
-				pChildren3.add(pChild3);
-				for (int i = 0; i < pChild3.getNumTests(); i++)
-					child3.addTest(pChild3.getTest(i));
+			catch(NullPointerException e){
+				return null;
 			}
-
-			// retrieve unittests
-			for (int x = 0; x < pChildren3.size(); x++) {
-				for (int y = 0; y < pChildren3.get(x).getNumTests(); y++) {
-					UnitTestInfo child4 = children3.get(x).getTestInfo(y);
-					UnitTestPersist pChild4 = pChildren3.get(x).getTestInfo(y);
-					child4.setCode(pChild4.getCode());
+			finally{
+				if(o.getTxn().isActive()){
+					o.getTxn().rollback();
+					logger.log(Level.SEVERE,"Pull " + (count++)+" failed rolling back");
 				}
 			}
-			pm.close();
-		} finally {
-
 		}
+		if(pInfo instanceof UserStoryPersist)
+			return transferToClient((UserStoryPersist)pInfo);
+		if(pInfo instanceof EntryPointPersist)
+			return transferToClient((EntryPointPersist)pInfo);
+		if(pInfo instanceof AceEditorPersist)
+			return transferToClient((AceEditorPersist)pInfo);
+		if(pInfo instanceof TestCasePersist)
+			return transferToClient((TestCasePersist)pInfo);
+		if(pInfo instanceof UnitTestPersist)
+			return transferToClient((UnitTestPersist)pInfo);
+		return null;
 	}
 
-	public void submit(UserStoryInfo info) {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		try {
-			Key key = KeyFactory.createKey(UserStoryPersist.class.getSimpleName(), info.getName());
 
-			// record userstory
-			UserStoryPersist story = new UserStoryPersist();
-			story.setKey(key);
-			pm.makePersistent(story);
-			story=pm.getObjectById(UserStoryPersist.class,
-					key);
+	/*@Deprecated
+	private PersistObject chooseRandomly(UserStoryPersist story){
+		ArrayList<PersistObject> list = new ArrayList<PersistObject>();
+		if(!story.isDone()&&!story.isCheckedOut());
+			list.add(story);//add story
+		
+		EntryPointPersist ePoint=story.getChild();
+		if(!ePoint.isDone()&&!ePoint.isCheckedOut());
+			list.add(ePoint);  //add entry point
+		
+		for(EntryMethodPersist e:ePoint.getAllMethods()){
+			TestCasePersist t=e.getTest();
+			AceEditorPersist cip = e.getCode();
+			if(!t.isDone()&&!t.isCheckedOut())
+				list.add(t);
+			if(!cip.isDone()&&!cip.isCheckedOut())
+				list.add(cip);
 			
-			story.setStory(info.getStory());
-			story.setName(info.getName());
-			story.setChild(new EntryPointPersist());
-			
-
-			// record entrypoint
-			EntryPointInfo child1 = info.getChild();
-			if (child1.getNumMethods() == 0) {
-				pm.close();
-				return;
+			for(UnitTestPersist u:t.getAllUnitTests()){
+				if(!u.isDone()&&!u.isCheckedOut())
+					list.add(u);
 			}
-			EntryPointPersist pChild1 = story.getChild();
-			for (int x = 0; x < child1.getNumMethods(); x++)
-				pChild1.addMethod(new EntryMethodPersist());
-
-			// record entrymethods
-			for (int x = 0; x < child1.getNumMethods(); x++) {
-				EntryMethodInfo child2 = child1.getMethod(x);
-				EntryMethodPersist pChild2 = pChild1.getMethod(x);
-				pChild2.setMethodDescription(child2.getDescription());
-				pChild2.setMethodName(child2.getName());
-				for (int y = 0; y < child2.getNumParameters(); y++)
-					pChild2.addParameter(child2.getParameter(y));
-				if (child2.getTest() != null)
-					pChild2.addTest();
-			}
-
-			ArrayList<TestCaseInfo> children3 = new ArrayList<TestCaseInfo>();
-			ArrayList<TestCasePersist> pChildren3 = new ArrayList<TestCasePersist>();
-			// record testcases
-			for (int x = 0; x < child1.getNumMethods(); x++) {
-				EntryMethodInfo child2 = child1.getMethod(x);
-				if (child2.getTest() == null)
-					continue;
-				TestCaseInfo child3 = child2.getTest();
-				children3.add(child3);
-				TestCasePersist pChild3 = pChild1.getMethod(x).getTest();
-				pChildren3.add(pChild3);
-				for (int i = 0; i < child3.getNumTests(); i++)
-					pChild3.addTest(child3.getTest(i));
-			}
-
-			// record unittests
-			for (int x = 0; x < children3.size(); x++) {
-				for (int y = 0; y < children3.get(x).getNumTests(); y++) {
-					UnitTestInfo child4 = children3.get(x).getTestInfo(y);
-					UnitTestPersist pChild4 = pChildren3.get(x).getTestInfo(y);
-					pChild4.setCode(child4.getCode());
-				}
-			}
-			pm.close();
-
-			// 
-		} finally {
-			//pm.close();
+		}		
+		if(list.size()==0)
+			return null;
+		int a=(int)(Math.random()*list.size());
+		PersistObject p=list.get(a);
+		return p;
+	}*/
+	
+	
+	private PersistObject chooseRandomly(){
+		Objectify o = ObjectifyService.begin();
+		Query<PersistObject> q = o.query(PersistObject.class).filter("isDone", false).filter("checkedOut", false);
+		List<PersistObject> list = q.list();
+		if(list.size()==0){
+			return null;
 		}
+		int a = (int)(Math.random()*list.size());
+		PersistObject p = list.get(a);
+		return p;
 	}
+	
+	
+	private UserStoryInfo transferToClient(UserStoryPersist pInfo){
+		UserStoryInfo result=new UserStoryInfo();
+		result.setStory(pInfo.getStory());
+		result.setName(pInfo.getName());
+		result.setKeyString(pInfo.getId());
+		result.setDone(pInfo.isDone());
+		return result;
+	}
+	private EntryPointInfo transferToClient(EntryPointPersist pInfo){
+		EntryPointInfo result=new EntryPointInfo();
+		result.setStory(pInfo.getStory());
+		for(EntryMethodPersist p:pInfo.getAllMethods()){
+			EntryMethodInfo e=new EntryMethodInfo();
+			e.setMethodDescription(p.getDescription());
+			e.setMethodName(p.getName());
+			for(int i=0; i<p.getNumParameters(); i++)
+				e.addParameter(p.getParameter(i));
+			result.addMethod(e);
+		}
+		result.setKeyString(pInfo.getId());
+		result.setDone(pInfo.isDone());
+		return result;
+	}
+	
+	private AceEditorInfo transferToClient(AceEditorPersist pInfo) {
+		AceEditorInfo result = new AceEditorInfo();
+		result.setDescription(pInfo.getDescription());
+		result.setMethodName(pInfo.getMethodName());
+		result.setParameters(pInfo.getParameters());
+		result.setReturnType(pInfo.getReturnType());
+		result.setCode(pInfo.getCode());
+		result.setKeyString(pInfo.getId());
+		result.setDone(pInfo.isDone());
+		result.setStubCreated(pInfo.getStubCreated());
+		return result;
+	}
+	
+	private TestCaseInfo transferToClient(TestCasePersist pInfo){
+		TestCaseInfo result=new TestCaseInfo();
+		result.setDescription(pInfo.getDescription());
+		for(int x=0; x<pInfo.getNumTests(); x++){
+			result.addTest(pInfo.getTest(x));
+		}
+		result.setKeyString(pInfo.getId());
+		result.setDone(pInfo.isDone());
+		return result;
+	}
+	private UnitTestInfo transferToClient(UnitTestPersist pInfo){
+		UnitTestInfo result=new UnitTestInfo();
+		result.setCode(pInfo.getCode());
+		result.setMethodDesc(pInfo.getMethodDesc());
+		result.setTestDesc(pInfo.getTestDesc());
+		result.setKeyString(pInfo.getId());
+		result.setDone(pInfo.isDone());
+		return result;
+	}
+	
 
+	public void submit(InfoObject info) {
+		Objectify o = ObjectifyService.begin();
+		
+		Query<PersistObject> q = o.query(PersistObject.class);//.filter("isDone", false).filter("checkedOut", false);
+		List<PersistObject> l=q.list();
+		String s="";
+		for(PersistObject p:l)
+			s+=p.getClass().getSimpleName()+" - "+p.isDone()+"\n";
+				
+		if(info instanceof UserStoryInfo)
+			transferToServer(o, (UserStoryInfo)info);
+		else if(info instanceof EntryPointInfo)
+			transferToServer(o,(EntryPointInfo)info);
+		else if(info instanceof TestCaseInfo)
+			transferToServer(o, (TestCaseInfo)info);
+		else if(info instanceof UnitTestInfo)
+			transferToServer(o, (UnitTestInfo)info);
+		else if(info instanceof AceEditorInfo)
+			transferToServer(o, (AceEditorInfo)info);
+		
+		q = o.query(PersistObject.class);//.filter("isDone", false).filter("checkedOut", false);
+		l=q.list();
+		s="\n";
+		for(PersistObject p:l)
+			s+=p.getClass().getSimpleName()+" - "+p.isDone()+"\n";
+		logger.log(Level.SEVERE, s);
+
+	}
+	
+
+
+
+
+	private void transferToServer(Objectify o, UserStoryInfo info){
+		Key k=new Key<UserStoryPersist>(UserStoryPersist.class, info.getKeyString());
+		UserStoryPersist pInfo=o.get(k);
+		
+		pInfo.setStory(info.getStory());
+		pInfo.getChild().setStory(info.getStory());
+
+		pInfo.setDone(info.isDone());
+		pInfo.setCheckedOut(false);
+		o.put(pInfo);
+		
+		pInfo=o.get(k);
+		logger.log(Level.SEVERE, ""+pInfo.isDone());
+
+	}
+	private void transferToServer(Objectify o, EntryPointInfo info){
+		Key k=new Key<EntryPointPersist>(EntryPointPersist.class, info.getKeyString());
+		EntryPointPersist pInfo=o.get(k);
+		
+		pInfo.setStory(info.getStory());
+		
+		for(int x=pInfo.getNumMethods()-1; x>=0; x--)
+			pInfo.removeMethod(x);
+		
+		for(int x=0; x<info.getNumMethods(); x++){
+			EntryMethodPersist e=new EntryMethodPersist();
+			EntryMethodInfo p=info.getMethod(x);
+			e.setMethodDescription(p.getDescription());
+			e.setMethodName(p.getName());
+			
+		/*	for(int i=0; i<p.getNumParameters(); i++){
+				e.addParameter(p.getParameter(i));
+				logger.log(Level.SEVERE, i+"");
+			}*/
+			e.setParameters(p.getParameters());
+			e.newTest();
+			e.newCode();
+			pInfo.addMethod(e);
+			
+
+		}
+		pInfo.setDone(info.isDone());
+		pInfo.setCheckedOut(false);
+		o.put(pInfo);
+		
+		pInfo=o.get(k);
+		logger.log(Level.SEVERE, ""+pInfo.isDone());
+
+	}
+	private void transferToServer(Objectify o, TestCaseInfo info){
+		Key k=new Key<TestCasePersist>(TestCasePersist.class, info.getKeyString());
+		TestCasePersist pInfo=o.get(k);
+		
+		pInfo.setDescription(info.getDescription());
+		
+		for(int x=pInfo.getNumTests()-1; x>=0; x--)
+			pInfo.removeTest(pInfo.getTest(x));
+		for(int x=0; x<info.getNumTests(); x++){
+			pInfo.addTest(info.getTest(x));
+		}
+		pInfo.setDone(info.isDone());
+		o.put(pInfo);
+		
+		pInfo=o.get(k);
+		logger.log(Level.SEVERE, ""+pInfo.isDone());
+	}
+	
+	private void transferToServer(Objectify o, AceEditorInfo info) {
+		Key k=new Key<AceEditorPersist>(AceEditorPersist.class, info.getKeyString());
+		AceEditorPersist pInfo = o.get(k);  //nullpointer
+
+		pInfo.setDescription(info.getDescription());
+		pInfo.setCode(info.getCode());
+		pInfo.setMethodName(info.getMethodName());
+		pInfo.setParameters(info.getParameters());
+		pInfo.setDone(info.isDone());
+		pInfo.setCheckedOut(false);
+		pInfo.setStubCreated(info.getStubCreated());
+		o.put(pInfo);
+		logger.log(Level.SEVERE, ""+o.get(new Key<AceEditorPersist>(AceEditorPersist.class, pInfo.getId())).getCode());
+		
+		pInfo=o.get(k);
+		logger.log(Level.SEVERE, ""+pInfo.isDone());
+		
+	}
+	
+	private void transferToServer(Objectify o, UnitTestInfo info){
+		Key k=new Key<UnitTestPersist>(UnitTestPersist.class, info.getKeyString());
+		UnitTestPersist pInfo=o.get(k);
+		
+		pInfo.setCode(info.getCode());
+		pInfo.setMethodDesc(info.getMethodDesc());
+		pInfo.setTestDesc(info.getMethodDesc());
+		pInfo.setDone(info.isDone());
+		pInfo.setCheckedOut(false);
+		o.put(pInfo);
+		
+		pInfo=o.get(k);
+		logger.log(Level.SEVERE, ""+pInfo.isDone());
+	}
+	
+	public UserStoryInfo create(UserStoryInfo info){
+		Objectify o=ObjectifyService.begin();
+		try{
+			UserStoryPersist pInfo=new UserStoryPersist();					
+			pInfo.newChild();
+			pInfo.setStory(info.getStory());
+			pInfo.setName(info.getName());
+			o.put(pInfo);
+			info.setKeyString(pInfo.getId());
+			//o.getTxn().commit();
+			return info;
+		} finally{
+			//if(o.getTxn().isActive()){
+				//o.getTxn().rollback();
+				//logger.log(Level.SEVERE, "Transmission still active, rolling back");
+			//}
+		}
+		
+	}
+	
+	public void register(){
+		Register a=new Register();
+		//clears memory
+		Objectify o=ObjectifyService.begin();
+		o.delete(o.query(UserStoryPersist.class).fetchKeys());
+		o.delete(o.query(UnitTestPersist.class).fetchKeys());
+		o.delete(o.query(TestCasePersist.class).fetchKeys());
+		o.delete(o.query(EntryPointPersist.class).fetchKeys());
+		o.delete(o.query(EntryMethodPersist.class).fetchKeys());
+		o.delete(o.query(AceEditorPersist.class).fetchKeys());
+	}
+	
+	
 }

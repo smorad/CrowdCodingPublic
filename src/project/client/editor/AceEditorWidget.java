@@ -41,7 +41,7 @@ public class AceEditorWidget  extends EditorContainer{
 			}
 
 			private void checkSyntax() {
-				lint.setText(lintData);
+				lint.setText("JSLint checker output: \n" +lintData);
 			}
 		};
 		
@@ -109,7 +109,6 @@ public class AceEditorWidget  extends EditorContainer{
 		panel.add(textArea);
 		panel.add(aceEditor);
 		panel.add(lint);
-		lint.setText("JSLint checker output: \n" +lintData);
 		lint.setReadOnly(true);
 	}
 

@@ -2,6 +2,8 @@ package project.server.points;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -30,11 +32,11 @@ public class PointUpdateServiceImpl extends RemoteServiceServlet implements Poin
 			if(x>=allUsers.size())
 				break;
 			Entity e=allUsers.get(x);
-			strings.add((x+1)+": "+(String)e.getProperty("nickname"));
 			Object a=e.getProperty("points");
 			long b=(Long)a;
-			strings.add(" "+Long.toString(b)+" pts.");
-			strings.add("");
+			strings.add((x+1)+": "+(String)e.getProperty("nickname")+" "+Long.toString(b)+" pts.");
+			//strings.add(" "+Long.toString(b)+" pts.");
+			//strings.add("");
 		}
 		return strings;
 	}

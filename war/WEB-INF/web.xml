@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+              http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5"
+         xmlns="http://java.sun.com/xml/ns/javaee">
+
+  <!-- Servlets -->
+  <servlet>
+    <servlet-name>SubmitServiceImpl</servlet-name>
+    <servlet-class>project.server.editor.SubmitServiceImpl</servlet-class>
+  </servlet>
+
+   <servlet>
+    <servlet-name>loginService</servlet-name>
+    <servlet-class>project.server.login.LoginServiceImpl</servlet-class>
+  </servlet>
+  
+    <servlet>
+    <servlet-name>PointUpdateService</servlet-name>
+    <servlet-class>project.server.points.PointUpdateServiceImpl</servlet-class>
+  </servlet>
+  
+
+  <servlet>
+    <servlet-name>SubmissionService</servlet-name>
+    <servlet-class>project.server.submit.SubmitServiceImpl</servlet-class>
+  </servlet>
+  
+  
+   <servlet-mapping>
+    <servlet-name>SubmitServiceImpl</servlet-name>
+    <url-pattern>/aceproject/AceProjectPath</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>loginService</servlet-name>
+    <url-pattern>/aceproject/login</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>PointUpdateService</servlet-name>
+    <url-pattern>/aceproject/points</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet-mapping>
+    <servlet-name>SubmissionService</servlet-name>
+    <url-pattern>/aceproject/submit</url-pattern>
+  </servlet-mapping>
+  
+  
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>Login.html</welcome-file>
+  </welcome-file-list>
+
+</web-app>

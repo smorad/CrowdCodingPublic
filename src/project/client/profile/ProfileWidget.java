@@ -5,7 +5,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.gen2.picker.client.SliderBar;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
 import project.client.login.LoginInfo;
@@ -18,11 +20,18 @@ public class ProfileWidget extends ScreenWidget {
 	private SliderWidget testCase = new SliderWidget("Test Case");
 	private SliderWidget unit = new SliderWidget("Unit Test");
 	
+	
+	
 	private TextBox nameBox;
+	private Button cancelButton;
+	
+	private ScreenWidget other;
 	
 	private final int height=SliderWidget.getSliderHeight()+10;
-	public ProfileWidget(LoginInfo loginInfo) {
+	
+	public ProfileWidget(LoginInfo loginInfo, ScreenWidget other) {
 		super(loginInfo);
+		this.other=other;
 		setSize("1150px", "768px");
 		override();
 		UI();
@@ -59,6 +68,14 @@ public class ProfileWidget extends ScreenWidget {
 		mainPanel.add(nameBox);
 		mainPanel.setWidgetLeftWidth(nameBox, 184.0, Unit.PX, 334.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(nameBox, 492.0, Unit.PX, 43.0, Unit.PX); 
+		
+		cancelButton=new Button("Cancel");
+		horizontalPanel.add(cancelButton);
+		cancelButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent c){
+				transfer();
+			}
+		});
 	}
 	
 	
@@ -79,12 +96,20 @@ public class ProfileWidget extends ScreenWidget {
 	}
 	
 	private void override(){
+		button.setText("Save");
 		remover.removeHandler();
 		remover=button.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent c){
 				submit();
+				transfer();
 			}
 		});
+	}
+	
+	private void transfer(){
+		RootPanel.get("ace").clear();
+
+		RootPanel.get("ace").add(other);
 	}
 	
 

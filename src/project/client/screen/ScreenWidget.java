@@ -7,6 +7,7 @@ import project.client.editor.AceEditorWidget;
 import project.client.login.LoginInfo;
 import project.client.points.PointUpdateService;
 import project.client.points.PointUpdateServiceAsync;
+import project.client.profile.ProfileWidget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -43,6 +44,8 @@ public abstract class ScreenWidget extends VerticalPanel{
 	
 	protected Button button;
 	protected HandlerRegistration remover;
+	protected HorizontalPanel horizontalPanel;
+	protected Anchor prefs;
 	
 	public ScreenWidget(LoginInfo loginInfo){
 		setSize(Window.getClientHeight() + "px",Window.getClientWidth()+"px");
@@ -73,7 +76,11 @@ public abstract class ScreenWidget extends VerticalPanel{
 		
 		spacer.setSize("1px", Window.getClientHeight()/4+"px");
 		spacer1.setSize("1px", Window.getClientHeight()/4+"px");
-		Label lab=new Label(loginInfo.getNickname());
+		Label lab;
+		if(loginInfo!=null)
+			lab=new Label(loginInfo.getNickname());
+		else
+			lab=new Label();
 		Label lab1 = new Label("Your Points:");
 		userPointsPanel.add(spacer);
 		userPointsPanel.add(lab);
@@ -83,8 +90,8 @@ public abstract class ScreenWidget extends VerticalPanel{
 		
 		final VerticalPanel verticalPanel_2 = new VerticalPanel();
 		hPanel.add(verticalPanel_2);
-		hPanel.setCellHorizontalAlignment(verticalPanel_2, ALIGN_RIGHT);
-		hPanel.setCellHorizontalAlignment(userPointsPanel, ALIGN_LEFT);
+		hPanel.setCellHorizontalAlignment(verticalPanel_2, ALIGN_CENTER);
+		hPanel.setCellHorizontalAlignment(userPointsPanel, ALIGN_RIGHT);
 		verticalPanel_2.setSize("750", "750");
 		
 		Label lblCrowdcoding = new Label("Crowd Coding");
@@ -100,7 +107,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 		verticalPanel.setSize("750px", "160px");
 		add(hPanel);	
 		
-		HorizontalPanel horizontalPanel = new HorizontalPanel();
+		horizontalPanel = new HorizontalPanel();
 		verticalPanel.add(horizontalPanel);
 		horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		horizontalPanel.setSize("100%", "40px");
@@ -133,9 +140,20 @@ public abstract class ScreenWidget extends VerticalPanel{
 		horizontalPanel_1.add(label);
 		label.setSize("180px", "23px");
 		
-		Label lblPreferencesWillGo = new Label("Preferences will go here");
+		/*Label lblPreferencesWillGo = new Label("Preferences will go here");
 		horizontalPanel_1.add(lblPreferencesWillGo);
-		lblPreferencesWillGo.setSize("170px", "20px");
+		lblPreferencesWillGo.setSize("170px", "20px");*/
+		prefs=new Anchor("Set Preferences");
+		horizontalPanel_1.add(prefs);
+		final ScreenWidget t=this;
+		prefs.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent e){
+				RootPanel.get("ace").clear();
+				RootPanel.get("ace").add(new ProfileWidget(loginInfo, t));
+				
+			}
+		});
+		
 		horizontalPanel_1.add(signOutLink);
 		
 		//Current user

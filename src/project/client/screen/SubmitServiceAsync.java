@@ -11,4 +11,5 @@ public interface SubmitServiceAsync {
 	void sendCode(String string, Long points, AsyncCallback<String> callback);
 	void doCheck(String s, AsyncCallback<List<JSIssue>> c);
 	void instantiate(AsyncCallback c);
+	void setNickname(String name, AsyncCallback<String> callback);
 }

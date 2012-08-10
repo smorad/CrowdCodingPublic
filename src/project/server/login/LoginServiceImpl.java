@@ -1,5 +1,11 @@
 package project.server.login;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -24,8 +30,22 @@ public LoginInfo login(String requestUri) {
     if (user != null) {
       loginInfo.setLoggedIn(true);
       loginInfo.setEmailAddress(user.getEmail());
-      loginInfo.setNickname(user.getNickname());
+      //loginInfo.setNickname(user.getNickname());
       loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
+      
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      Key k = KeyFactory.createKey("AceProjectUser", user.getEmail());
+      Entity u;
+      try{
+			u = datastore.get(k);//new Entity(user);
+
+		}
+		catch(EntityNotFoundException e){
+			u=new Entity(k);
+			u.setProperty("nickname", user.getNickname());
+			datastore.put(u);
+		}
+      loginInfo.setNickname(user.getNickname());
     } else {
       loginInfo.setLoggedIn(false);
       loginInfo.setLoginUrl(userService.createLoginURL(requestUri));

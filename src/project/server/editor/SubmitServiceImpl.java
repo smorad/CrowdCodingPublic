@@ -79,6 +79,28 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 			j=new JSLintBuilder().fromDefault();
 			
 	}
+	
+	public String setNickname(String name){
+		UserService userService = UserServiceFactory.getUserService();
+		User currentUser=userService.getCurrentUser();
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+		Entity user=null;
+		Key k = KeyFactory.createKey("AceProjectUser", currentUser.getEmail()); 
+		try{
+			user = datastore.get(k);//new Entity(user);
+		}
+		catch(EntityNotFoundException e){
+			user=new Entity(k);
+		}
+		user.setProperty("nickname", name);
+		datastore.put(user);
+		try{
+			datastore.get(k);
+		}finally{
+			return name;
+		}
+	}
 
 	
 	

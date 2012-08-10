@@ -11,8 +11,7 @@ import project.client.points.PointUpdateServiceAsync;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -20,7 +19,6 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -28,6 +26,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 
 public abstract class ScreenWidget extends VerticalPanel{
+	
 	protected LayoutPanel mainPanel = new LayoutPanel();
 	private Label userPoints=new Label("0");
 	private VerticalPanel pointRank=new VerticalPanel();
@@ -37,24 +36,28 @@ public abstract class ScreenWidget extends VerticalPanel{
 	private LoginInfo loginInfo;
 	private Long points=1L;
 	private VerticalPanel userPointsPanel;
-	public AceEditorWidget a;
-	private HorizontalPanel hPanel = new HorizontalPanel();
+	private HorizontalPanel hPanel = new HorizontalPanel();	
 	private Label spacer = new Label();
 	private Label spacer1 = new Label();
-
+	public AceEditorWidget a;
+	
+	protected Button button;
+	protected HandlerRegistration remover;
+	
 	public ScreenWidget(LoginInfo loginInfo){
 		setSize(Window.getClientHeight() + "px",Window.getClientWidth()+"px");
-		/*setHeight(Window.getClientHeight()+"px");
-		setWidth(Window.getClientWidth()+"px");*/
 		this.loginInfo=loginInfo;
-		//setSize("100%", "100%");		
 		buildButtonUI();
 		buildUI();
 		buildPointDisplays();
-		startService();
-		RootPanel.get("ace").getElement().setAttribute("align", "center");
-		DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginLeft", "auto");  //removes border
-		DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginRight", "auto");  //removes border
+		
+		if(false){
+			startService();
+			RootPanel.get("ace").getElement().setAttribute("align", "center");
+			DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginLeft", "auto");  //removes border
+			DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginRight", "auto");  //removes border
+		}
+
 		spacer.setSize("1px", Window.getClientHeight()/4+"px");
 	}
 	
@@ -62,6 +65,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 
 	private void buildUI() {
 
+								
 		//hPanel.add(new Label());			
 		userPointsPanel = new VerticalPanel();
 		hPanel.add(userPointsPanel);
@@ -94,20 +98,18 @@ public abstract class ScreenWidget extends VerticalPanel{
 		VerticalPanel verticalPanel = new VerticalPanel();
 		verticalPanel_2.add(verticalPanel);
 		verticalPanel.setSize("750px", "160px");
-		add(hPanel);
+		add(hPanel);	
 		
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		verticalPanel.add(horizontalPanel);
 		horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		horizontalPanel.setSize("100%", "40px");
-		Button button = new Button("Submit");
-		button.addClickHandler(new ClickHandler() {
+		button = new Button("Submit");
+		remover=button.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
 					callSubmitService();
-					callRankUpdateService();
-					callPointUpdateService();
 					AceProject.submit();
 				}
 				catch (Exception e) {
@@ -148,7 +150,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 	private void setInitialSize() {
 		setHeight(Window.getClientHeight()+"px");
 		setWidth(Window.getClientWidth()+"px");
-		userPointsPanel.setWidth(Window.getClientWidth()/5 + "px");
+		 userPointsPanel.setWidth(Window.getClientWidth()/5 + "px");
 		System.out.println("Client width is: "+ Window.getClientWidth());
 		Window.resizeTo(Window.getClientWidth()-1,Window.getClientHeight()-1);
 		System.out.println("initial resize");
@@ -158,7 +160,8 @@ public abstract class ScreenWidget extends VerticalPanel{
 
 
 
-	private void startService(){			
+	private void startService(){
+
 		if (submitService == null)
 			submitService = (SubmitServiceAsync) GWT
 					.create(SubmitService.class);
@@ -188,12 +191,12 @@ public abstract class ScreenWidget extends VerticalPanel{
 			pointRankPanel.add(spacer1);
 			pointRankPanel.add(pointRank);
 			hPanel.add(pointRankPanel);
+		}
 		pointRank.setSize("500px", "28px");
 		userPoints.setStyleName("gwt-DialogBox");
 		
 		userPointsPanel.add(userPoints);
 		userPoints.setSize("150px", "20px");
-		}
 		
 	}
 	
@@ -204,8 +207,10 @@ public abstract class ScreenWidget extends VerticalPanel{
 			
 			public void onSuccess(List<String> result){
 				pointRank.clear();
-				for(int x=0; x<result.size(); x++)
+				for(int x=0; x<result.size(); x++){
+					System.out.println(result.get(x));
 					pointRank.add(new Label(result.get(x)));
+				}
 			}
 		});
 	}
@@ -226,9 +231,16 @@ public abstract class ScreenWidget extends VerticalPanel{
 			public void onFailure(Throwable caught) {
 				Window.alert("Failure");
 			}
+
 			public void onSuccess(String result) {
+				//Window.alert("Success");
+				updatePoints();
 			}
 		});
+	}
+	protected void updatePoints(){
+		callRankUpdateService();
+		callPointUpdateService();
 	}
 	
 	private void buildButtonUI(){

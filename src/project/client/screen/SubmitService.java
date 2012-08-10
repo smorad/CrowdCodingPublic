@@ -12,5 +12,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 		String sendCode(String string, Long points);
 		List<JSIssue> doCheck(String s);
 		void instantiate();
+		String setNickname(String name);
 	}
 

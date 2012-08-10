@@ -9,9 +9,9 @@ public class SliderWidget extends LayoutPanel{
 	private SliderBar slider;
 	private Label label;
 	
-	private final int height=50;
-	private final int sliderWidth=300;
-	private final int labelWidth=200;
+	private static final int height=50;
+	private static final int sliderWidth=300;
+	private static final int labelWidth=200;
 	public SliderWidget(String microtask){
 		
 		label=new Label("Preference for "+microtask+" tasks");
@@ -50,5 +50,9 @@ public class SliderWidget extends LayoutPanel{
 	
 	public double getCurrentValue(){
 		return slider.getCurrentValue();
+	}
+	
+	public static int getSliderHeight(){
+		return height;
 	}
 }

@@ -16,6 +16,7 @@ import project.shared.JSIssue;
 public abstract class EditorContainer extends ScreenWidget{
 	protected AceEditor aceEditor = new AceEditor(true);
 	private Timer timer;
+	protected String lintData;
 	
 	public EditorContainer(LoginInfo info){
 		super(info);
@@ -50,10 +51,11 @@ public abstract class EditorContainer extends ScreenWidget{
 			}
 			public void onSuccess(List<JSIssue> t){
 				for(JSIssue issue:t){
-					int line=issue.getLine();
-					int character=issue.getCharacter();
+					//int line=issue.getLine();
+					//int character=issue.getCharacter();
 					String reason= issue.getReason();
-					aceEditor.addAnnotation(line, character, reason, AceAnnotationType.ERROR);
+					//aceEditor.addAnnotation(line, character, reason, AceAnnotationType.ERROR);
+					lintData = issue.getReason() + " at line" + issue.getLine() + " char" + issue.getCharacter();
 				}
 				aceEditor.setAnnotations();
 				//Window.alert("Yes");

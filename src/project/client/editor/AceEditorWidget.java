@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import project.client.EditorContainer;
 import project.client.login.LoginInfo;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -19,6 +20,8 @@ public class AceEditorWidget  extends EditorContainer{
 	private TextArea description;
 	private AceEditorInfo aInfo;
 	private VerticalPanel panel = new VerticalPanel();
+	private TextArea lint;
+	private Timer timer;
 	
 	//JSLint j=new JSLintBuilder().fromDefault();
 	
@@ -32,7 +35,20 @@ public class AceEditorWidget  extends EditorContainer{
 		this.methodType = aInfo.getReturnType();
 		this.parameters = aInfo.getParameters();
 		UI();
+		timer=new Timer(){
+			public void run(){
+				checkSyntax();
+			}
+
+			private void checkSyntax() {
+				lint.setText(lintData);
+			}
+		};
+		
+		timer.scheduleRepeating(5000);
 	}
+	
+	
 
 	
 	
@@ -64,25 +80,37 @@ public class AceEditorWidget  extends EditorContainer{
 		mainPanel.setWidgetTopHeight(description, 80.0, Unit.PX, 162.0, Unit.PX);*/
 		
 		TextArea textArea = new TextArea();
+		lint = new TextArea();
 	/*	mainPanel.add(textArea);
 		mainPanel.setWidgetLeftWidth(textArea, 21.0, Unit.PX, 652.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(textArea, 248.0, Unit.PX, 86.0, Unit.PX);*/
-		textArea.setText("Method signature:\n " + "method name: " + aInfo.getMethodName()+ "\n" +  "parameters: " + aInfo.getParameters() + "\n" + "method return type: " + aInfo.getReturnType());
+		textArea.setText("Method signature:\n" + "method name: " + aInfo.getMethodName()+ "\n" +  "parameters: " + aInfo.getParameters() + "\n" + "method return type: " + aInfo.getReturnType());
 		DOM.setStyleAttribute(description.getElement(), "border", "1px");  //removes border
 		DOM.setStyleAttribute(description.getElement(), "minHeight","100px");
 		DOM.setStyleAttribute(description.getElement(), "width", "652px");  //fixes size error on firefox
 		DOM.setStyleAttribute(description.getElement(), "height", "80px");
+		
 		DOM.setStyleAttribute(textArea.getElement(), "border", "1px");  //removes border
 		DOM.setStyleAttribute(textArea.getElement(), "minHeight","100px");
 		DOM.setStyleAttribute(textArea.getElement(), "width", "652px");  //fixes size error on firefox
 		DOM.setStyleAttribute(textArea.getElement(), "height", "80px");
+		
 		DOM.setStyleAttribute(textArea.getElement(), "resize", "none");
 		DOM.setStyleAttribute(description.getElement(), "resize", "none");
+		
+		DOM.setStyleAttribute(lint.getElement(), "border", "1px");  //removes border
+		DOM.setStyleAttribute(lint.getElement(), "minHeight","100px");
+		DOM.setStyleAttribute(lint.getElement(), "width", "652px");  //fixes size error on firefox
+		DOM.setStyleAttribute(lint.getElement(), "height", "80px");
+		DOM.setStyleAttribute(lint.getElement(), "resize", "none");
 		textArea.setReadOnly(true);
 		panel.add(title);
 		panel.add(description);
 		panel.add(textArea);
 		panel.add(aceEditor);
+		panel.add(lint);
+		lint.setText("JSLint checker output: \n" +lintData);
+		lint.setReadOnly(true);
 	}
 
 

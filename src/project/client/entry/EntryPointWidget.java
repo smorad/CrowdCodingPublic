@@ -44,25 +44,25 @@ public class EntryPointWidget extends ScreenWidget{
 		DOM.setStyleAttribute(text.getElement(), "height", "80px");
 		//text.setEnabled(false);
 		mainPanel.add(text);
-		mainPanel.setWidgetLeftWidth(text, 76.0, Unit.PX, 597.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(text, 77.0, Unit.PX, 82.0, Unit.PX);
+		//mainPanel.setWidgetLeftWidth(text, 76.0, Unit.PX, 597.0, Unit.PX);
+		//mainPanel.setWidgetTopHeight(text, 77.0, Unit.PX, 82.0, Unit.PX);
 
 		Label title=new Label("Identify the entry point necessary for this user story");
 		mainPanel.add(title);
-		mainPanel.setWidgetLeftWidth(title, 207.0, Unit.PX, 311.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(title, 0.0, Unit.PX, 49.0, Unit.PX);
+		//mainPanel.setWidgetLeftWidth(title, 207.0, Unit.PX, 311.0, Unit.PX);
+		//mainPanel.setWidgetTopHeight(title, 0.0, Unit.PX, 49.0, Unit.PX);
 		
 		tabs=new TabPanel();
 		tabs.setSize("450px", "320px");
 		tabs.setAnimationEnabled(true);
 		mainPanel.add(tabs);
-		mainPanel.setWidgetLeftWidth(tabs, 40.0, Unit.PX, 685.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(tabs, 190.0, Unit.PX, 320.0, Unit.PX);
+		//mainPanel.setWidgetLeftWidth(tabs, 40.0, Unit.PX, 685.0, Unit.PX);
+		//mainPanel.setWidgetTopHeight(tabs, 190.0, Unit.PX, 320.0, Unit.PX);
 		
 		Button addMethodButton=new Button("Add Method");
 		mainPanel.add(addMethodButton);
-		mainPanel.setWidgetLeftWidth(addMethodButton, 76.0, Unit.PX, 119.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(addMethodButton, 611.0, Unit.PX, 28.0, Unit.PX);
+		//mainPanel.setWidgetLeftWidth(addMethodButton, 76.0, Unit.PX, 119.0, Unit.PX);
+		//mainPanel.setWidgetTopHeight(addMethodButton, 611.0, Unit.PX, 28.0, Unit.PX);
 		addMethodButton.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event){
 				addTab();
@@ -71,8 +71,8 @@ public class EntryPointWidget extends ScreenWidget{
 		
 		Button delMethodButton = new Button("Delete Method");
 		mainPanel.add(delMethodButton);
-		mainPanel.setWidgetLeftWidth(delMethodButton, 207.0, Unit.PX, 119.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(delMethodButton, 611.0, Unit.PX, 28.0, Unit.PX);
+		//mainPanel.setWidgetLeftWidth(delMethodButton, 207.0, Unit.PX, 119.0, Unit.PX);
+		//mainPanel.setWidgetTopHeight(delMethodButton, 611.0, Unit.PX, 28.0, Unit.PX);
 		delMethodButton.setSize("119px", "28px");
 		delMethodButton.addClickHandler(new ClickHandler(){
 			@Override

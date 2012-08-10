@@ -30,7 +30,6 @@ public class PointUpdateServiceImpl extends RemoteServiceServlet implements Poin
 			if(x>=allUsers.size())
 				break;
 			Entity e=allUsers.get(x);
-			strings.add((x+1)+": "+(String)e.getProperty("nickname"));
 			Object a=e.getProperty("points");
 			long b=(Long)a;
 			strings.add((x+1)+": "+(String)e.getProperty("nickname")+" "+Long.toString(b)+" pts.");

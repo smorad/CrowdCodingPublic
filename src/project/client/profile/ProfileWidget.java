@@ -19,16 +19,16 @@ public class ProfileWidget extends ScreenWidget {
 	private SliderWidget sketch = new SliderWidget("Sketch/Impl");
 	private SliderWidget testCase = new SliderWidget("Test Case");
 	private SliderWidget unit = new SliderWidget("Unit Test");
-	
-	
-	
+
+
+
 	private TextBox nameBox;
 	private Button cancelButton;
-	
+
 	private ScreenWidget other;
-	
+
 	private final int height=SliderWidget.getSliderHeight()+10;
-	
+
 	public ProfileWidget(LoginInfo loginInfo, ScreenWidget other) {
 		super(loginInfo);
 		this.other=other;
@@ -45,30 +45,30 @@ public class ProfileWidget extends ScreenWidget {
 		mainPanel.add(sketch);
 		mainPanel.add(testCase);
 		mainPanel.add(unit);
-		
 
-		mainPanel.setWidgetTopHeight(main, height, Unit.PX, height, Unit.PX);
-		
-		mainPanel.setWidgetTopHeight(ePoint, height*2, Unit.PX, height, Unit.PX); 
-		
-		mainPanel.setWidgetTopHeight(sketch, height*3, Unit.PX, height, Unit.PX); 
-		
-		mainPanel.setWidgetTopHeight(testCase, height*4, Unit.PX, height, Unit.PX); 
-		
-		mainPanel.setWidgetTopHeight(unit, height*5, Unit.PX, height, Unit.PX); 
-		
-		
+
+		//mainPanel.setWidgetTopHeight(main, height, Unit.PX, height, Unit.PX);
+
+		//mainPanel.setWidgetTopHeight(ePoint, height*2, Unit.PX, height, Unit.PX); 
+
+		//mainPanel.setWidgetTopHeight(sketch, height*3, Unit.PX, height, Unit.PX); 
+
+		//mainPanel.setWidgetTopHeight(testCase, height*4, Unit.PX, height, Unit.PX); 
+
+		//mainPanel.setWidgetTopHeight(unit, height*5, Unit.PX, height, Unit.PX); 
+
+
 		Label l=new Label("Nickname is: ");
 		mainPanel.add(l);
-		mainPanel.setWidgetLeftWidth(l, 74.0, Unit.PX, 92.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(l, 498.0, Unit.PX, 21.0, Unit.PX); 
-		
+		//mainPanel.setWidgetLeftWidth(l, 74.0, Unit.PX, 92.0, Unit.PX);
+		//mainPanel.setWidgetTopHeight(l, 498.0, Unit.PX, 21.0, Unit.PX); 
+
 		nameBox=new TextBox();
 		nameBox.setText("1");
 		mainPanel.add(nameBox);
-		mainPanel.setWidgetLeftWidth(nameBox, 184.0, Unit.PX, 334.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(nameBox, 492.0, Unit.PX, 43.0, Unit.PX); 
-		
+		//mainPanel.setWidgetLeftWidth(nameBox, 184.0, Unit.PX, 334.0, Unit.PX);
+		//mainPanel.setWidgetTopHeight(nameBox, 492.0, Unit.PX, 43.0, Unit.PX); 
+
 		cancelButton=new Button("Cancel");
 		horizontalPanel.add(cancelButton);
 		cancelButton.addClickHandler(new ClickHandler(){
@@ -77,9 +77,9 @@ public class ProfileWidget extends ScreenWidget {
 			}
 		});
 	}
-	
-	
-		
+
+
+
 
 	@Override
 	public void submit() {
@@ -90,11 +90,11 @@ public class ProfileWidget extends ScreenWidget {
 			public void onSuccess(String s){
 				updatePoints();
 				System.out.println(s);
-				
+
 			}
 		});
 	}
-	
+
 	private void override(){
 		button.setText("Save");
 		remover.removeHandler();
@@ -105,12 +105,12 @@ public class ProfileWidget extends ScreenWidget {
 			}
 		});
 	}
-	
+
 	private void transfer(){
 		RootPanel.get("ace").clear();
 
 		RootPanel.get("ace").add(other);
 	}
-	
+
 
 }

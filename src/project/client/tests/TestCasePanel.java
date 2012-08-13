@@ -21,18 +21,12 @@ public class TestCasePanel extends HorizontalPanel{
 		textBox.setText("Write test here");
 		add(textBox);
 		textBox.setWidth("500px");
+		textBox.setFocus(true);
 		
 		final Button delete = new Button();
 		delete.setText("Delete");
 		delete.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {	
-				System.out.println(delete.getParent().getClass());
-				System.out.println(delete.getParent().getParent().getClass());
-				System.out.println(delete.getParent().getParent().getParent().getClass());
-				System.out.println(delete.getParent().getParent().getParent().getParent().getClass());
-				System.out.println(delete.getParent().getParent().getParent().getParent().getParent().getClass());
-				System.out.println(delete.getParent().getParent().getParent().getParent().getParent().getParent().getClass());
-				System.out.println(delete.getParent().getParent().getParent().getParent().getParent().getParent().getParent().getClass());
 				try{
 				((TestCaseWidget)delete.getParent().getParent().getParent().getParent().getParent().getParent()).removeFromList(((TestCasePanel)delete.getParent()));
 			} catch (Exception e){

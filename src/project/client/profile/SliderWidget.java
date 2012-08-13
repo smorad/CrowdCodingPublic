@@ -1,9 +1,9 @@
 package project.client.profile;
 
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.gen2.picker.client.SliderBar;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.widgetideas.client.SliderBar;
 
 public class SliderWidget extends LayoutPanel{
 	private SliderBar slider;
@@ -29,18 +29,9 @@ public class SliderWidget extends LayoutPanel{
 	}
 	
 	private SliderBar createSlider(){
-		  SliderBar slider = new SliderBar(0.0, 100.0){
-			  protected String formatLabel(double val){
-				  //System.out.println(super.formatLabel(val)+"\n");
-				  /*if(val==0)
-					  return "I hate it";
-				  if(val==100)
-					  return "*/
-				  return super.formatLabel(val);
-			  }
-		  };
+		  SliderBar slider = new SliderBar(0.0, 100.0);
 		  slider.setStepSize(2.0);
-		  slider.setCurrentValue(50.0);
+		  //slider.setCurrentValue(50.0);
 		  slider.setNumTicks(0);
 		  slider.setNumLabels(2);
 		  slider.setHeight(height+"px");

@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -42,11 +43,14 @@ public class ProfileWidget extends ScreenWidget {
 		mainPanel.add(sketch);
 		mainPanel.add(testCase);
 		mainPanel.add(unit);
+		
+		HorizontalPanel h=new HorizontalPanel();
+		mainPanel.add(h);
 		Label l=new Label("Nickname is: ");
-		mainPanel.add(l);
+		h.add(l);
 		nameBox=new TextBox();
-		nameBox.setText("1");
-		mainPanel.add(nameBox);
+		//nameBox.setText("1");
+		h.add(nameBox);
 		cancelButton=new Button("Cancel");
 		horizontalPanel.add(cancelButton);
 		cancelButton.addClickHandler(new ClickHandler(){
@@ -82,6 +86,7 @@ public class ProfileWidget extends ScreenWidget {
 				transfer();
 			}
 		});
+		prefs.removeFromParent();
 	}
 
 	private void transfer(){

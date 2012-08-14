@@ -33,7 +33,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 	private Label userPoints=new Label("0");
 	private VerticalPanel pointRank=new VerticalPanel();
 	private Anchor signOutLink = new Anchor("Sign Out");
-	private PointUpdateServiceAsync pointUpdater;
+	private  PointUpdateServiceAsync pointUpdater;
 	protected SubmitServiceAsync submitService;	//temporary
 	private LoginInfo loginInfo;
 	private Long points=1L;
@@ -250,6 +250,11 @@ public abstract class ScreenWidget extends VerticalPanel{
 	}
 	
 	private void buildButtonUI(){
+	}
+	
+	protected void onLoad(){
+		super.onLoad();
+		updatePoints();
 	}
 	
 

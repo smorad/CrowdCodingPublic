@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -27,6 +28,8 @@ public class LoginWidget extends LayoutPanel{
 	private LoginInfo loginInfo;
 	private int width, height;
 	private AbsolutePanel absolutePanel;
+	private PopupPanel pPanel = new PopupPanel();;
+	private boolean checked;
 	
 	public LoginWidget(final LoginInfo loginInfo){
 		//setSize("1024px","768px");
@@ -49,13 +52,15 @@ public class LoginWidget extends LayoutPanel{
 		DOM.setStyleAttribute(area.getElement(), "border", "1px");  //removes border
 		DOM.setStyleAttribute(area.getElement(), "width", "100%");  //fixes size error on firefox
 		DOM.setStyleAttribute(area.getElement(), "height", "80%");
+
+		System.out.println("updated");
 		area.setReadOnly(true);
 		area.setText(
 			"Here is example advertisement text for our study, which may be supplemented with or\n"+
 			"replaced by text from the consent document description.\n "+
-			"Come code with us! Program in small steps and help explore a new paradigm of\n "+
-			"crowdsourcing coding. Complete only as many microtasks as you want, earn points, gain\n "+
-			"experience, and help build something cool. Sign up today, at <URL>.\n\n\n\n\n\n "+
+			"Come code with us! Program in small steps and help explore a new paradigm of\n"+
+			"crowdsourcing coding. Complete only as many microtasks as you want, earn points, gain\n"+
+			"experience, and help build something cool. Sign up today, at <URL>.\n\n\n\n\n\n"+
 			"This project is about crowdsourcing programming. We're trying to see if a complex task like "+
 			"coding can successfully be broken up into a large number of small pieces. You can be part "+
 			"of this project and help us test the new paradigm, especially if you have some background "+
@@ -84,19 +89,25 @@ public class LoginWidget extends LayoutPanel{
 	    absolutePanel.add(tos, 0, 86);
 	    tos.setSize("408px", "20px");
 	    add(area);
-	    setWidgetLeftWidth(area, 0.0, Unit.PX, 1150.0, Unit.PX);
-	    setWidgetTopHeight(area, 0.0, Unit.PX, 491.0, Unit.PX);
+	    setWidgetLeftWidth(area, 250.0, Unit.PX, 1150.0, Unit.PX);
+	    setWidgetTopHeight(area, 100.0, Unit.PX, 491.0, Unit.PX);
 	    
 	    CheckBox chckbxNewCheckBox = new CheckBox("I am 18 years of age or older and have read and understood the text");
 	    chckbxNewCheckBox.setDirectionEstimator(false);
 	    add(chckbxNewCheckBox);
-	    setWidgetLeftWidth(chckbxNewCheckBox, 0.0, Unit.PX, 1150.0, Unit.PX);
-	    setWidgetTopHeight(chckbxNewCheckBox, 497.0, Unit.PX, 21.0, Unit.PX);
+	    setWidgetLeftWidth(chckbxNewCheckBox, 250.0, Unit.PX, 1150.0, Unit.PX);
+	    setWidgetTopHeight(chckbxNewCheckBox, 525.0, Unit.PX, 21.0, Unit.PX);
+		//pPanel.add(absolutePanel);
 	    chckbxNewCheckBox.addClickHandler(new ClickHandler(){
 	    	public void onClick(ClickEvent event){
-	    		add(absolutePanel);
-		    	setWidgetLeftWidth(absolutePanel, 345.0, Unit.PX, 408.0, Unit.PX);
-			    setWidgetTopHeight(absolutePanel, 607.0, Unit.PX, 126.0, Unit.PX);
+	    		
+	    		pPanel.setWidget(absolutePanel);
+	    		checked=!checked;
+	    	
+	    		pPanel.setAnimationEnabled(true);
+	    		pPanel.setGlassEnabled(true);
+		    	//setWidgetLeftWidth(absolutePanel, 345.0, Unit.PX, 408.0, Unit.PX);
+			    //setWidgetTopHeight(absolutePanel, 607.0, Unit.PX, 126.0, Unit.PX);
 			    absolutePanel.setSize("408px", "126px");
 			    loginLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 			    absolutePanel.add(loginLabel, 0, 0);
@@ -117,6 +128,9 @@ public class LoginWidget extends LayoutPanel{
 			    		System.out.println("step2");
 			    	}
 			    });
+				if(checked)
+	    			pPanel.center();
+	    		else{pPanel.hide();}
 		}
 	    	});
 	    	

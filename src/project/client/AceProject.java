@@ -110,7 +110,7 @@ public class AceProject implements EntryPoint {
 	public static void instantiateRandomly(final LoginInfo loginInfo) {
 		RootPanel.get("ace").clear();
 		
-		service.retrieve(name, new AsyncCallback<InfoObject>() {
+		service.retrieve(ScreenWidget.getLoginInfo(), new AsyncCallback<InfoObject>() {
 			public void onFailure(Throwable t) {
 				t.printStackTrace();
 			}

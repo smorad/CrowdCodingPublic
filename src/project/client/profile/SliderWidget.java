@@ -42,6 +42,9 @@ public class SliderWidget extends LayoutPanel{
 	public double getCurrentValue(){
 		return slider.getCurrentValue();
 	}
+	public void setCurrentValue(double value){
+		slider.setCurrentValue(value);
+	}
 	
 	public static int getSliderHeight(){
 		return height;

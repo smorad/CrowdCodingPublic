@@ -38,10 +38,19 @@ public class ProfileWidget extends ScreenWidget {
 
 	@Override
 	public void UI() {
+		main.setCurrentValue(loginInfo.getUserStory());
 		mainPanel.add(main);
+		
+		ePoint.setCurrentValue(loginInfo.getePoint());
 		mainPanel.add(ePoint);
+		
+		sketch.setCurrentValue(loginInfo.getSketch());
 		mainPanel.add(sketch);
+		
+		testCase.setCurrentValue(loginInfo.getSketch());
 		mainPanel.add(testCase);
+		
+		unit.setCurrentValue(loginInfo.getUnit());
 		mainPanel.add(unit);
 		
 		HorizontalPanel h=new HorizontalPanel();
@@ -65,18 +74,32 @@ public class ProfileWidget extends ScreenWidget {
 
 	@Override
 	public void submit() {
-		submitService.setNickname(nameBox.getText(), new AsyncCallback<String>(){
+		savePrefs();
+		submitService.setProfile(loginInfo, new AsyncCallback<String>(){
 			public void onFailure(Throwable s){
 				System.out.println("no change");
 			}
 			public void onSuccess(String s){
-				loginInfo.setNickname(s);
+				
 				updatePoints();
 				transfer();
 
 			}
 		});
+		
 	}
+	
+	private void savePrefs(){
+		loginInfo.setNickname(nameBox.getText());
+		
+		loginInfo.setUserStory(main.getCurrentValue());
+		//System.out.println(loginInfo.getUserStory());
+		loginInfo.setePoint(ePoint.getCurrentValue());
+		loginInfo.setSketch(sketch.getCurrentValue());
+		loginInfo.setTestCase(testCase.getCurrentValue());
+		loginInfo.setUnit(unit.getCurrentValue());
+	}
+	
 
 	private void override(){
 		button.setText("Save");

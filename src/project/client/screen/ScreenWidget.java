@@ -273,5 +273,8 @@ public abstract class ScreenWidget extends VerticalPanel{
 	public static void setLoginInfo(LoginInfo l){
 		loginInfo=l;
 	}
+	public static LoginInfo getLoginInfo(){
+		return loginInfo;
+	}
 	
 }

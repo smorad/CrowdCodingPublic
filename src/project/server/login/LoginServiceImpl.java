@@ -22,36 +22,68 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 	 */
 	private static final long serialVersionUID = 1L;
 
-public LoginInfo login(String requestUri) {
-    UserService userService = UserServiceFactory.getUserService();
-    User user = userService.getCurrentUser();
-    LoginInfo loginInfo = new LoginInfo();
+	public LoginInfo login(String requestUri) {
+	    UserService userService = UserServiceFactory.getUserService();
+	    User user = userService.getCurrentUser();
+	    LoginInfo loginInfo = new LoginInfo();
+	
+	    if (user != null) {
+	    	//made without datastore
+		    loginInfo.setLoggedIn(true);
+		    loginInfo.setEmailAddress(user.getEmail());
+		    loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
+		  
+		    //made with datastore
+		    Entity u=createUser(user);
+		    loginInfo.setNickname((String)u.getProperty("nickname"));
+		    setPrefs(u, loginInfo);
+		} else {
+		    loginInfo.setLoggedIn(false);
+		    loginInfo.setLoginUrl(userService.createLoginURL(requestUri));
+		}
+	    return loginInfo;
+	}
 
-    if (user != null) {
-      loginInfo.setLoggedIn(true);
-      loginInfo.setEmailAddress(user.getEmail());
-      //loginInfo.setNickname(user.getNickname());
-      loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
-      
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      Key k = KeyFactory.createKey("AceProjectUser", user.getEmail());
-      Entity u;
-      try{
+	@SuppressWarnings("finally")
+	public Entity createUser(User user){
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Key k = KeyFactory.createKey("AceProjectUser", user.getEmail());
+		Entity u;
+		try{
 			u = datastore.get(k);//new Entity(user);
-			System.out.println("name is: "+u.getProperty("nickname"));
+			if(!u.hasProperty("userStory")){
+				setDefaultPrefs(u);
+				datastore.put(u);
+			}
 		}
 		catch(EntityNotFoundException e){
-			System.out.println("making new entity");
 			u=new Entity(k);
 			u.setProperty("nickname", user.getNickname());
+			setDefaultPrefs(u);
 			datastore.put(u);
 		}
-      loginInfo.setNickname((String)u.getProperty("nickname"));
-    } else {
-      loginInfo.setLoggedIn(false);
-      loginInfo.setLoginUrl(userService.createLoginURL(requestUri));
-    }
-    return loginInfo;
-  }
+		try{
+			datastore.get(k);
+		}
+		finally{
+			return u;
+		}
+	}
+	
+	private void setDefaultPrefs(Entity u){
+		u.setProperty("userStory", 50.0);
+		u.setProperty("ePoint", 50.0);
+		u.setProperty("sketch", 50.0);
+		u.setProperty("testCase", 50.0);
+		u.setProperty("unit", 50.0);
+	}
+	private void setPrefs(Entity u, LoginInfo info){
+		info.setUserStory((Double)u.getProperty("userStory"));
+		info.setePoint((Double)u.getProperty("ePoint"));
+		info.setSketch((Double)u.getProperty("sketch"));
+		info.setTestCase((Double)u.getProperty("testCase"));
+		info.setUnit((Double)u.getProperty("unit"));
+	}
+	
 
 }

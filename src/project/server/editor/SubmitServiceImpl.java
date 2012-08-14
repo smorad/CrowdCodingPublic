@@ -2,6 +2,8 @@ package project.server.editor;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import project.client.login.LoginInfo;
 import project.client.screen.SubmitService;
 import project.shared.JSIssue;
 
@@ -80,7 +82,8 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 			
 	}
 	
-	public String setNickname(String name){
+	@SuppressWarnings("finally")
+	public String setProfile(LoginInfo info){
 		UserService userService = UserServiceFactory.getUserService();
 		User currentUser=userService.getCurrentUser();
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -93,13 +96,25 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		catch(EntityNotFoundException e){
 			user=new Entity(k);
 		}
-		user.setProperty("nickname", name);
+		
+		setProperties(user, info);
 		datastore.put(user);
+		
+		
 		try{
 			datastore.get(k);
 		}finally{
-			return name;
+			return info.getNickname();
 		}
+	}
+	
+	private void setProperties(Entity u, LoginInfo info){
+		u.setProperty("nickname", info.getNickname());
+		u.setProperty("userStory", info.getUserStory());
+		u.setProperty("ePoint", info.getePoint());
+		u.setProperty("sketch", info.getSketch());
+		u.setProperty("testCase", info.getTestCase());
+		u.setProperty("unit", info.getUnit());
 	}
 
 	

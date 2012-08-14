@@ -15,6 +15,7 @@ import project.client.InfoObject;
 import project.client.editor.AceEditorInfo;
 import project.client.entry.EntryMethodInfo;
 import project.client.entry.EntryPointInfo;
+import project.client.login.LoginInfo;
 import project.client.submission.SubmitService;
 import project.client.tests.TestCaseInfo;
 import project.client.tests.UnitTestInfo;
@@ -29,7 +30,7 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 	private Logger logger = Logger.getLogger("NameOfYourLogger");
 	//private DAO d=new DAO();
 
-	public InfoObject retrieve(String name){
+	public InfoObject retrieve(LoginInfo info){
 		Objectify o=ObjectifyService.beginTransaction();	
 		PersistObject pInfo=null;
 		int count = 0; //debugging
@@ -106,9 +107,24 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		if(list.size()==0){
 			return null;
 		}
+		
 		int a = (int)(Math.random()*list.size());
 		PersistObject p = list.get(a);
+		
 		return p;
+	}
+	
+	private PersistObject chooseUsingPrefs(LoginInfo info){//for future use
+		Objectify o = ObjectifyService.begin();
+		Query<PersistObject> q = o.query(PersistObject.class).filter("isDone", false).filter("checkedOut", false);
+		List<PersistObject> list = q.list();
+		if(list.size()==0){
+			return null;
+		}
+		
+		/*Insert Algorithm for sorting the different tasks*/  
+		
+		return new PersistObject();
 	}
 	
 	

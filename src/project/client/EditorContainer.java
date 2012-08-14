@@ -18,8 +18,7 @@ public abstract class EditorContainer extends ScreenWidget{
 	private Timer timer;
 	protected String lintData;
 	
-	public EditorContainer(LoginInfo info){
-		super(info);
+	public EditorContainer(){
 		timer=new Timer(){
 			public void run(){
 				setAnnotations();

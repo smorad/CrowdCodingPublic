@@ -21,8 +21,7 @@ public class TestCaseWidget extends ScreenWidget {
 	VerticalPanel testContainer = new VerticalPanel();
 	Button btnNewTestCase;
 
-	public TestCaseWidget(LoginInfo info, TestCaseInfo tInfo) {
-		super(info);
+	public TestCaseWidget(TestCaseInfo tInfo) {
 		setSize("1150px", "768px");
 		this.tInfo=tInfo;
 		this.methodDescription=tInfo.getDescription();	

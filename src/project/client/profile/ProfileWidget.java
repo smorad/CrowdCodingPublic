@@ -28,8 +28,7 @@ public class ProfileWidget extends ScreenWidget {
 
 	private final int height=SliderWidget.getSliderHeight()+10;
 
-	public ProfileWidget(LoginInfo loginInfo, ScreenWidget other) {
-		super(loginInfo);
+	public ProfileWidget(ScreenWidget other) {
 		this.other=other;
 		setSize("1150px", "768px");
 		override();
@@ -71,8 +70,8 @@ public class ProfileWidget extends ScreenWidget {
 				System.out.println("no change");
 			}
 			public void onSuccess(String s){
+				loginInfo.setNickname(s);
 				updatePoints();
-				System.out.println(s);
 
 			}
 		});

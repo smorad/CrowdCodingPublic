@@ -55,6 +55,8 @@ public class AceProject implements EntryPoint {
 				}
 
 				public void onSuccess(final LoginInfo result) {
+					ScreenWidget.setLoginInfo(result);
+					
 					service.register(new AsyncCallback() {
 						public void onSuccess(Object t) {
 							loginInfo = result;
@@ -97,8 +99,7 @@ public class AceProject implements EntryPoint {
 
 					public void onSuccess(UserStoryInfo info) {
 						storyInfo = info;
-						editor = new UserStoryWidget(loginInfo,
-								(UserStoryInfo) storyInfo);
+						editor = new UserStoryWidget((UserStoryInfo) storyInfo);
 						RootPanel.get("ace").add(new ScrollPanel(editor));
 						//RootPanel.get().add(new ProfileWidget(loginInfo));
 						System.out.println("Success");
@@ -118,22 +119,19 @@ public class AceProject implements EntryPoint {
 				storyInfo = info;
 				if (info == null) {
 					RootPanel.get("ace").clear();
-					RootPanel.get("ace").add(new EndPageWidget(loginInfo));
+					RootPanel.get("ace").add(new EndPageWidget());
 					return;
 				}
 				if (info instanceof EntryPointInfo)
-					editor = new EntryPointWidget(loginInfo,
-							(EntryPointInfo) info);
+					editor = new EntryPointWidget((EntryPointInfo) info);
 				else if (info instanceof TestCaseInfo)
-					editor = new TestCaseWidget(loginInfo, (TestCaseInfo) info);
+					editor = new TestCaseWidget((TestCaseInfo) info);
 				else if (info instanceof UnitTestInfo)
-					editor = new UnitTestWidget(loginInfo, (UnitTestInfo) info);
+					editor = new UnitTestWidget((UnitTestInfo) info);
 				else if (info instanceof UserStoryInfo)
-					editor = new UserStoryWidget(loginInfo,
-							(UserStoryInfo) info);
+					editor = new UserStoryWidget((UserStoryInfo) info);
 				else if (info instanceof AceEditorInfo)
-					editor = new AceEditorWidget(loginInfo,
-							(AceEditorInfo) info);
+					editor = new AceEditorWidget((AceEditorInfo) info);
 
 				RootPanel.get("ace").add(new ScrollPanel(editor));
 				if (editor instanceof EditorContainer)

@@ -14,8 +14,7 @@ public class UserStoryWidget extends ScreenWidget{
 	private TextArea area;
 	private UserStoryInfo uInfo;
 	
-	public UserStoryWidget(LoginInfo info, UserStoryInfo uInfo){
-		super(info);
+	public UserStoryWidget(UserStoryInfo uInfo){
 		setSize("1150px", "768px");
 		this.uInfo=uInfo;
 		

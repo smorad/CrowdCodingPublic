@@ -11,8 +11,7 @@ public class UnitTestWidget extends  EditorContainer{
 	private UnitTestInfo uInfo;
 	private String description, testCase;
 	
-	public UnitTestWidget(LoginInfo info, UnitTestInfo uInfo) {
-		super(info);
+	public UnitTestWidget(UnitTestInfo uInfo) {
 		this.uInfo=uInfo;
 		this.description=uInfo.getMethodDesc();
 		this.testCase=uInfo.getTestDesc();

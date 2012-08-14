@@ -38,14 +38,15 @@ public LoginInfo login(String requestUri) {
       Entity u;
       try{
 			u = datastore.get(k);//new Entity(user);
-
+			System.out.println("name is: "+u.getProperty("nickname"));
 		}
 		catch(EntityNotFoundException e){
+			System.out.println("making new entity");
 			u=new Entity(k);
 			u.setProperty("nickname", user.getNickname());
 			datastore.put(u);
 		}
-      loginInfo.setNickname(user.getNickname());
+      loginInfo.setNickname((String)u.getProperty("nickname"));
     } else {
       loginInfo.setLoggedIn(false);
       loginInfo.setLoginUrl(userService.createLoginURL(requestUri));

@@ -7,8 +7,7 @@ import project.client.screen.ScreenWidget;
 
 public class EndPageWidget extends ScreenWidget {
 
-	public EndPageWidget(LoginInfo loginInfo) {
-		super(loginInfo);
+	public EndPageWidget() {
 		setSize("1150", "768px");
 		UI();
 		// TODO Auto-generated constructor stub

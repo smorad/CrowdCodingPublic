@@ -35,7 +35,10 @@ public abstract class ScreenWidget extends VerticalPanel{
 	private Anchor signOutLink = new Anchor("Sign Out");
 	private  PointUpdateServiceAsync pointUpdater;
 	protected SubmitServiceAsync submitService;	//temporary
-	private LoginInfo loginInfo;
+	
+	private Label lblYouAreSigned;
+	private Label lab;
+	
 	private Long points=1L;
 	private VerticalPanel userPointsPanel;
 	private HorizontalPanel hPanel = new HorizontalPanel();	
@@ -48,8 +51,9 @@ public abstract class ScreenWidget extends VerticalPanel{
 	protected Button button;
 	protected HandlerRegistration remover;
 	
-	public ScreenWidget(LoginInfo loginInfo){
-		this.loginInfo=loginInfo;
+	protected static LoginInfo loginInfo;
+	
+	public ScreenWidget(){
 		buildButtonUI();
 		buildUI();
 		buildPointDisplays();
@@ -69,7 +73,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 
 
 	private void buildUI() {
-
+		System.out.println(loginInfo.getNickname());
 								
 		//hPanel.add(new Label());			
 		userPointsPanel = new VerticalPanel();
@@ -78,7 +82,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 		
 		spacer.setSize("1px", Window.getClientHeight()/4+"px");
 		spacer1.setSize("1px", Window.getClientHeight()/4+"px");
-		Label lab;
+		
 		if(loginInfo!=null)
 			lab = new Label(loginInfo.getNickname());
 		else
@@ -142,11 +146,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 		Label label = new Label("Editor by daveho@Github");
 		bottomFooterPanel.add(label);
 		label.setSize("180px", "23px");
-		
-		//Label lblPreferencesWillGo = new Label("Preferences will go here");
-		
-		//bottomFooterPanel.add(lblPreferencesWillGo);
-		//lblPreferencesWillGo.setSize("170px", "20px");
+
 		bottomFooterPanel.add(signOutLink);
 		prefs=new Anchor("Set Preferences");
 		bottomFooterPanel.add(prefs);
@@ -154,14 +154,14 @@ public abstract class ScreenWidget extends VerticalPanel{
 		prefs.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent e){
 				RootPanel.get("ace").clear();
-				RootPanel.get("ace").add(new ProfileWidget(loginInfo, t));
+				RootPanel.get("ace").add(new ProfileWidget(t));
 
 			}
 		});
 
 		//Current user
 		if(loginInfo!=null){
-			Label lblYouAreSigned = new Label("You are signed in as "+loginInfo.getNickname());
+			lblYouAreSigned = new Label("You are signed in as "+loginInfo.getNickname());
 			bottomFooterPanel.add(lblYouAreSigned);
 		}						  
 	}
@@ -215,7 +215,6 @@ public abstract class ScreenWidget extends VerticalPanel{
 			public void onSuccess(List<String> result){
 				pointRank.clear();
 				for(int x=0; x<result.size(); x++){
-					System.out.println(result.get(x));
 					pointRank.add(new Label(result.get(x)));
 				}
 			}
@@ -223,6 +222,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 	}
 	
 	private void callPointUpdateService(){
+		
 		pointUpdater.updatedPoints(new AsyncCallback<Long>(){
 			public void onFailure(Throwable caught){
 			}
@@ -248,6 +248,8 @@ public abstract class ScreenWidget extends VerticalPanel{
 	protected void updatePoints(){
 		callRankUpdateService();
 		callPointUpdateService();
+		lab.setText(loginInfo.getNickname());
+		lblYouAreSigned.setText(loginInfo.getNickname());	
 	}
 	
 	private void buildButtonUI(){
@@ -262,4 +264,9 @@ public abstract class ScreenWidget extends VerticalPanel{
 	public abstract void UI();
 	
 	public abstract void submit();
+	
+	public static void setLoginInfo(LoginInfo l){
+		loginInfo=l;
+	}
+	
 }

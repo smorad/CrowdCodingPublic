@@ -27,8 +27,7 @@ public class AceEditorWidget  extends EditorContainer{
 	
 
 	
-	public AceEditorWidget(LoginInfo info, AceEditorInfo aInfo ){
-		super(info);
+	public AceEditorWidget(AceEditorInfo aInfo ){
 		this.aInfo = aInfo;
 		this.methodDescription = aInfo.getDescription();
 		this.methodName = aInfo.getMethodName();

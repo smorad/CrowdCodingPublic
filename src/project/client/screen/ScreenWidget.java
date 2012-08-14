@@ -7,6 +7,7 @@ import project.client.editor.AceEditorWidget;
 import project.client.login.LoginInfo;
 import project.client.points.PointUpdateService;
 import project.client.points.PointUpdateServiceAsync;
+import project.client.profile.ProfileWidget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -20,6 +21,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -27,11 +29,11 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 
 public abstract class ScreenWidget extends VerticalPanel{
 	
-	protected LayoutPanel mainPanel = new LayoutPanel();
+	protected VerticalPanel mainPanel = new VerticalPanel();
 	private Label userPoints=new Label("0");
 	private VerticalPanel pointRank=new VerticalPanel();
 	private Anchor signOutLink = new Anchor("Sign Out");
-	private PointUpdateServiceAsync pointUpdater;
+	private  PointUpdateServiceAsync pointUpdater;
 	protected SubmitServiceAsync submitService;	//temporary
 	private LoginInfo loginInfo;
 	private Long points=1L;
@@ -40,25 +42,27 @@ public abstract class ScreenWidget extends VerticalPanel{
 	private Label spacer = new Label();
 	private Label spacer1 = new Label();
 	public AceEditorWidget a;
-	
+	protected TextArea instructions = new TextArea();
+	protected HorizontalPanel horizontalPanel;
+	protected Anchor prefs;
 	protected Button button;
 	protected HandlerRegistration remover;
 	
 	public ScreenWidget(LoginInfo loginInfo){
-		setSize(Window.getClientHeight() + "px",Window.getClientWidth()+"px");
 		this.loginInfo=loginInfo;
 		buildButtonUI();
 		buildUI();
 		buildPointDisplays();
-		
-		if(false){
+		if(true){
 			startService();
 			RootPanel.get("ace").getElement().setAttribute("align", "center");
 			DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginLeft", "auto");  //removes border
 			DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginRight", "auto");  //removes border
+			
+			DOM.setStyleAttribute(instructions.getElement(), "height", "200px");  //removes border
+			DOM.setStyleAttribute(instructions.getElement(), "width", "750px");  //removes border
 		}
 
-		spacer.setSize("1px", Window.getClientHeight()/4+"px");
 	}
 	
 
@@ -73,7 +77,11 @@ public abstract class ScreenWidget extends VerticalPanel{
 		
 		spacer.setSize("1px", Window.getClientHeight()/4+"px");
 		spacer1.setSize("1px", Window.getClientHeight()/4+"px");
-		Label lab=new Label(loginInfo.getNickname());
+		Label lab;
+		if(loginInfo!=null)
+			lab = new Label(loginInfo.getNickname());
+		else
+			lab = new Label();
 		Label lab1 = new Label("Your Points:");
 		userPointsPanel.add(spacer);
 		userPointsPanel.add(lab);
@@ -81,29 +89,30 @@ public abstract class ScreenWidget extends VerticalPanel{
 		lab.setStyleName("gwt-DialogBox");
 		lab.setSize("150px", "80px");
 		
-		final VerticalPanel verticalPanel_2 = new VerticalPanel();
-		hPanel.add(verticalPanel_2);
-		hPanel.setCellHorizontalAlignment(verticalPanel_2, ALIGN_RIGHT);
-		hPanel.setCellHorizontalAlignment(userPointsPanel, ALIGN_LEFT);
-		verticalPanel_2.setSize("750", "750");
+		final VerticalPanel contentPanel = new VerticalPanel();
+		hPanel.add(contentPanel);
+		hPanel.setCellHorizontalAlignment(userPointsPanel, ALIGN_RIGHT);
+		contentPanel.setSize("750px", "750px");
 		
 		Label lblCrowdcoding = new Label("Crowd Coding");
 		add(lblCrowdcoding);
 		lblCrowdcoding.setStyleName("gwt-Title");
 		lblCrowdcoding.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-		verticalPanel_2.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-		verticalPanel_2.add(mainPanel);
+		contentPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		//contentPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		contentPanel.add(instructions);
+		contentPanel.add(mainPanel);
 		mainPanel.setSize("750px", "650px");
 		
-		VerticalPanel verticalPanel = new VerticalPanel();
-		verticalPanel_2.add(verticalPanel);
-		verticalPanel.setSize("750px", "160px");
+		VerticalPanel footerPanel = new VerticalPanel();
+		contentPanel.add(footerPanel);
+		footerPanel.setSize("750px", "160px");
 		add(hPanel);	
 		
-		HorizontalPanel horizontalPanel = new HorizontalPanel();
-		verticalPanel.add(horizontalPanel);
+		horizontalPanel = new HorizontalPanel();
+		footerPanel.add(horizontalPanel);
 		horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-		horizontalPanel.setSize("100%", "40px");
+		horizontalPanel.setSize("750px", "40px");
 		button = new Button("Submit");
 		remover=button.addClickHandler(new ClickHandler() {
 			@Override
@@ -121,44 +130,40 @@ public abstract class ScreenWidget extends VerticalPanel{
 		horizontalPanel.add(button);
 		button.setWidth("100px");
 		
-		HorizontalPanel horizontalPanel_1 = new HorizontalPanel();
-		verticalPanel.add(horizontalPanel_1);
-		horizontalPanel_1.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-		horizontalPanel_1.setSpacing(5);
-		horizontalPanel_1.setSize("750px", "40px");
+		HorizontalPanel bottomFooterPanel = new HorizontalPanel();
+		footerPanel.add(bottomFooterPanel);
+		bottomFooterPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		bottomFooterPanel.setSpacing(5);
+		bottomFooterPanel.setSize("750px", "40px");
 		
 				
 				
 		Label label = new Label("Editor by daveho@Github");
-		horizontalPanel_1.add(label);
+		bottomFooterPanel.add(label);
 		label.setSize("180px", "23px");
 		
-		Label lblPreferencesWillGo = new Label("Preferences will go here");
-		horizontalPanel_1.add(lblPreferencesWillGo);
-		lblPreferencesWillGo.setSize("170px", "20px");
-		horizontalPanel_1.add(signOutLink);
+		//Label lblPreferencesWillGo = new Label("Preferences will go here");
 		
+		//bottomFooterPanel.add(lblPreferencesWillGo);
+		//lblPreferencesWillGo.setSize("170px", "20px");
+		bottomFooterPanel.add(signOutLink);
+		prefs=new Anchor("Set Preferences");
+		bottomFooterPanel.add(prefs);
+		final ScreenWidget t=this;
+		prefs.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent e){
+				RootPanel.get("ace").clear();
+				RootPanel.get("ace").add(new ProfileWidget(loginInfo, t));
+
+			}
+		});
+
 		//Current user
 		if(loginInfo!=null){
 			Label lblYouAreSigned = new Label("You are signed in as "+loginInfo.getNickname());
-			horizontalPanel_1.add(lblYouAreSigned);
-		}
-		setInitialSize(); //causes window to center without resizing
-							  
+			bottomFooterPanel.add(lblYouAreSigned);
+		}						  
 	}
-
-	private void setInitialSize() {
-		setHeight(Window.getClientHeight()+"px");
-		setWidth(Window.getClientWidth()+"px");
-		 userPointsPanel.setWidth(Window.getClientWidth()/5 + "px");
-		System.out.println("Client width is: "+ Window.getClientWidth());
-		Window.resizeTo(Window.getClientWidth()-1,Window.getClientHeight()-1);
-		System.out.println("initial resize");
-		
-		
-	}
-
-
 
 	private void startService(){
 
@@ -191,8 +196,9 @@ public abstract class ScreenWidget extends VerticalPanel{
 			pointRankPanel.add(spacer1);
 			pointRankPanel.add(pointRank);
 			hPanel.add(pointRankPanel);
+			hPanel.setCellHorizontalAlignment(pointRank, ALIGN_LEFT);
 		}
-		pointRank.setSize("500px", "28px");
+		pointRank.setSize("400px", "28px");
 		userPoints.setStyleName("gwt-DialogBox");
 		
 		userPointsPanel.add(userPoints);
@@ -244,6 +250,11 @@ public abstract class ScreenWidget extends VerticalPanel{
 	}
 	
 	private void buildButtonUI(){
+	}
+	
+	protected void onLoad(){
+		super.onLoad();
+		updatePoints();
 	}
 	
 

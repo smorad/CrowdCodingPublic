@@ -27,16 +27,16 @@ public class UserStoryWidget extends ScreenWidget{
 		Label l=new Label("User Story");
 		l.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		mainPanel.add(l);
-		mainPanel.setWidgetLeftWidth(l, 0.0, Unit.PX, 750.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(l, 29.0, Unit.PX, 21.0, Unit.PX);
+		//mainPanel.setWidgetLeftWidth(l, 0.0, Unit.PX, 750.0, Unit.PX);
+		//mainPanel.setWidgetTopHeight(l, 29.0, Unit.PX, 21.0, Unit.PX);
 		
 		area=new TextArea();
-		DOM.setStyleAttribute(area.getElement(), "width", "600px");
-		DOM.setStyleAttribute(area.getElement(), "height", "350px");
+		DOM.setStyleAttribute(area.getElement(), "width", "750px");
+		DOM.setStyleAttribute(area.getElement(), "height", "450px");
 				
 		mainPanel.add(area);
-		mainPanel.setWidgetLeftWidth(area, 49.0, Unit.PX, 630.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(area, 165.0, Unit.PX, 347.0, Unit.PX);
+		//mainPanel.setWidgetLeftWidth(area, 49.0, Unit.PX, 630.0, Unit.PX);
+		//mainPanel.setWidgetTopHeight(area, 165.0, Unit.PX, 347.0, Unit.PX);
 		area.setText(uInfo.getStory());
 	}
 	public void submit(){

@@ -53,11 +53,13 @@ public abstract class ScreenWidget extends VerticalPanel{
 	
 	protected static LoginInfo loginInfo;
 	
+	boolean temporaryForTestingPurposes=true;
+	
 	public ScreenWidget(){
 		buildButtonUI();
 		buildUI();
 		buildPointDisplays();
-		if(true){
+		if(temporaryForTestingPurposes){
 			startService();
 			RootPanel.get("ace").getElement().setAttribute("align", "center");
 			DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginLeft", "auto");  //removes border
@@ -73,7 +75,6 @@ public abstract class ScreenWidget extends VerticalPanel{
 
 
 	private void buildUI() {
-		System.out.println(loginInfo.getNickname());
 								
 		//hPanel.add(new Label());			
 		userPointsPanel = new VerticalPanel();
@@ -160,10 +161,13 @@ public abstract class ScreenWidget extends VerticalPanel{
 		});
 
 		//Current user
-		if(loginInfo!=null){
-			lblYouAreSigned = new Label("You are signed in as "+loginInfo.getNickname());
-			bottomFooterPanel.add(lblYouAreSigned);
-		}						  
+		String text;
+		if(loginInfo!=null)
+			text=loginInfo.getNickname();
+		else
+			 text="null";
+		lblYouAreSigned=new Label("You are signed in as "+text);
+		bottomFooterPanel.add(lblYouAreSigned);
 	}
 
 	private void startService(){
@@ -249,7 +253,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 		callRankUpdateService();
 		callPointUpdateService();
 		lab.setText(loginInfo.getNickname());
-		lblYouAreSigned.setText(loginInfo.getNickname());	
+		lblYouAreSigned.setText("You are signed in as "+loginInfo.getNickname());	
 	}
 	
 	private void buildButtonUI(){
@@ -257,6 +261,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 	
 	protected void onLoad(){
 		super.onLoad();
+		if(temporaryForTestingPurposes)
 		updatePoints();
 	}
 	

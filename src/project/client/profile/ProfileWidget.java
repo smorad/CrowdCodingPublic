@@ -72,6 +72,7 @@ public class ProfileWidget extends ScreenWidget {
 			public void onSuccess(String s){
 				loginInfo.setNickname(s);
 				updatePoints();
+				transfer();
 
 			}
 		});
@@ -83,7 +84,7 @@ public class ProfileWidget extends ScreenWidget {
 		remover=button.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent c){
 				submit();
-				transfer();
+				
 			}
 		});
 		prefs.removeFromParent();

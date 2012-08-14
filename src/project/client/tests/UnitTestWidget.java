@@ -21,6 +21,8 @@ public class UnitTestWidget extends  EditorContainer{
 	}
 	
 	public void UI(){
+		instructions.setText("This is the unit test phase. Using the test case given by another user, " +
+				"write a JsUnit test. Try to write as much as possible, don't worry about processing cycles or storage limits!");
 		setSize("1150px", "768px");
 		Label lblWriteAUnit = new Label("Write a Unit Test");
 		mainPanel.add(lblWriteAUnit);

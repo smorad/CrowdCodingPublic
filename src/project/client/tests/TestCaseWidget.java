@@ -32,6 +32,9 @@ public class TestCaseWidget extends ScreenWidget {
 	
 	
 	public void UI(){
+		instructions.setText("This is the test case phase. Write some single line test cases for the given description. " +
+				"These test cases will be used to create unit tests, so be descriptive! Try to think of some errors that" +
+				"the given function may have trouble with, such as having null variables.");
 		testCase = new ArrayList<TestCasePanel>();
 		Label lblDescribeTestCases = new Label("Describe test cases");
 		mainPanel.add(lblDescribeTestCases);

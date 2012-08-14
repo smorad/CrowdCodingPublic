@@ -23,7 +23,9 @@ public class UserStoryWidget extends ScreenWidget{
 	}
 	
 	public void UI(){
-	
+		instructions.setText("This is the user story phase. Have a program you would like to create in mind, and " +
+				"write the specifications here. Please be as descriptive and thorough as possible, as this is all the information" +
+				"all the other users will have to create the program.");
 		Label l=new Label("User Story");
 		l.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		mainPanel.add(l);

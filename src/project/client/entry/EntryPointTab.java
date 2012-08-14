@@ -57,7 +57,7 @@ public class EntryPointTab extends VerticalPanel{
 				TextBox t=parameters.get(parameters.size()-1);
 				TextBox type = paramType.get(paramType.size()-1);
 				t.setText("varName");
-				type.setText("String");
+				type.setText("@String");
 				//type.setSize("400px", "28px");
 				panel.add(t);
 				panel.add(type);

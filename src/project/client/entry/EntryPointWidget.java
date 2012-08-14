@@ -33,6 +33,10 @@ public class EntryPointWidget extends ScreenWidget{
 	}
 	
 	public void UI(){
+		instructions.setText("This is the entry point phase. Designate \"entry points\" by reading the user story thoroughly" +
+				" and identifying all the method calls to successfully create the program. Methods are the top tabs, each method description should contain" +
+				"a detailed description of what the method does, and information about what is returned. " +
+				"Make sure to also give your methods names and types!");
 		text=new TextArea();
 		
 		text.setText(story);

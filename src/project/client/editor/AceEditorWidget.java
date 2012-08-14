@@ -53,6 +53,10 @@ public class AceEditorWidget  extends EditorContainer{
 	
 	
 	public void UI(){
+		instructions.setText("This is the sketch phase. Write the method that takes the parameters given." +
+				" and returns what the description asks for" +
+				"use the pound symbol '#' to denote a line of psuedocode, comment with //. " +
+				"If your method is not done, make sure one of your lines starts with # so it is not flagged as complete!.");
 		setSize("1150px", "768px");
 		Label title=new Label("Sketch and Implement the Method. Use # to denote a line of pseudocode");
 		title.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);

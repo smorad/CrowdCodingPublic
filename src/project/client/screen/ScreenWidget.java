@@ -61,6 +61,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 			
 			DOM.setStyleAttribute(instructions.getElement(), "height", "200px");  //removes border
 			DOM.setStyleAttribute(instructions.getElement(), "width", "750px");  //removes border
+			instructions.setReadOnly(true);
 		}
 
 	}

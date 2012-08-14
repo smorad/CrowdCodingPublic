@@ -34,6 +34,7 @@ public class ProfileWidget extends ScreenWidget {
 		setSize("1150px", "768px");
 		override();
 		UI();
+		nameBox.setText(loginInfo.getNickname());
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class ProfileWidget extends ScreenWidget {
 		h.add(l);
 		nameBox=new TextBox();
 		//nameBox.setText("1");
-		h.add(nameBox);
+		h.add(nameBox);	
 		cancelButton=new Button("Cancel");
 		horizontalPanel.add(cancelButton);
 		cancelButton.addClickHandler(new ClickHandler(){

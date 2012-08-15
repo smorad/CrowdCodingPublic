@@ -7,6 +7,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -15,6 +16,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -30,6 +32,8 @@ public class LoginWidget extends LayoutPanel{
 	private AbsolutePanel absolutePanel;
 	private PopupPanel pPanel = new PopupPanel();;
 	private boolean checked;
+	private SimplePanel sPanel = new SimplePanel();
+	private HTML h = new HTML();
 	
 	public LoginWidget(final LoginInfo loginInfo){
 		RootPanel rPanel = RootPanel.get("ace");
@@ -49,19 +53,12 @@ public class LoginWidget extends LayoutPanel{
 
 	
 	private void createLogin(){
-		TextArea area = new TextArea();
+		/*TextArea area = new TextArea();
 		DOM.setStyleAttribute(area.getElement(), "border", "1px");  //removes border
 		DOM.setStyleAttribute(area.getElement(), "width", "100%");  //fixes size error on firefox
 		DOM.setStyleAttribute(area.getElement(), "height", "80%");
-
-		System.out.println("updated");
-		area.setReadOnly(true);
-		area.setText(
-			"Here is example advertisement text for our study, which may be supplemented with or\n"+
-			"replaced by text from the consent document description.\n "+
-			"Come code with us! Program in small steps and help explore a new paradigm of\n"+
-			"crowdsourcing coding. Complete only as many microtasks as you want, earn points, gain\n"+
-			"experience, and help build something cool. Sign up today, at <URL>.\n\n\n\n\n\n"+
+		area.setReadOnly(true);*/
+		h.setHTML(
 			"This project is about crowdsourcing programming. We're trying to see if a complex task like "+
 			"coding can successfully be broken up into a large number of small pieces. You can be part "+
 			"of this project and help us test the new paradigm, especially if you have some background "+
@@ -69,19 +66,17 @@ public class LoginWidget extends LayoutPanel{
 			"the order of seconds to minutes), and ask you to complete them as best as you can. You are "+
 			"welcome to use reference resources that we provide, or that you can find on the Internet and "+
 			"in other places, if you want to. You may find that you are learning as you go, and that's great. "+
-			"As you go, you'll earn experience points, visible in the <corner location> of this site. You can "+
+			"As you go, you'll earn experience points, visible in the left column of this site. You can "+
 			"use these points to highlight your contributions, on your profile page, where you're welcome to "+
 			"share a bit about who you are and showcase some of your work. If you like to rack 'em up, you "+
-			"can check out our <link>leaderboards</link> and jockey for position there. Occasionally, we "+
+			"can check out our leaderboard in the right column, and jockey for position there. Occasionally, we "+
 			"may offer raffles and other special rewards, and your experience points will be redeemable as "+
 			"entries. You are not obligated to complete any particular task, and you can stop at any time. "+
 			"If you go on to do something awesome with the knowledge you gained here, or if you get a "+
-			"job/promotion/connection/recognition based on we'd love to hear about it. If you have any "+
-			"questions about this study, now or later, you can ask us at <project e-mail address>. If this "+
-			"sounds good to you, click the <\"button\" or \"link\" depending on media> below to get started! "+ 
-			"We look forward to you being part of the project.\n\n"+
-
-			"Version 8/ 2009");
+			"job/promotion/connection/recognition based on it we'd love to hear about it. If you have any "+
+			"questions about this study, now or later, you can <a href=mailto:\"crowdcodingstudy@gmail.com\">email us</a>. If this "+
+			"sounds good to you, check the box and login to your Google account below to get started! "+ 
+			"We look forward to you being part of the project.");
 		
 		absolutePanel = new AbsolutePanel();
 		
@@ -89,9 +84,9 @@ public class LoginWidget extends LayoutPanel{
 	    tos.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 	    absolutePanel.add(tos, 0, 86);
 	    tos.setSize("408px", "20px");
-	    add(area);
-	    setWidgetLeftWidth(area, 250.0, Unit.PX, 1150.0, Unit.PX);
-	    setWidgetTopHeight(area, 100.0, Unit.PX, 491.0, Unit.PX);
+	    add(h);
+	    setWidgetLeftWidth(h, 250.0, Unit.PX, 1150.0, Unit.PX);
+	    setWidgetTopHeight(h, 100.0, Unit.PX, 491.0, Unit.PX);
 	    
 	    CheckBox chckbxNewCheckBox = new CheckBox("I am 18 years of age or older and have read and understood the text");
 	    chckbxNewCheckBox.setDirectionEstimator(false);

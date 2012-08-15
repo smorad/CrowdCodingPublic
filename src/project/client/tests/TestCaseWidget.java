@@ -6,6 +6,7 @@ import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -18,6 +19,7 @@ public class TestCaseWidget extends ScreenWidget {
 	private ArrayList<TestCasePanel> testCase;
 	private TestCaseInfo tInfo;
 	private String methodDescription;
+	private HTML h = new HTML();
 	VerticalPanel testContainer = new VerticalPanel();
 	Button btnNewTestCase;
 
@@ -31,12 +33,14 @@ public class TestCaseWidget extends ScreenWidget {
 	
 	
 	public void UI(){
-		instructions.setText("This is the test case phase. Write some single line test cases for the given description. " +
-				"These test cases will be used to create unit tests, so be descriptive! Try to think of some errors that" +
-				"the given function may have trouble with, such as having null variables.");
+		h.setHTML("This is the test case phase. Write some single line test cases for the given description. " +
+				"These test cases will be used to create unit tests, so be descriptive! Try to think of some errors that " +
+				"the given function may have trouble with.");
+		h.setStyleName("h1");
+		instructions.add(h);
 		testCase = new ArrayList<TestCasePanel>();
-		Label lblDescribeTestCases = new Label("Describe test cases");
-		mainPanel.add(lblDescribeTestCases);
+		/*Label lblDescribeTestCases = new Label("Describe test cases");
+		mainPanel.add(lblDescribeTestCases);*/
 		//mainPanel.setWidgetLeftWidth(lblDescribeTestCases, 336.0, Unit.PX, 125.0, Unit.PX);
 		//mainPanel.setWidgetTopHeight(lblDescribeTestCases, 13.0, Unit.PX, 42.0, Unit.PX);
 		

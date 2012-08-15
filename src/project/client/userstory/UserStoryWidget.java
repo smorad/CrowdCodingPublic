@@ -4,6 +4,7 @@ import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.dom.client.Style.Unit;
@@ -13,6 +14,7 @@ public class UserStoryWidget extends ScreenWidget{
 	
 	private TextArea area;
 	private UserStoryInfo uInfo;
+	private HTML h = new HTML();
 	
 	public UserStoryWidget(UserStoryInfo uInfo){
 		setSize("1150px", "768px");
@@ -22,12 +24,14 @@ public class UserStoryWidget extends ScreenWidget{
 	}
 	
 	public void UI(){
-		instructions.setText("This is the user story phase. Have a program you would like to create in mind, and " +
+		h.setStyleName("h1");
+		h.setHTML("<b>This is the user story phase. Have a program you would like to create in mind, and " +
 				"write the specifications here. Please be as descriptive and thorough as possible, as this is all the information" +
 				"all the other users will have to create the program.");
-		Label l=new Label("User Story");
+		instructions.add(h);
+/*		Label l=new Label("User Story");
 		l.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		mainPanel.add(l);
+		mainPanel.add(l);*/
 		//mainPanel.setWidgetLeftWidth(l, 0.0, Unit.PX, 750.0, Unit.PX);
 		//mainPanel.setWidgetTopHeight(l, 29.0, Unit.PX, 21.0, Unit.PX);
 		

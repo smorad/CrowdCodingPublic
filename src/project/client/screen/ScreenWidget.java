@@ -18,9 +18,11 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -45,7 +47,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 	private Label spacer = new Label();
 	private Label spacer1 = new Label();
 	public AceEditorWidget a;
-	protected TextArea instructions = new TextArea();
+	protected SimplePanel instructions = new SimplePanel();
 	protected HorizontalPanel horizontalPanel;
 	protected Anchor prefs;
 	protected Button button;
@@ -65,9 +67,8 @@ public abstract class ScreenWidget extends VerticalPanel{
 			DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginLeft", "auto");  //removes border
 			DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginRight", "auto");  //removes border
 			
-			DOM.setStyleAttribute(instructions.getElement(), "height", "100px");  //removes border
+			DOM.setStyleAttribute(instructions.getElement(), "height", "200px");  //removes border
 			DOM.setStyleAttribute(instructions.getElement(), "width", "750px");  //removes border
-			instructions.setReadOnly(true);
 		}
 
 	}

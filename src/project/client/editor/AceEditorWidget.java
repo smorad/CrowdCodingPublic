@@ -6,6 +6,7 @@ import project.client.EditorContainer;
 import project.client.login.LoginInfo;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -22,6 +23,7 @@ public class AceEditorWidget  extends EditorContainer{
 	private VerticalPanel panel = new VerticalPanel();
 	private TextArea lint;
 	private Timer timer;
+	private HTML h = new HTML();
 	
 	//JSLint j=new JSLintBuilder().fromDefault();
 	
@@ -52,13 +54,15 @@ public class AceEditorWidget  extends EditorContainer{
 	
 	
 	public void UI(){
-		instructions.setText("This is the sketch phase. Write the method that takes the parameters given." +
+		h.setStyleName("h1");
+		h.setHTML("This is the sketch phase. Write the method that takes the parameters given." +
 				" and returns what the description asks for" +
 				"use the pound symbol '#' to denote a line of psuedocode, comment with //. " +
 				"If your method is not done, make sure one of your lines starts with # so it is not flagged as complete!.");
+		instructions.add(h);
 		setSize("1150px", "768px");
-		Label title=new Label("Sketch and Implement the Method. Use # to denote a line of pseudocode");
-		title.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		/*Label title=new Label("Sketch and Implement the Method. Use # to denote a line of pseudocode");
+		title.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);*/
 		/*mainPanel.add(title);
 		mainPanel.setWidgetLeftWidth(title, 21.0, Unit.PX, 652.0, Unit.PX);
 		mainPanel.setWidgetTopHeight(title, 23.0, Unit.PX, 38.0, Unit.PX);*/
@@ -108,7 +112,7 @@ public class AceEditorWidget  extends EditorContainer{
 		DOM.setStyleAttribute(lint.getElement(), "height", "80px");
 		DOM.setStyleAttribute(lint.getElement(), "resize", "none");
 		textArea.setReadOnly(true);
-		panel.add(title);
+		//panel.add(title);
 		panel.add(description);
 		panel.add(textArea);
 		panel.add(aceEditor);

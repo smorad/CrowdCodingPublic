@@ -7,6 +7,7 @@ import project.client.screen.ScreenWidget;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextArea;
@@ -21,6 +22,7 @@ public class EntryPointWidget extends ScreenWidget{
 	private int numTabs;
 	private String story;
 	private EntryPointInfo eInfo;
+	private HTML h = new HTML();
 	
 	public EntryPointWidget(EntryPointInfo eInfo){
 		setSize("1150px", "768px");
@@ -32,10 +34,12 @@ public class EntryPointWidget extends ScreenWidget{
 	}
 	
 	public void UI(){
-		instructions.setText("This is the entry point phase. Designate \"entry points\" by reading the user story thoroughly" +
-				" and identifying all the method calls to successfully create the program. Methods are the top tabs, each method description should contain" +
-				"a detailed description of what the method does, and information about what is returned. " +
-				"Make sure to also give your methods names and types!");
+		h.setStyleName("h1");
+		h.setHTML("This is the entry point phase. Designate \"entry points\" by reading the user story thoroughly" +
+				" and identifying all the method calls to successfully create the program. Each method description should contain " +
+				"a detailed description of what the method does, and what is returned. " +
+				"Don't forget to give your methods names and types!");
+		instructions.add(h);
 		text=new TextArea();
 		
 		text.setText(story);
@@ -51,8 +55,8 @@ public class EntryPointWidget extends ScreenWidget{
 		//mainPanel.setWidgetLeftWidth(text, 76.0, Unit.PX, 597.0, Unit.PX);
 		//mainPanel.setWidgetTopHeight(text, 77.0, Unit.PX, 82.0, Unit.PX);
 
-		Label title=new Label("Identify the entry point necessary for this user story");
-		mainPanel.add(title);
+	/*	Label title=new Label("Identify the entry point necessary for this user story");
+		mainPanel.add(title);*/
 		//mainPanel.setWidgetLeftWidth(title, 207.0, Unit.PX, 311.0, Unit.PX);
 		//mainPanel.setWidgetTopHeight(title, 0.0, Unit.PX, 49.0, Unit.PX);
 		

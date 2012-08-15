@@ -3,6 +3,7 @@ package project.client.tests;
 import project.client.EditorContainer;
 import project.client.login.LoginInfo;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.TextArea;
@@ -10,6 +11,7 @@ import com.google.gwt.user.client.ui.TextArea;
 public class UnitTestWidget extends  EditorContainer{
 	private UnitTestInfo uInfo;
 	private String description, testCase;
+	private HTML h = new HTML();
 	
 	public UnitTestWidget(UnitTestInfo uInfo) {
 		this.uInfo=uInfo;
@@ -20,11 +22,13 @@ public class UnitTestWidget extends  EditorContainer{
 	}
 	
 	public void UI(){
-		instructions.setText("This is the unit test phase. Using the test case given by another user, " +
+		h.setStyleName("h1");
+		h.setHTML("<b>This is the unit test phase. Using the test case given by another user, " +
 				"write a JsUnit test. Try to write as much as possible, don't worry about processing cycles or storage limits!");
+		instructions.add(h);
 		setSize("1150px", "768px");
-		Label lblWriteAUnit = new Label("Write a Unit Test");
-		mainPanel.add(lblWriteAUnit);
+		/*Label lblWriteAUnit = new Label("Write a Unit Test");
+		mainPanel.add(lblWriteAUnit);*/
 		//mainPanel.setWidgetLeftWidth(lblWriteAUnit, 324.0, Unit.PX, 319.0, Unit.PX);
 		//mainPanel.setWidgetTopHeight(lblWriteAUnit, 26.0, Unit.PX, 58.0, Unit.PX);
 		

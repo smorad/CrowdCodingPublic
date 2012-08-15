@@ -47,7 +47,7 @@ public class ProfileWidget extends ScreenWidget {
 		sketch.setCurrentValue(loginInfo.getSketch());
 		mainPanel.add(sketch);
 		
-		testCase.setCurrentValue(loginInfo.getSketch());
+		testCase.setCurrentValue(loginInfo.getTestCase());
 		mainPanel.add(testCase);
 		
 		unit.setCurrentValue(loginInfo.getUnit());

@@ -1,2 +1,0 @@
-serviceClass: project.client.screen.SubmitService
-path: 83129D3791F44DD910A407A1E0380DF3.gwt.rpc

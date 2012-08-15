@@ -41,6 +41,7 @@ public class EntryPointWidget extends ScreenWidget{
 		text.setText(story);
 		text.setReadOnly(true);
 		text.setSize("600px", "80px");
+		text.setStyleName("dialogVPanel");  //makes the font black instead of grey
 		DOM.setStyleAttribute(text.getElement(), "border", "1px");  //removes border
 		DOM.setStyleAttribute(text.getElement(), "minHeight","100px");
 		DOM.setStyleAttribute(text.getElement(), "width", "600px");  //fixes size error on firefox

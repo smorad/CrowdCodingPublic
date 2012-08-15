@@ -32,6 +32,7 @@ public class LoginWidget extends LayoutPanel{
 	private boolean checked;
 	
 	public LoginWidget(final LoginInfo loginInfo){
+		RootPanel rPanel = RootPanel.get("ace");
 		//setSize("1024px","768px");
 		width=Window.getClientWidth();
 		height=Window.getClientHeight();
@@ -120,11 +121,15 @@ public class LoginWidget extends LayoutPanel{
 			    signInLink.setSize("408px", "33px");
 			    tos.addClickHandler(new ClickHandler() {
 			    	public void onClick(ClickEvent event) {
+			    		pPanel.hide();
 /*			    		RootLayoutPanel.get().clear();
 			    		RootPanel.get().clear();*/
-			    		RootPanel.get().clear();
+			    		//RootPanel.get().clear();
 			    		System.out.println("step1");
-			    		RootPanel.get().add(new TOSWidget(loginInfo));
+			    		//RootLayoutPanel.get().clear();
+			    		RootPanel.get("ace").clear();
+			    		RootPanel.get("ace").add(new TOSWidget(loginInfo));
+			    		//RootLayoutPanel.get().add(new TOSWidget(loginInfo));
 			    		System.out.println("step2");
 			    	}
 			    });

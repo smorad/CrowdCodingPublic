@@ -44,6 +44,7 @@ public class TestCaseWidget extends ScreenWidget {
 		TextArea methodBox=new TextArea();
 		methodBox.setText(methodDescription);
 		methodBox.setReadOnly(true);
+		methodBox.setStyleName("dialogVPanel");  //makes the font black instead of grey
 		mainPanel.add(methodBox);
 		//mainPanel.setWidgetLeftWidth(methodBox, 79.0, Unit.PX, 604.0, Unit.PX);
 		//mainPanel.setWidgetTopHeight(methodBox, 44.0, Unit.PX, 189.0, Unit.PX);

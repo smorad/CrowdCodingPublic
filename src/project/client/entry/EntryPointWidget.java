@@ -41,6 +41,7 @@ public class EntryPointWidget extends ScreenWidget{
 		
 		text.setText(story);
 		text.setReadOnly(true);
+		text.setStyleName("dialogVPanel");  //makes the font black instead of grey
 		text.setSize("600px", "80px");
 		DOM.setStyleAttribute(text.getElement(), "border", "1px");  //removes border
 		DOM.setStyleAttribute(text.getElement(), "minHeight","100px");

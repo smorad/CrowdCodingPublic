@@ -41,6 +41,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 	private HorizontalPanel hPanel = new HorizontalPanel();	
 	private Label spacer = new Label();
 	private Label spacer1 = new Label();
+	private Label spacer2 = new Label();
 	public AceEditorWidget a;
 	protected TextArea instructions = new TextArea();
 	protected HorizontalPanel horizontalPanel;
@@ -59,9 +60,13 @@ public abstract class ScreenWidget extends VerticalPanel{
 			DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginLeft", "auto");  //removes border
 			DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginRight", "auto");  //removes border
 			
-			DOM.setStyleAttribute(instructions.getElement(), "height", "200px");  //removes border
+			DOM.setStyleAttribute(instructions.getElement(), "height", "100px");  //removes border
 			DOM.setStyleAttribute(instructions.getElement(), "width", "750px");  //removes border
+			DOM.setStyleAttribute(instructions.getElement(), "border", "1px");
 			instructions.setReadOnly(true);
+			instructions.setStylePrimaryName("gwt-Instructions");
+			instructions.setStylePrimaryName("Black");
+			//instructions.set
 		}
 
 	}
@@ -94,6 +99,8 @@ public abstract class ScreenWidget extends VerticalPanel{
 		hPanel.add(contentPanel);
 		hPanel.setCellHorizontalAlignment(userPointsPanel, ALIGN_RIGHT);
 		contentPanel.setSize("750px", "750px");
+		spacer2.setSize("75px", "1px");
+		hPanel.add(spacer2);
 		
 		Label lblCrowdcoding = new Label("Crowd Coding");
 		add(lblCrowdcoding);
@@ -112,7 +119,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 		
 		horizontalPanel = new HorizontalPanel();
 		footerPanel.add(horizontalPanel);
-		horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
 		horizontalPanel.setSize("750px", "40px");
 		button = new Button("Submit");
 		remover=button.addClickHandler(new ClickHandler() {

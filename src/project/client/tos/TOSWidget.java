@@ -16,9 +16,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class TOSWidget extends VerticalPanel{
 	public TOSWidget(final LoginInfo loginInfo){
 		System.out.println("tos constructor start");
-		RootPanel.get().clear();
 	//ScrollPanel panel = new ScrollPanel();
 	TextArea area = new TextArea();
+	area.setStyleName("dialogVPanel");
 	DOM.setStyleAttribute(area.getElement(), "border", "1px");  //removes border
 	DOM.setStyleAttribute(area.getElement(), "width", "1150px");  //fixes size error on firefox
 	DOM.setStyleAttribute(area.getElement(), "height", "768px");
@@ -321,8 +321,8 @@ public class TOSWidget extends VerticalPanel{
 	b.addClickHandler(new ClickHandler(){
 		@Override
 		public void onClick(ClickEvent event) {
-		RootPanel.get().clear();
-		RootPanel.get().add(new LoginWidget(loginInfo));
+		RootPanel.get("ace").clear();
+		RootPanel.get("ace").add(new LoginWidget(loginInfo));
 			
 		}
 		

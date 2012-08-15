@@ -78,6 +78,7 @@ public class AceEditorWidget  extends EditorContainer{
 		//description.setReadOnly(true);
 		description.setText(methodDescription);
 		description.setReadOnly(true);
+		description.setStyleName("dialogVPanel");  //makes the font black instead of grey
 		//System.out.println("adding txtbox with text: "+ methodDescription);
 	/*	mainPanel.add(description);
 		mainPanel.setWidgetLeftWidth(description, 21.0, Unit.PX, 652.0, Unit.PX);

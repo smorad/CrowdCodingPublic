@@ -33,6 +33,7 @@ public class UnitTestWidget extends  EditorContainer{
 		txtrMethodDescription.setReadOnly(true);
 		txtrMethodDescription.setText(description);
 		mainPanel.add(txtrMethodDescription);
+		txtrMethodDescription.setStyleName("dialogVPanel");  //makes the font black instead of grey
 		//mainPanel.setWidgetLeftWidth(txtrMethodDescription, 86.0, Unit.PX, 631.0, Unit.PX);
 		//mainPanel.setWidgetTopHeight(txtrMethodDescription, 90.0, Unit.PX, 106.0, Unit.PX);
 		DOM.setStyleAttribute(txtrMethodDescription.getElement(), "border", "1px");  //removes border

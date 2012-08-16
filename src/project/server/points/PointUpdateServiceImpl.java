@@ -32,7 +32,8 @@ public class PointUpdateServiceImpl extends RemoteServiceServlet implements Poin
 			Entity e=allUsers.get(x);
 			Object a=e.getProperty("points");
 			long b=(Long)a;
-			strings.add((x+1)+": "+(String)e.getProperty("nickname")+" "+Long.toString(b)+" pts.");
+			//strings.add((x+1)+": "+(String)e.getProperty("nickname")+" "+Long.toString(b)+" pts.");
+			strings.add(Long.toString(b)+"  " + (String)e.getProperty("nickname"));
 		}
 		return strings;
 	}

@@ -212,8 +212,11 @@ public abstract class ScreenWidget extends VerticalPanel{
 	private void buildPointDisplays(){  //displays player points
 		pointRank.setStyleName("gwt-DialogBox");
 		if(pointRank!=null){
+			Label rankLabel = new Label("High Scores");
+			rankLabel.setStyleName("Bold");
 			VerticalPanel pointRankPanel = new VerticalPanel();
 			pointRankPanel.add(spacer1);
+			pointRankPanel.add(rankLabel);
 			pointRankPanel.add(pointRank);
 			hPanel.add(pointRankPanel);
 			//hPanel.setCellHorizontalAlignment(pointRank, ALIGN_CENTER);

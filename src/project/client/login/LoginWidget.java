@@ -16,13 +16,15 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 
-public class LoginWidget extends LayoutPanel{
+public class LoginWidget extends VerticalPanel{
 	
 	private Label loginLabel = new Label("Please sign in to your Google account");
 	private Anchor signInLink = new Anchor("Sign in");
@@ -36,13 +38,15 @@ public class LoginWidget extends LayoutPanel{
 	private HTML h = new HTML();
 	
 	public LoginWidget(final LoginInfo loginInfo){
-		RootPanel rPanel = RootPanel.get("ace");
 		//setSize("1024px","768px");
 		width=Window.getClientWidth();
 		height=Window.getClientHeight();
 		setSize("1150px", "768px");
 		this.loginInfo=loginInfo;
 		createLogin();
+		RootPanel.get("ace").getElement().setAttribute("align", "center");
+		DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginLeft", "auto");  //removes border
+		DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginRight", "auto");  //removes border
 		
 	}
 	public void onResize(){
@@ -53,11 +57,13 @@ public class LoginWidget extends LayoutPanel{
 
 	
 	private void createLogin(){
+		 VerticalPanel vPanel = new VerticalPanel();		 
 		/*TextArea area = new TextArea();
 		DOM.setStyleAttribute(area.getElement(), "border", "1px");  //removes border
 		DOM.setStyleAttribute(area.getElement(), "width", "100%");  //fixes size error on firefox
 		DOM.setStyleAttribute(area.getElement(), "height", "80%");
 		area.setReadOnly(true);*/
+		//h.addStyleName("userPoints");
 		h.setHTML(
 			"This project is about crowdsourcing programming. We're trying to see if a complex task like "+
 			"coding can successfully be broken up into a large number of small pieces. You can be part "+
@@ -80,19 +86,25 @@ public class LoginWidget extends LayoutPanel{
 		
 		absolutePanel = new AbsolutePanel();
 		
+		Label lblCrowdcoding = new Label("Crowd Coding");
+		lblCrowdcoding.setHeight("30px");
+		vPanel.add(lblCrowdcoding);
+		lblCrowdcoding.setStyleName("gwt-Title");
+		lblCrowdcoding.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+
 	    
 	    tos.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 	    absolutePanel.add(tos, 0, 86);
 	    tos.setSize("408px", "20px");
-	    add(h);
-	    setWidgetLeftWidth(h, 250.0, Unit.PX, 1150.0, Unit.PX);
-	    setWidgetTopHeight(h, 100.0, Unit.PX, 491.0, Unit.PX);
+	    vPanel.add(h);
+	    vPanel.setSize("1150px", "250px");
+	    add(vPanel);
 	    
 	    CheckBox chckbxNewCheckBox = new CheckBox("I am 18 years of age or older and have read and understood the text");
 	    chckbxNewCheckBox.setDirectionEstimator(false);
-	    add(chckbxNewCheckBox);
-	    setWidgetLeftWidth(chckbxNewCheckBox, 250.0, Unit.PX, 1150.0, Unit.PX);
-	    setWidgetTopHeight(chckbxNewCheckBox, 525.0, Unit.PX, 21.0, Unit.PX);
+	    vPanel.add(chckbxNewCheckBox);
+	    /*setWidgetLeftWidth(chckbxNewCheckBox, 250.0, Unit.PX, 1150.0, Unit.PX);
+	    setWidgetTopHeight(chckbxNewCheckBox, 525.0, Unit.PX, 21.0, Unit.PX);*/
 		//pPanel.add(absolutePanel);
 	    chckbxNewCheckBox.addClickHandler(new ClickHandler(){
 	    	public void onClick(ClickEvent event){

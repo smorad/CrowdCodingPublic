@@ -2,6 +2,9 @@
 <module rename-to='aceproject'>
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User'/>
+  <!-- BELOW ONLY ALLOWS CERTAIN BROWSERS, SPEEDS UP COMPILATION -->
+  <!-- DELETE LINE WHEN DONE TESTING -->
+  <set-property name="user.agent" value="gecko1_8"/>
 
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->

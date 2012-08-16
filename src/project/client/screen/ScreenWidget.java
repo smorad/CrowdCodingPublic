@@ -46,6 +46,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 	private HorizontalPanel hPanel = new HorizontalPanel();	
 	private Label spacer = new Label();
 	private Label spacer1 = new Label();
+	private Label spacer2 = new Label();
 	public AceEditorWidget a;
 	protected SimplePanel instructions = new SimplePanel();
 	protected HorizontalPanel horizontalPanel;
@@ -100,6 +101,9 @@ public abstract class ScreenWidget extends VerticalPanel{
 		hPanel.add(contentPanel);
 		hPanel.setCellHorizontalAlignment(userPointsPanel, ALIGN_RIGHT);
 		contentPanel.setSize("750px", "750px");
+		
+		spacer2.setSize("75px", "1px");
+		hPanel.add(spacer2);
 		
 		Label lblCrowdcoding = new Label("Crowd Coding");
 		add(lblCrowdcoding);

@@ -47,12 +47,14 @@ public abstract class ScreenWidget extends VerticalPanel{
 	private Label spacer = new Label();
 	private Label spacer1 = new Label();
 	private Label spacer2 = new Label();
+	private Label userPointSpacer = new Label();
 	public AceEditorWidget a;
 	protected SimplePanel instructions = new SimplePanel();
 	protected HorizontalPanel horizontalPanel;
 	protected Anchor prefs;
 	protected Button button;
 	protected HandlerRegistration remover;
+	private Label lab1;
 	
 	protected static LoginInfo loginInfo;
 	
@@ -90,10 +92,15 @@ public abstract class ScreenWidget extends VerticalPanel{
 			lab = new Label(loginInfo.getNickname());
 		else
 			lab = new Label();
-		Label lab1 = new Label("Your Points:");
+		lab1 = new Label("Your Points:");
+		lab1.setHorizontalAlignment(ALIGN_CENTER);
+		lab.setHorizontalAlignment(ALIGN_CENTER);
 		userPointsPanel.add(spacer);
 		userPointsPanel.add(lab);
+		userPointsPanel.add(userPointSpacer);
+		//userPointSpacer.setSize("1px", )
 		userPointsPanel.add(lab1);
+		lab1.setHeight("40px");
 		lab.setStyleName("gwt-DialogBox");
 		lab.setSize("150px", "80px");
 		
@@ -106,7 +113,10 @@ public abstract class ScreenWidget extends VerticalPanel{
 		hPanel.add(spacer2);
 		
 		Label lblCrowdcoding = new Label("Crowd Coding");
+		//titleSpacer.setText("This is a title lalalalalala");;
+		lblCrowdcoding.setHeight("30px");
 		add(lblCrowdcoding);
+		//titleSpacer1.setText("weeeeeeeeeeeeeeeeeeeeeeeeee ");
 		lblCrowdcoding.setStyleName("gwt-Title");
 		lblCrowdcoding.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
 		contentPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
@@ -206,13 +216,20 @@ public abstract class ScreenWidget extends VerticalPanel{
 			pointRankPanel.add(spacer1);
 			pointRankPanel.add(pointRank);
 			hPanel.add(pointRankPanel);
-			hPanel.setCellHorizontalAlignment(pointRank, ALIGN_LEFT);
+			//hPanel.setCellHorizontalAlignment(pointRank, ALIGN_CENTER);
+			//pointRankPanel.setCellHorizontalAlignment(true, ALIGN_CENTER);
 		}
-		pointRank.setSize("400px", "28px");
+		pointRank.setSize("250px", "40px");
+		//pointRank.setHorizontalAlignment(ALIGN_CENTER);
 		userPoints.setStyleName("gwt-DialogBox");
 		
 		userPointsPanel.add(userPoints);
-		userPoints.setSize("150px", "20px");
+		userPoints.setHorizontalAlignment(ALIGN_CENTER);
+		userPointsPanel.setCellHorizontalAlignment(userPoints, ALIGN_CENTER);
+		userPointsPanel.setCellHorizontalAlignment(lab, ALIGN_CENTER);
+		userPointsPanel.setCellHorizontalAlignment(lab1, ALIGN_CENTER);
+		userPoints.setSize("250px", "20px");
+		userPoints.setStyleName("userPoints");
 		
 	}
 	

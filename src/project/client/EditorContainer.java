@@ -12,7 +12,12 @@ import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
 import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 import project.shared.JSIssue;
-
+/*This is the superclass for all objects which use an AceEditor
+ * This is because AceEditor will not function correctly and throw exceptions
+ * Unless starting the editor is the very last thing you do
+ * So we made a class that will start the editor at the very end
+ * It also contains the JsLint checker output
+ */
 public abstract class EditorContainer extends ScreenWidget{
 	protected AceEditor aceEditor = new AceEditor(true);
 	private Timer timer;
@@ -42,7 +47,8 @@ public abstract class EditorContainer extends ScreenWidget{
 		return aceEditor;
 	}
 	
-	public void setAnnotations(){
+	public void setAnnotations(){  //used to set annotations, once we realized annotations don't work
+								   // we changed this to print JsLint to a textbox
 		aceEditor.clearAnnotations();
 		submitService.doCheck(aceEditor.getText(), new AsyncCallback<List<JSIssue>>(){
 			public void onFailure(Throwable t){
@@ -50,20 +56,16 @@ public abstract class EditorContainer extends ScreenWidget{
 			}
 			public void onSuccess(List<JSIssue> t){
 				for(JSIssue issue:t){
-					//int line=issue.getLine();
-					//int character=issue.getCharacter();
 					String reason= issue.getReason();
-					//aceEditor.addAnnotation(line, character, reason, AceAnnotationType.ERROR);
 					lintData = issue.getReason() + " at line" + issue.getLine() + " char" + issue.getCharacter();
 				}
 				aceEditor.setAnnotations();
-				//Window.alert("Yes");
 			}
 		});
 		
 	}
 	
-	public void clearTimer(){
+	public void clearTimer(){ //Timer cancels to save resources
 		timer.cancel();
 	}
 	

@@ -21,7 +21,10 @@ import com.googlecode.jslint4java.Issue;
 import com.googlecode.jslint4java.JSLint;
 import com.googlecode.jslint4java.JSLintBuilder;
 import com.googlecode.jslint4java.JSLintResult;
-
+/*Despite the name,  this isn't really for submission
+ * It is for points and JsLint checking
+ * This is probably one of the oldest files, so I'm not quite sure what it does exactly
+ */
 public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitService {
 
 	/**
@@ -43,10 +46,10 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
 		Entity user=null;
-		Key k = KeyFactory.createKey("AceProjectUser", currentUser.getEmail()); //userid will be the actual userid from login instead of this string
+		Key k = KeyFactory.createKey("AceProjectUser", currentUser.getEmail()); //creates user in datastore
 
 		try{
-			user = datastore.get(k);//new Entity(user);
+			user = datastore.get(k);
 
 		}
 		catch(EntityNotFoundException e){
@@ -91,7 +94,7 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		Entity user=null;
 		Key k = KeyFactory.createKey("AceProjectUser", currentUser.getEmail()); 
 		try{
-			user = datastore.get(k);//new Entity(user);
+			user = datastore.get(k);
 		}
 		catch(EntityNotFoundException e){
 			user=new Entity(k);

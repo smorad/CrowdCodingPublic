@@ -9,7 +9,8 @@
   margin: 40px 0px 70px;
   text-align: left;
 }
-
+/*All this sliderbar stuff is required for GWT-Incubator (the slider addon) to work
+*/
 .gwt-SliderBar-shell {
   border: 2px solid #faf9f7;
   border-right: 2px solid #848280;

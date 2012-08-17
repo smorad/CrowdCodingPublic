@@ -10,7 +10,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class AceEditorInfo implements IsSerializable, InfoObject{
 	private boolean isDone;
-	private Long key;
+	private Long key; //used for serialization
 	private String code;
 	private String description; //from parent
 	private String returnType;
@@ -20,7 +20,7 @@ public class AceEditorInfo implements IsSerializable, InfoObject{
 	private boolean stubCreated;
 	
 	
-	public boolean getStubCreated(){
+	public boolean getStubCreated(){  //Used so user code is not overwritten with method stub
 		return stubCreated;
 	}
 	public void setStubCreated(boolean b){
@@ -46,7 +46,7 @@ public class AceEditorInfo implements IsSerializable, InfoObject{
 	}
 
 	@Override
-	public void setKeyString(Long s) {
+	public void setKeyString(Long s) {  
 		key=s;
 	}
 

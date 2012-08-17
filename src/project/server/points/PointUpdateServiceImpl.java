@@ -17,14 +17,14 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import project.client.points.PointUpdateService;
-
+//Does exactly what the title says
 @SuppressWarnings("serial")
 public class PointUpdateServiceImpl extends RemoteServiceServlet implements PointUpdateService{
 	public List<String> updatedList(){
 		ArrayList<String> strings=new ArrayList<String>();
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		Query q=new Query("AceProjectUser").addSort("points", Query.SortDirection.DESCENDING);	
-		List<Entity> allUsers=datastore.prepare(q).asList(FetchOptions.Builder.withLimit(5));
+		Query q=new Query("AceProjectUser").addSort("points", Query.SortDirection.DESCENDING);	//used for leaderboard
+		List<Entity> allUsers=datastore.prepare(q).asList(FetchOptions.Builder.withLimit(5));  //used for leaderboard
 
 		for(int x=0; x<10; x++){
 			if(x>=allUsers.size())
@@ -32,14 +32,12 @@ public class PointUpdateServiceImpl extends RemoteServiceServlet implements Poin
 			Entity e=allUsers.get(x);
 			Object a=e.getProperty("points");
 			long b=(Long)a;
-			//strings.add((x+1)+": "+(String)e.getProperty("nickname")+" "+Long.toString(b)+" pts.");
-			strings.add(Long.toString(b)+"  " + (String)e.getProperty("nickname"));
+			strings.add(Long.toString(b)+"  " + (String)e.getProperty("nickname")); //This is what is displayed in the right column
 		}
 		return strings;
 	}
 	
 	public Long updatedPoints(){
-		//ArrayList<String> strings=new ArrayList<String>();
 		UserService userService = UserServiceFactory.getUserService();
 		User currentUser=userService.getCurrentUser();
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -49,7 +47,7 @@ public class PointUpdateServiceImpl extends RemoteServiceServlet implements Poin
 			user = datastore.get(k);//new Entity(user);
 			System.out.println("name2 is: "+user.getProperty("nickname"));
 		}
-		catch(EntityNotFoundException e){
+		catch(EntityNotFoundException e){  //if user doesn't exist
 			user=new Entity(k);
 			user.setProperty("points",0);
 			user.setProperty("nickname", currentUser.getNickname());

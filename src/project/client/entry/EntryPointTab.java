@@ -13,7 +13,8 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
+/*These are the individual tabs for each method
+ */
 public class EntryPointTab extends VerticalPanel{
 	private static double labelWidth=680.0, labelHeight=25.0;
 	private ArrayList<TextBox> parameters=new ArrayList<TextBox>();
@@ -24,7 +25,7 @@ public class EntryPointTab extends VerticalPanel{
 		setSize("685px", "260px");
 		ScrollPanel scroll=new ScrollPanel();
 		scroll.setSize("685px", "220px");
-		add(scroll);
+		add(scroll); //allows scrolling
 		
 		final LayoutPanel panel=new LayoutPanel();
 		panel.setSize("685px", "200px");
@@ -35,7 +36,7 @@ public class EntryPointTab extends VerticalPanel{
 		panel.add(methodDesc);
 		panel.setWidgetLeftWidth(methodDesc, 0.0, Unit.PX, 685.0, Unit.PX);
 		panel.setWidgetTopHeight(methodDesc, 0.0, Unit.PX, 75.0, Unit.PX);
-		DOM.setStyleAttribute(methodDesc.getElement(), "width", "600px");
+		DOM.setStyleAttribute(methodDesc.getElement(), "width", "600px"); //firefox doesn't recognize setSize()
 		
 		methodName=new TextBox();
 		methodName.setText("Method name goes here.");
@@ -56,9 +57,8 @@ public class EntryPointTab extends VerticalPanel{
 				paramType.add(new TextBox());
 				TextBox t=parameters.get(parameters.size()-1);
 				TextBox type = paramType.get(paramType.size()-1);
-				t.setText("varName");
-				type.setText("@String");
-				//type.setSize("400px", "28px");
+				t.setText("varName"); //example variable name
+				type.setText("@String");  //example parameter
 				panel.add(t);
 				panel.add(type);
 				panel.setWidgetLeftWidth(t, 0.0, Unit.PX, 200, Unit.PX);
@@ -74,9 +74,9 @@ public class EntryPointTab extends VerticalPanel{
 		removeParButton.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event){
 				if(!parameters.isEmpty())
-					panel.remove(parameters.remove(parameters.size()-1));
+					panel.remove(parameters.remove(parameters.size()-1)); //remove last parameter
 				if(!paramType.isEmpty())
-					panel.remove(paramType.remove(paramType.size()-1));
+					panel.remove(paramType.remove(paramType.size()-1)); //remote last parameter type
 			}
 		});
 		h.add(removeParButton);

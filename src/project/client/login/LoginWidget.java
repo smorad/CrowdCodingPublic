@@ -23,7 +23,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-
+/* This is the widget shown when first loading the page
+ * the user must check the box, then a popup dialog is shown.
+ * The user may then login and be given a microtask, or may view the terms
+ * of service.
+ */
 public class LoginWidget extends VerticalPanel{
 	
 	private Label loginLabel = new Label("Please sign in to your Google account");
@@ -45,8 +49,8 @@ public class LoginWidget extends VerticalPanel{
 		this.loginInfo=loginInfo;
 		createLogin();
 		RootPanel.get("ace").getElement().setAttribute("align", "center");
-		DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginLeft", "auto");  //removes border
-		DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginRight", "auto");  //removes border
+		DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginLeft", "auto");  //These two lines center the page
+		DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginRight", "auto");  //Make sure to use RootPanel.get("ace")
 		
 	}
 	public void onResize(){
@@ -57,13 +61,7 @@ public class LoginWidget extends VerticalPanel{
 
 	
 	private void createLogin(){
-		 VerticalPanel vPanel = new VerticalPanel();		 
-		/*TextArea area = new TextArea();
-		DOM.setStyleAttribute(area.getElement(), "border", "1px");  //removes border
-		DOM.setStyleAttribute(area.getElement(), "width", "100%");  //fixes size error on firefox
-		DOM.setStyleAttribute(area.getElement(), "height", "80%");
-		area.setReadOnly(true);*/
-		//h.addStyleName("userPoints");
+		 VerticalPanel vPanel = new VerticalPanel();	//This vPanel gets rid of superfluous spacing	 
 		h.setHTML(
 			"This project is about crowdsourcing programming. We're trying to see if a complex task like "+
 			"coding can successfully be broken up into a large number of small pieces. You can be part "+
@@ -86,7 +84,7 @@ public class LoginWidget extends VerticalPanel{
 		
 		absolutePanel = new AbsolutePanel();
 		
-		Label lblCrowdcoding = new Label("Crowd Coding");
+		Label lblCrowdcoding = new Label("Crowd Coding");  //main title
 		lblCrowdcoding.setHeight("30px");
 		vPanel.add(lblCrowdcoding);
 		lblCrowdcoding.setStyleName("gwt-Title");
@@ -103,19 +101,14 @@ public class LoginWidget extends VerticalPanel{
 	    CheckBox chckbxNewCheckBox = new CheckBox("I am 18 years of age or older and have read and understood the text");
 	    chckbxNewCheckBox.setDirectionEstimator(false);
 	    vPanel.add(chckbxNewCheckBox);
-	    /*setWidgetLeftWidth(chckbxNewCheckBox, 250.0, Unit.PX, 1150.0, Unit.PX);
-	    setWidgetTopHeight(chckbxNewCheckBox, 525.0, Unit.PX, 21.0, Unit.PX);*/
-		//pPanel.add(absolutePanel);
-	    chckbxNewCheckBox.addClickHandler(new ClickHandler(){
+	    chckbxNewCheckBox.addClickHandler(new ClickHandler(){  //Using checkbox like a button w/ click handler
 	    	public void onClick(ClickEvent event){
 	    		
 	    		pPanel.setWidget(absolutePanel);
-	    		checked=!checked;
+	    		checked=!checked;  //toggle checkbox value
 	    	
-	    		pPanel.setAnimationEnabled(true);
+	    		pPanel.setAnimationEnabled(true);  //these two lines make the popup look nice
 	    		pPanel.setGlassEnabled(true);
-		    	//setWidgetLeftWidth(absolutePanel, 345.0, Unit.PX, 408.0, Unit.PX);
-			    //setWidgetTopHeight(absolutePanel, 607.0, Unit.PX, 126.0, Unit.PX);
 			    absolutePanel.setSize("408px", "126px");
 			    loginLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 			    absolutePanel.add(loginLabel, 0, 0);
@@ -129,19 +122,14 @@ public class LoginWidget extends VerticalPanel{
 			    tos.addClickHandler(new ClickHandler() {
 			    	public void onClick(ClickEvent event) {
 			    		pPanel.hide();
-/*			    		RootLayoutPanel.get().clear();
-			    		RootPanel.get().clear();*/
-			    		//RootPanel.get().clear();
 			    		System.out.println("step1");
-			    		//RootLayoutPanel.get().clear();
 			    		RootPanel.get("ace").clear();
-			    		RootPanel.get("ace").add(new TOSWidget(loginInfo));
-			    		//RootLayoutPanel.get().add(new TOSWidget(loginInfo));
+			    		RootPanel.get("ace").add(new TOSWidget(loginInfo));  //clear panel and add new page (how we do all page changes)
 			    		System.out.println("step2");
 			    	}
 			    });
 				if(checked)
-	    			pPanel.center();
+	    			pPanel.center();  //shows and centers popup window
 	    		else{pPanel.hide();}
 		}
 	    	});

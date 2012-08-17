@@ -28,7 +28,17 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
-
+/*All the widgets extend this class.
+ * This is where a lot of the magic happens.
+ * All the widgets are put inside the contentPanel.
+ * I've been using labels as spacers.
+ * The current layout is this:
+ * 
+ * RootPanel|->VerticalPanel|-> CrowdCoding title
+ * 						    |-> hPanel|->(spacer) |->userPointsPanel|->Spacer, label, spacer, label, user points
+ *                                                |->contentPanel   |->currentWidget, footerPanel
+ *                                    |->(spacer) |->pointRankPanel |->label, leaderboard
+ */
 public abstract class ScreenWidget extends VerticalPanel{
 	
 	protected VerticalPanel mainPanel = new VerticalPanel();
@@ -36,7 +46,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 	private VerticalPanel pointRank=new VerticalPanel();
 	private Anchor signOutLink = new Anchor("Sign Out");
 	private  PointUpdateServiceAsync pointUpdater;
-	protected SubmitServiceAsync submitService;	//temporary
+	protected SubmitServiceAsync submitService;	
 	
 	private Label lblYouAreSigned;
 	private Label lab;
@@ -64,23 +74,21 @@ public abstract class ScreenWidget extends VerticalPanel{
 		buildButtonUI();
 		buildUI();
 		buildPointDisplays();
-		if(temporaryForTestingPurposes){
+		if(temporaryForTestingPurposes){  //when using GWT WindowBuilder this should be false, else true
 			startService();
 			RootPanel.get("ace").getElement().setAttribute("align", "center");
-			DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginLeft", "auto");  //removes border
-			DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginRight", "auto");  //removes border
+			DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginLeft", "auto");  
+			DOM.setStyleAttribute(RootPanel.get("ace").getElement(), "marginRight", "auto"); //centers page
 			
-			DOM.setStyleAttribute(instructions.getElement(), "height", "200px");  //removes border
-			DOM.setStyleAttribute(instructions.getElement(), "width", "750px");  //removes border
+			DOM.setStyleAttribute(instructions.getElement(), "height", "200px");  
+			DOM.setStyleAttribute(instructions.getElement(), "width", "750px");  //setSize() doesn't work on firefox
 		}
 
 	}
 	
 
-
-	private void buildUI() {
-								
-		//hPanel.add(new Label());			
+//This function is messy, just read the comments at the very top for a better picture
+	private void buildUI() {		
 		userPointsPanel = new VerticalPanel();
 		hPanel.add(userPointsPanel);
 		userPointsPanel.setSize("250px", "40px");
@@ -98,7 +106,6 @@ public abstract class ScreenWidget extends VerticalPanel{
 		userPointsPanel.add(spacer);
 		userPointsPanel.add(lab);
 		userPointsPanel.add(userPointSpacer);
-		//userPointSpacer.setSize("1px", )
 		userPointsPanel.add(lab1);
 		lab1.setHeight("40px");
 		lab.setStyleName("gwt-DialogBox");
@@ -113,14 +120,11 @@ public abstract class ScreenWidget extends VerticalPanel{
 		hPanel.add(spacer2);
 		
 		Label lblCrowdcoding = new Label("Crowd Coding");
-		//titleSpacer.setText("This is a title lalalalalala");;
 		lblCrowdcoding.setHeight("30px");
 		add(lblCrowdcoding);
-		//titleSpacer1.setText("weeeeeeeeeeeeeeeeeeeeeeeeee ");
 		lblCrowdcoding.setStyleName("gwt-Title");
 		lblCrowdcoding.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
 		contentPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-		//contentPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		contentPanel.add(instructions);
 		contentPanel.add(mainPanel);
 		mainPanel.setSize("750px", "650px");
@@ -219,16 +223,13 @@ public abstract class ScreenWidget extends VerticalPanel{
 			pointRankPanel.add(rankLabel);
 			pointRankPanel.add(pointRank);
 			hPanel.add(pointRankPanel);
-			//hPanel.setCellHorizontalAlignment(pointRank, ALIGN_CENTER);
-			//pointRankPanel.setCellHorizontalAlignment(true, ALIGN_CENTER);
 		}
 		pointRank.setSize("250px", "40px");
-		//pointRank.setHorizontalAlignment(ALIGN_CENTER);
 		userPoints.setStyleName("gwt-DialogBox");
 		
 		userPointsPanel.add(userPoints);
 		userPoints.setHorizontalAlignment(ALIGN_CENTER);
-		userPointsPanel.setCellHorizontalAlignment(userPoints, ALIGN_CENTER);
+		userPointsPanel.setCellHorizontalAlignment(userPoints, ALIGN_CENTER);  //centers text
 		userPointsPanel.setCellHorizontalAlignment(lab, ALIGN_CENTER);
 		userPointsPanel.setCellHorizontalAlignment(lab1, ALIGN_CENTER);
 		userPoints.setSize("250px", "20px");
@@ -265,11 +266,10 @@ public abstract class ScreenWidget extends VerticalPanel{
 	public void callSubmitService() {
 		submitService.sendCode("Success", points, new AsyncCallback<String>() {
 			public void onFailure(Throwable caught) {
-				Window.alert("Failure");
+				Window.alert("Point update failure");
 			}
 
 			public void onSuccess(String result) {
-				//Window.alert("Success");
 				updatePoints();
 			}
 		});
@@ -286,7 +286,7 @@ public abstract class ScreenWidget extends VerticalPanel{
 	
 	protected void onLoad(){
 		super.onLoad();
-		if(temporaryForTestingPurposes)
+		if(temporaryForTestingPurposes) //true if not using GWT WindowBuilder
 		updatePoints();
 	}
 	

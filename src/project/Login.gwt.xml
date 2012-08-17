@@ -15,8 +15,11 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
+  <!-- Below is for AceEditor -->
 	<inherits name='edu.ycp.cs.dh.acegwt.AceGWT'/>
+	<!-- Below is for server side loggin -->
 	<inherits name="com.google.gwt.logging.Logging"/>
+	<!-- Below is for sliders -->
 	<inherits name='com.google.gwt.gen2.Gen2'/>
   <!-- Specify the app entry point class.                         -->
   <entry-point class='project.client.AceProject'/>
@@ -26,7 +29,7 @@
   <source path='shared'/>
 
   
-  
+    <!--  Disables annoying logger popup -->
   	<set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED"/>
   	<set-property name="gwt.logging.popupHandler" value="DISABLED" />
   	<set-property name="gwt.logging.consoleHandler" value="DISABLED" />

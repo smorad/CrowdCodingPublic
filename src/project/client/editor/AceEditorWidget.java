@@ -12,13 +12,19 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-
+/* This widget is the Sketch/Impl widget/phase.
+ * It contains AceEditor, which is a wonky addon,
+ * if you find it not working, it's because you must add the editor
+ * and all its parent panels to the root panel
+ * before calling editor.startEditor().
+ * Also, annotations can be added, but cannot be removed due to
+ * a bug from the developer
+ */
 public class AceEditorWidget  extends EditorContainer{
 	
 	private String methodDescription;
 	private  ArrayList<String> parameters;
 	private String methodName, methodType;
-	private TextArea description;
 	private AceEditorInfo aInfo;
 	private VerticalPanel panel = new VerticalPanel();
 	private TextArea lint;
@@ -61,11 +67,6 @@ public class AceEditorWidget  extends EditorContainer{
 				"If your method is not done, make sure one of your lines starts with # so it is not flagged as complete!.");
 		instructions.add(h);
 		setSize("1150px", "768px");
-		/*Label title=new Label("Sketch and Implement the Method. Use # to denote a line of pseudocode");
-		title.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);*/
-		/*mainPanel.add(title);
-		mainPanel.setWidgetLeftWidth(title, 21.0, Unit.PX, 652.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(title, 23.0, Unit.PX, 38.0, Unit.PX);*/
 		mainPanel.add(panel);
 	
 		
@@ -73,38 +74,17 @@ public class AceEditorWidget  extends EditorContainer{
 		
 		aceEditor.setWidth("652px");
 		aceEditor.setHeight("300px");
-		/*mainPanel.add(aceEditor);
-		mainPanel.setWidgetLeftWidth(aceEditor, 21.0, Unit.PX, 652.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(aceEditor, 274.0, Unit.PX, 300.0, Unit.PX);*/
-						
-		description=new TextArea();
-		//description.setReadOnly(true);
-		description.setText(methodDescription);
-		description.setReadOnly(true);
-		description.setStyleName("dialogVPanel");  //makes the font black instead of grey
-		//System.out.println("adding txtbox with text: "+ methodDescription);
-	/*	mainPanel.add(description);
-		mainPanel.setWidgetLeftWidth(description, 21.0, Unit.PX, 652.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(description, 80.0, Unit.PX, 162.0, Unit.PX);*/
-		
 		TextArea textArea = new TextArea();
-		lint = new TextArea();
-	/*	mainPanel.add(textArea);
-		mainPanel.setWidgetLeftWidth(textArea, 21.0, Unit.PX, 652.0, Unit.PX);
-		mainPanel.setWidgetTopHeight(textArea, 248.0, Unit.PX, 86.0, Unit.PX);*/
-		textArea.setText("Method signature:\n" + "method name: " + aInfo.getMethodName()+ "\n" +  "parameters: " + aInfo.getParameters() + "\n" + "method return type: " + aInfo.getReturnType());
-		DOM.setStyleAttribute(description.getElement(), "border", "1px");  //removes border
-		DOM.setStyleAttribute(description.getElement(), "minHeight","100px");
-		DOM.setStyleAttribute(description.getElement(), "width", "652px");  //fixes size error on firefox
-		DOM.setStyleAttribute(description.getElement(), "height", "80px");
+		lint = new TextArea();  //This is the JsLint checker output area
+		textArea.setText("Method signature:\n" + "method name: " + aInfo.getMethodName()+ "\n" +
+		"parameters: " + aInfo.getParameters() + "\n" + "method return type: " + aInfo.getReturnType()); //these lines make method signature
 		
 		DOM.setStyleAttribute(textArea.getElement(), "border", "1px");  //removes border
 		DOM.setStyleAttribute(textArea.getElement(), "minHeight","100px");
 		DOM.setStyleAttribute(textArea.getElement(), "width", "652px");  //fixes size error on firefox
 		DOM.setStyleAttribute(textArea.getElement(), "height", "80px");
 		
-		DOM.setStyleAttribute(textArea.getElement(), "resize", "none");
-		DOM.setStyleAttribute(description.getElement(), "resize", "none");
+		DOM.setStyleAttribute(textArea.getElement(), "resize", "none");  //resize is not allowed
 		
 		DOM.setStyleAttribute(lint.getElement(), "border", "1px");  //removes border
 		DOM.setStyleAttribute(lint.getElement(), "minHeight","100px");
@@ -112,8 +92,6 @@ public class AceEditorWidget  extends EditorContainer{
 		DOM.setStyleAttribute(lint.getElement(), "height", "80px");
 		DOM.setStyleAttribute(lint.getElement(), "resize", "none");
 		textArea.setReadOnly(true);
-		//panel.add(title);
-		panel.add(description);
 		panel.add(textArea);
 		panel.add(aceEditor);
 		panel.add(lint);
@@ -125,11 +103,12 @@ public class AceEditorWidget  extends EditorContainer{
 		super.buildEditor();
 		aceEditor.setText(aInfo.getCode());
 /*		if(!aInfo.getStubCreated()){
-			aceEditor.setText(method());  //autogenerates method stub
-			aInfo.setStubCreated(true);
+			aceEditor.setText(method());  //autogenerates method stub in Editor. Currently not in use,
+			aInfo.setStubCreated(true);   //since method signature already generated in textArea
 		}*/
 	}
 	
+	@Deprecated
 	private String method(){  //used to autogenerate method stub
 		String s="public "+methodType+" "+methodName+"(";
 		for(int x=0; x<parameters.size(); x++){
@@ -158,20 +137,15 @@ public class AceEditorWidget  extends EditorContainer{
 	
 	public void submit(){
 		boolean tempIsDone = true;
-	/*	String text = ">> denote pseudo code with the '>>' notation \n" +
-				aceEditor.getText();
-		aInfo.setCode(text);*/
 		String text = aceEditor.getText();
-		aInfo.setCode(text);
-		//System.out.println("text in submit is "+ text);
-		//System.out.println("aInfo code in submit is " + aInfo.getCode());
-		String lines[] = text.split("[\\r\\n]+");
+		aInfo.setCode(text);  //save text in aInfo object
+		String lines[] = text.split("[\\r\\n]+");   //split text on newlines
 		for(int i=0; i<lines.length; i++ ){
-			if(lines[i].trim().startsWith("#")){
-				aInfo.setDone(false);
+			if(lines[i].trim().startsWith("#")){  //if line starts with # (not counting whitespace)
+				aInfo.setDone(false);  //psuedocode exists, phase not complete
 				return;
 			}
-			aInfo.setDone(tempIsDone);
+			aInfo.setDone(tempIsDone);  //phase complete
 	}
 }
 }

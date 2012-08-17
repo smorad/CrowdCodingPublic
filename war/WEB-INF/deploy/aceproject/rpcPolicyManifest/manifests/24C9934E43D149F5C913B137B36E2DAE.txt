@@ -1,0 +1,2 @@
+serviceClass: project.client.submission.SubmitService
+path: AC54AF60C7BD409BEE3EF411C85BE9A6.gwt.rpc

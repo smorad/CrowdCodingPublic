@@ -8,14 +8,15 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
-
+/*Pressing add test case creates a new testcase panel
+ * 
+ */
 public class TestCasePanel extends HorizontalPanel{
 	private TextBox textBox;
 
 	public TestCasePanel(){
 		DOM.setStyleAttribute(getElement(), "width", "750px");  //fixes size error on firefox
 		DOM.setStyleAttribute(getElement(), "height", "20px");
-		//setSpacing(10);
 		
 		textBox = new TextBox();
 		textBox.setText("Write test here");
@@ -27,7 +28,8 @@ public class TestCasePanel extends HorizontalPanel{
 		delete.setText("Delete");
 		delete.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {	
-				try{
+				try{//This monster line deletes the testcase panel and removes that panel from the list
+					//if you get errors here when changing something, you may need to add/remove a getParent()
 				((TestCaseWidget)delete.getParent().getParent().getParent().getParent().getParent().getParent()).removeFromList(((TestCasePanel)delete.getParent()));
 			} catch (Exception e){
 				e.printStackTrace();

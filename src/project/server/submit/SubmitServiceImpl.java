@@ -20,15 +20,22 @@ import project.client.submission.SubmitService;
 import project.client.tests.TestCaseInfo;
 import project.client.tests.UnitTestInfo;
 import project.client.userstory.UserStoryInfo;
-
+/*This is the most important file in the project
+ * It takes care of pretty much everything
+ * It decides what info/microtask to serve to client
+ * It saves the data from the client
+ * It locks files that are in use
+ * It rolls back changes if it notices something is wrong
+ * It also deletes all datastore entries on page refresh for testing
+ * MAKE SURE TO DISABLE THIS BEFORE YOU LET USERS IN
+ */
 @SuppressWarnings("serial")
 public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitService {	
 	/**
 	 * 
 	 */
 	
-	private Logger logger = Logger.getLogger("NameOfYourLogger");
-	//private DAO d=new DAO();
+	private Logger logger = Logger.getLogger("NameOfYourLogger");  //used since println doesn't work serverside
 
 	public InfoObject retrieve(LoginInfo info){
 		Objectify o=ObjectifyService.beginTransaction();	
@@ -37,7 +44,7 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		while(true){
 			try{
 				pInfo=chooseRandomly();
-				pInfo.setCheckedOut(true);
+				pInfo.setCheckedOut(true);  //for file locking
 				o.getTxn().commit();
 				logger.log(Level.SEVERE, "Successful pull");
 				break;
@@ -67,40 +74,9 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 			return transferToClient((UnitTestPersist)pInfo);
 		return null;
 	}
-
-
-	/*@Deprecated
-	private PersistObject chooseRandomly(UserStoryPersist story){
-		ArrayList<PersistObject> list = new ArrayList<PersistObject>();
-		if(!story.isDone()&&!story.isCheckedOut());
-			list.add(story);//add story
-		
-		EntryPointPersist ePoint=story.getChild();
-		if(!ePoint.isDone()&&!ePoint.isCheckedOut());
-			list.add(ePoint);  //add entry point
-		
-		for(EntryMethodPersist e:ePoint.getAllMethods()){
-			TestCasePersist t=e.getTest();
-			AceEditorPersist cip = e.getCode();
-			if(!t.isDone()&&!t.isCheckedOut())
-				list.add(t);
-			if(!cip.isDone()&&!cip.isCheckedOut())
-				list.add(cip);
-			
-			for(UnitTestPersist u:t.getAllUnitTests()){
-				if(!u.isDone()&&!u.isCheckedOut())
-					list.add(u);
-			}
-		}		
-		if(list.size()==0)
-			return null;
-		int a=(int)(Math.random()*list.size());
-		PersistObject p=list.get(a);
-		return p;
-	}*/
 	
 	
-	private PersistObject chooseRandomly(){
+	private PersistObject chooseRandomly(){ //randomly chooses microtask
 		Objectify o = ObjectifyService.begin();
 		Query<PersistObject> q = o.query(PersistObject.class).filter("isDone", false).filter("checkedOut", false);
 		List<PersistObject> list = q.list();
@@ -128,7 +104,8 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 	}
 	
 	
-	private UserStoryInfo transferToClient(UserStoryPersist pInfo){
+	private UserStoryInfo transferToClient(UserStoryPersist pInfo){  //transfer to client just moves all the info from a persist class
+																	 //to an info class, so it can be served to client
 		UserStoryInfo result=new UserStoryInfo();
 		result.setStory(pInfo.getStory());
 		result.setName(pInfo.getName());
@@ -186,10 +163,10 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 	}
 	
 
-	public void submit(InfoObject info) {
+	public void submit(InfoObject info) {  //on submit, transfers information from client to server
 		Objectify o = ObjectifyService.begin();
 		
-		Query<PersistObject> q = o.query(PersistObject.class);//.filter("isDone", false).filter("checkedOut", false);
+		Query<PersistObject> q = o.query(PersistObject.class);
 		List<PersistObject> l=q.list();
 		String s="";
 		for(PersistObject p:l)
@@ -206,7 +183,7 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		else if(info instanceof AceEditorInfo)
 			transferToServer(o, (AceEditorInfo)info);
 		
-		q = o.query(PersistObject.class);//.filter("isDone", false).filter("checkedOut", false);
+		q = o.query(PersistObject.class);
 		l=q.list();
 		s="\n";
 		for(PersistObject p:l)
@@ -219,7 +196,9 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 
 
 
+	@SuppressWarnings("unchecked")
 	private void transferToServer(Objectify o, UserStoryInfo info){
+		@SuppressWarnings("rawtypes")
 		Key k=new Key<UserStoryPersist>(UserStoryPersist.class, info.getKeyString());
 		UserStoryPersist pInfo=o.get(k);
 		
@@ -231,10 +210,10 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		o.put(pInfo);
 		
 		pInfo=o.get(k);
-		logger.log(Level.SEVERE, ""+pInfo.isDone());
-
 	}
+	@SuppressWarnings("unchecked")
 	private void transferToServer(Objectify o, EntryPointInfo info){
+		@SuppressWarnings("rawtypes")
 		Key k=new Key<EntryPointPersist>(EntryPointPersist.class, info.getKeyString());
 		EntryPointPersist pInfo=o.get(k);
 		
@@ -248,16 +227,10 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 			EntryMethodInfo p=info.getMethod(x);
 			e.setMethodDescription(p.getDescription());
 			e.setMethodName(p.getName());
-			
-		/*	for(int i=0; i<p.getNumParameters(); i++){
-				e.addParameter(p.getParameter(i));
-				logger.log(Level.SEVERE, i+"");
-			}*/
 			e.setParameters(p.getParameters());
 			e.newTest();
 			e.newCode();
 			pInfo.addMethod(e);
-			
 
 		}
 		pInfo.setDone(info.isDone());
@@ -268,7 +241,9 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		logger.log(Level.SEVERE, ""+pInfo.isDone());
 
 	}
+	@SuppressWarnings("unchecked")
 	private void transferToServer(Objectify o, TestCaseInfo info){
+		@SuppressWarnings("rawtypes")
 		Key k=new Key<TestCasePersist>(TestCasePersist.class, info.getKeyString());
 		TestCasePersist pInfo=o.get(k);
 		
@@ -286,9 +261,11 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		logger.log(Level.SEVERE, ""+pInfo.isDone());
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void transferToServer(Objectify o, AceEditorInfo info) {
+		@SuppressWarnings("rawtypes")
 		Key k=new Key<AceEditorPersist>(AceEditorPersist.class, info.getKeyString());
-		AceEditorPersist pInfo = o.get(k);  //nullpointer
+		AceEditorPersist pInfo = o.get(k);
 
 		pInfo.setDescription(info.getDescription());
 		pInfo.setCode(info.getCode());
@@ -305,7 +282,9 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void transferToServer(Objectify o, UnitTestInfo info){
+		@SuppressWarnings("rawtypes")
 		Key k=new Key<UnitTestPersist>(UnitTestPersist.class, info.getKeyString());
 		UnitTestPersist pInfo=o.get(k);
 		
@@ -322,27 +301,18 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements SubmitSer
 	
 	public UserStoryInfo create(UserStoryInfo info){
 		Objectify o=ObjectifyService.begin();
-		try{
 			UserStoryPersist pInfo=new UserStoryPersist();					
 			pInfo.newChild();
 			pInfo.setStory(info.getStory());
 			pInfo.setName(info.getName());
 			o.put(pInfo);
 			info.setKeyString(pInfo.getId());
-			//o.getTxn().commit();
-			return info;
-		} finally{
-			//if(o.getTxn().isActive()){
-				//o.getTxn().rollback();
-				//logger.log(Level.SEVERE, "Transmission still active, rolling back");
-			//}
-		}
-		
+			return info;		
 	}
 	
 	public void register(){
 		Register a=new Register();
-		//clears memory
+		//clears memory, REMOVE ONCE REAL USERS JOIN
 		Objectify o=ObjectifyService.begin();
 		o.delete(o.query(UserStoryPersist.class).fetchKeys());
 		o.delete(o.query(UnitTestPersist.class).fetchKeys());

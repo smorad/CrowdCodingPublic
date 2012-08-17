@@ -13,11 +13,10 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
+//Just the terms of service in HTML
 public class TOSWidget extends VerticalPanel{
 	public TOSWidget(final LoginInfo loginInfo){
 		System.out.println("tos constructor start");
-	//ScrollPanel panel = new ScrollPanel();
 	TextArea area = new TextArea();
 	HTML html = new HTML();
 	area.setStyleName("dialogVPanel");
@@ -25,7 +24,6 @@ public class TOSWidget extends VerticalPanel{
 	DOM.setStyleAttribute(area.getElement(), "width", "1150px");  //fixes size error on firefox
 	DOM.setStyleAttribute(area.getElement(), "height", "768px");
 	area.setSize("1150px", "768px");
-	//add(area);
 	add(html);
 	System.out.println("area added, text not set");
 	String text =
@@ -312,8 +310,6 @@ public class TOSWidget extends VerticalPanel{
 			"identifiable information. This Privacy Policy applies solely to information collected by"+
 			"CrowdCoding via the Service.<p><br><br><br>"
 			;
-/*	area.setText(text);
-	area.setReadOnly(true);*/
 	html.setHTML(text);
 	System.out.println("step3");
 	Button b = new Button("Return");

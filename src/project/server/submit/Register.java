@@ -1,7 +1,9 @@
 package project.server.submit;
 
 import com.googlecode.objectify.ObjectifyService;
-
+/*Registers classes with objectify
+ * If adding a new info/persist class, register the persist class here
+ */
 public class Register {
 	static{
 		//temporary solution for testing purposes

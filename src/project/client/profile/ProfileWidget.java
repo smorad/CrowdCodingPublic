@@ -9,57 +9,39 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
-import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
 public class ProfileWidget extends ScreenWidget {
-	private SliderWidget main = new SliderWidget("User Story");
-	private SliderWidget ePoint = new SliderWidget("Entry Point");
-	private SliderWidget sketch = new SliderWidget("Sketch/Impl");
-	private SliderWidget testCase = new SliderWidget("Test Case");
-	private SliderWidget unit = new SliderWidget("Unit Test");
+	private ProfilePanel s;
 
 
-
-	private TextBox nameBox;
 	private Button cancelButton;
 
 	private ScreenWidget other;
 
-	private final int height=SliderWidget.getSliderHeight()+10;
+	
 
 	public ProfileWidget(ScreenWidget other) {
+		System.out.println("Printing");
 		this.other=other;
+		mainPanel.setSpacing(0);
 		setSize("1150px", "768px");
 		override();
 		UI();
-		nameBox.setText(loginInfo.getNickname());
+		
 	}
 
 	@Override
 	public void UI() {
-		main.setCurrentValue(loginInfo.getUserStory());
-		mainPanel.add(main);
+		s=new ProfilePanel(loginInfo);
+		mainPanel.add(s);
+
+		s.addSlider("User Story", loginInfo.getUserStory());
+		s.addSlider("EntryPoint", loginInfo.getePoint());
+		s.addSlider("Sketch/Impl", loginInfo.getSketch());
+		s.addSlider("Test Case", loginInfo.getTestCase());
+		s.addSlider("Unit Test", loginInfo.getUnit());
 		
-		ePoint.setCurrentValue(loginInfo.getePoint());
-		mainPanel.add(ePoint);
-		
-		sketch.setCurrentValue(loginInfo.getSketch());
-		mainPanel.add(sketch);
-		
-		testCase.setCurrentValue(loginInfo.getTestCase());
-		mainPanel.add(testCase);
-		
-		unit.setCurrentValue(loginInfo.getUnit());
-		mainPanel.add(unit);
-		
-		HorizontalPanel h=new HorizontalPanel();
-		mainPanel.add(h);
-		Label l=new Label("Nickname is: ");
-		h.add(l);
-		nameBox=new TextBox();
-		//nameBox.setText("1");
-		h.add(nameBox);	
 		cancelButton=new Button("Cancel");
 		horizontalPanel.add(cancelButton);
 		cancelButton.addClickHandler(new ClickHandler(){
@@ -90,14 +72,13 @@ public class ProfileWidget extends ScreenWidget {
 	}
 	
 	private void savePrefs(){
-		loginInfo.setNickname(nameBox.getText());
+		loginInfo.setNickname(s.getNickname());
 		
-		loginInfo.setUserStory(main.getCurrentValue());
-		//System.out.println(loginInfo.getUserStory());
-		loginInfo.setePoint(ePoint.getCurrentValue());
-		loginInfo.setSketch(sketch.getCurrentValue());
-		loginInfo.setTestCase(testCase.getCurrentValue());
-		loginInfo.setUnit(unit.getCurrentValue());
+		loginInfo.setUserStory(s.getSlider(0).getCurrentValue());
+		loginInfo.setePoint(s.getSlider(1).getCurrentValue());
+		loginInfo.setSketch(s.getSlider(2).getCurrentValue());
+		loginInfo.setTestCase(s.getSlider(3).getCurrentValue());
+		loginInfo.setUnit(s.getSlider(4).getCurrentValue());
 	}
 	
 

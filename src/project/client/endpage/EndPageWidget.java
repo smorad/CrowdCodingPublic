@@ -5,6 +5,8 @@ import com.google.gwt.user.client.ui.Label;
 import project.client.login.LoginInfo;
 import project.client.screen.ScreenWidget;
 
+
+//This is shown when no microtasks are available
 public class EndPageWidget extends ScreenWidget {
 
 	public EndPageWidget() {

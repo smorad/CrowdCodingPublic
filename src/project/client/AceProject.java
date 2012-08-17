@@ -1,5 +1,4 @@
 package project.client;
-
 import project.client.editor.AceEditorInfo;
 import project.client.editor.AceEditorWidget;
 import project.client.endpage.EndPageWidget;
@@ -26,6 +25,11 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+/* This is here to start all the services and serve as an entrypoint
+ * Depending on which info type the server serves, this will load the appropriate widget
+ * with the info served
+ * If you are adding a new service/RPC, initialize it here
+ */
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -101,7 +105,6 @@ public class AceProject implements EntryPoint {
 						storyInfo = info;
 						editor = new UserStoryWidget((UserStoryInfo) storyInfo);
 						RootPanel.get("ace").add(new ScrollPanel(editor));
-						//RootPanel.get().add(new ProfileWidget(loginInfo));
 						System.out.println("Success");
 					}
 				});
@@ -143,7 +146,6 @@ public class AceProject implements EntryPoint {
 
 	public static void submit() {
 		editor.submit();
-		// System.out.println(storyInfo.isDone());
 		if(editor instanceof EditorContainer)
 			((EditorContainer) editor).clearTimer();
 		RootPanel.get("ace").clear();

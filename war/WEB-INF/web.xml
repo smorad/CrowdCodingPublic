@@ -4,7 +4,7 @@
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee">
-
+<!-- REGISTER ALL YOUR SERVICES HERE, JUST COPY WHAT I DID FOR THE OTHER SERVICES FOR YOUR OWN SERVICE -->
   <!-- Servlets -->
   <servlet>
     <servlet-name>SubmitServiceImpl</servlet-name>

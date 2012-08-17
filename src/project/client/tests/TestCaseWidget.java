@@ -14,7 +14,7 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-
+//Most of the magic happens in testcasepanel
 public class TestCaseWidget extends ScreenWidget {
 	private ArrayList<TestCasePanel> testCase;
 	private TestCaseInfo tInfo;
@@ -39,30 +39,18 @@ public class TestCaseWidget extends ScreenWidget {
 		h.setStyleName("h1");
 		instructions.add(h);
 		testCase = new ArrayList<TestCasePanel>();
-		/*Label lblDescribeTestCases = new Label("Describe test cases");
-		mainPanel.add(lblDescribeTestCases);*/
-		//mainPanel.setWidgetLeftWidth(lblDescribeTestCases, 336.0, Unit.PX, 125.0, Unit.PX);
-		//mainPanel.setWidgetTopHeight(lblDescribeTestCases, 13.0, Unit.PX, 42.0, Unit.PX);
-		
-		TextArea methodBox=new TextArea();
+
+		TextArea methodBox=new TextArea();  //this should probably be changed to HTML in the future
 		methodBox.setText(methodDescription);
 		methodBox.setReadOnly(true);
 		methodBox.setStyleName("dialogVPanel");  //makes the font black instead of grey
 		mainPanel.add(methodBox);
-		//mainPanel.setWidgetLeftWidth(methodBox, 79.0, Unit.PX, 604.0, Unit.PX);
-		//mainPanel.setWidgetTopHeight(methodBox, 44.0, Unit.PX, 189.0, Unit.PX);
+		
 		DOM.setStyleAttribute(methodBox.getElement(), "border", "1px");  //removes border
 		DOM.setStyleAttribute(methodBox.getElement(), "width", "750px");  //fixes size error on firefox
 		DOM.setStyleAttribute(methodBox.getElement(), "height", "80px");
-
-		//mainPanel.setWidgetLeftWidth(lblTestCaseDescription, 336.0, Unit.PX, 134.0,
-				//Unit.PX);
-		//mainPanel.setWidgetTopHeight(lblTestCaseDescription, 239.0, Unit.PX, 42.0,
-				//Unit.PX);
-								
+	
 		btnNewTestCase = new Button("New test case");
-		//mainPanel.setWidgetLeftWidth(btnNewTestCase, 492.0, Unit.PX, 81.0, Unit.PX);
-		//mainPanel.setWidgetTopHeight(btnNewTestCase, 249.0, Unit.PX, 32.0, Unit.PX);
 		btnNewTestCase.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				createTextBox();
@@ -70,21 +58,18 @@ public class TestCaseWidget extends ScreenWidget {
 		});
 		btnNewTestCase.setText("Add test");
 		createTextBox();
-		//mainPanel.add(btnNewTestCase);
 	}
 	
-	private void createTextBox() {
+	private void createTextBox() { //when the user clicks addtestcase
 		testCase.add(new TestCasePanel());
 		TestCasePanel currentPanel = (TestCasePanel) testCase.get(testCase.size() - 1);
 		currentPanel.setVerticalAlignment(ALIGN_TOP);
 		testContainer.add(currentPanel);
 		mainPanel.add(testContainer);
 		mainPanel.add(btnNewTestCase);
-		//mainPanel.setWidgetLeftWidth(currentPanel, 100.0, Unit.PX, 650.0, Unit.PX);
-		//mainPanel.setWidgetTopHeight(currentPanel, 287+35*(testCase.size()-1), Unit.PX, 44, Unit.PX);
 	}
 	
-	public void removeFromList(TestCasePanel panel){
+	public void removeFromList(TestCasePanel panel){  //when the user clicks deleted on selected testcase
 		testCase.remove(panel);
 		testContainer.remove(panel);
 		for(int x=0; x<testCase.size(); x++)
@@ -92,8 +77,6 @@ public class TestCaseWidget extends ScreenWidget {
 		for(int x=0; x<testCase.size(); x++){
 			TestCasePanel currentPanel=testCase.get(x);
 			testContainer.add(currentPanel);
-		//	mainPanel.setWidgetLeftWidth(currentPanel, 100.0, Unit.PX, 650.0, Unit.PX);
-		//	mainPanel.setWidgetTopHeight(currentPanel, 287+(x*35), Unit.PX, 44, Unit.PX);
 		}
 	}
 	

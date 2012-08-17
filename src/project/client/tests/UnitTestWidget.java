@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.TextArea;
-
+//This one is pretty simple and self explanatory
 public class UnitTestWidget extends  EditorContainer{
 	private UnitTestInfo uInfo;
 	private String description, testCase;
@@ -27,18 +27,12 @@ public class UnitTestWidget extends  EditorContainer{
 				"write a JsUnit test. Try to write as much as possible, don't worry about processing cycles or storage limits!");
 		instructions.add(h);
 		setSize("1150px", "768px");
-		/*Label lblWriteAUnit = new Label("Write a Unit Test");
-		mainPanel.add(lblWriteAUnit);*/
-		//mainPanel.setWidgetLeftWidth(lblWriteAUnit, 324.0, Unit.PX, 319.0, Unit.PX);
-		//mainPanel.setWidgetTopHeight(lblWriteAUnit, 26.0, Unit.PX, 58.0, Unit.PX);
 		
-		TextArea txtrMethodDescription = new TextArea();
+		TextArea txtrMethodDescription = new TextArea(); //this should probably be changed to HTML in the future
 		txtrMethodDescription.setReadOnly(true);
 		txtrMethodDescription.setText(description);
 		mainPanel.add(txtrMethodDescription);
 		txtrMethodDescription.setStyleName("dialogVPanel");  //makes the font black instead of grey
-		//mainPanel.setWidgetLeftWidth(txtrMethodDescription, 86.0, Unit.PX, 631.0, Unit.PX);
-		//mainPanel.setWidgetTopHeight(txtrMethodDescription, 90.0, Unit.PX, 106.0, Unit.PX);
 		DOM.setStyleAttribute(txtrMethodDescription.getElement(), "border", "1px");  //removes border
 		DOM.setStyleAttribute(txtrMethodDescription.getElement(), "width", "600px");  //fixes size error on firefox
 		DOM.setStyleAttribute(txtrMethodDescription.getElement(), "height", "80px");
@@ -47,14 +41,10 @@ public class UnitTestWidget extends  EditorContainer{
 		txtbxTestCase.setText(testCase);
 		txtbxTestCase.setReadOnly(true);
 		mainPanel.add(txtbxTestCase);
-		//mainPanel.setWidgetLeftWidth(txtbxTestCase, 86.0, Unit.PX, 631.0, Unit.PX);
-		//mainPanel.setWidgetTopHeight(txtbxTestCase, 202.0, Unit.PX, 32.0, Unit.PX);
 		
 		aceEditor.setWidth("652px");
 		aceEditor.setHeight("300px");
 		mainPanel.add(aceEditor);
-		//mainPanel.setWidgetLeftWidth(aceEditor, 86.0, Unit.PX, 631.0, Unit.PX);
-		//mainPanel.setWidgetTopHeight(aceEditor, 240.0, Unit.PX, 343.0, Unit.PX);
 	}
 
 	

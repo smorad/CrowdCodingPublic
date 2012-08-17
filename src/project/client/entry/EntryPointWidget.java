@@ -1,5 +1,7 @@
 package project.client.entry;
-
+/*This widget is the entry point widget. When users create a new method
+ * they create a new entrypointtab, where you can add parameters
+ */
 import java.util.Iterator;
 
 import project.client.login.LoginInfo;
@@ -40,7 +42,7 @@ public class EntryPointWidget extends ScreenWidget{
 				"a detailed description of what the method does, and what is returned. " +
 				"Don't forget to give your methods names and types!");
 		instructions.add(h);
-		text=new TextArea();
+		text=new TextArea(); //this should probably be changed to HTML in the future
 		
 		text.setText(story);
 		text.setReadOnly(true);
@@ -50,27 +52,15 @@ public class EntryPointWidget extends ScreenWidget{
 		DOM.setStyleAttribute(text.getElement(), "minHeight","100px");
 		DOM.setStyleAttribute(text.getElement(), "width", "600px");  //fixes size error on firefox
 		DOM.setStyleAttribute(text.getElement(), "height", "80px");
-		//text.setEnabled(false);
 		mainPanel.add(text);
-		//mainPanel.setWidgetLeftWidth(text, 76.0, Unit.PX, 597.0, Unit.PX);
-		//mainPanel.setWidgetTopHeight(text, 77.0, Unit.PX, 82.0, Unit.PX);
-
-	/*	Label title=new Label("Identify the entry point necessary for this user story");
-		mainPanel.add(title);*/
-		//mainPanel.setWidgetLeftWidth(title, 207.0, Unit.PX, 311.0, Unit.PX);
-		//mainPanel.setWidgetTopHeight(title, 0.0, Unit.PX, 49.0, Unit.PX);
 		
 		tabs=new TabPanel();
 		tabs.setSize("450px", "320px");
 		tabs.setAnimationEnabled(true);
 		mainPanel.add(tabs);
-		//mainPanel.setWidgetLeftWidth(tabs, 40.0, Unit.PX, 685.0, Unit.PX);
-		//mainPanel.setWidgetTopHeight(tabs, 190.0, Unit.PX, 320.0, Unit.PX);
 		
 		Button addMethodButton=new Button("Add Method");
 		mainPanel.add(addMethodButton);
-		//mainPanel.setWidgetLeftWidth(addMethodButton, 76.0, Unit.PX, 119.0, Unit.PX);
-		//mainPanel.setWidgetTopHeight(addMethodButton, 611.0, Unit.PX, 28.0, Unit.PX);
 		addMethodButton.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event){
 				addTab();
@@ -79,8 +69,6 @@ public class EntryPointWidget extends ScreenWidget{
 		
 		Button delMethodButton = new Button("Delete Method");
 		mainPanel.add(delMethodButton);
-		//mainPanel.setWidgetLeftWidth(delMethodButton, 207.0, Unit.PX, 119.0, Unit.PX);
-		//mainPanel.setWidgetTopHeight(delMethodButton, 611.0, Unit.PX, 28.0, Unit.PX);
 		delMethodButton.setSize("119px", "28px");
 		delMethodButton.addClickHandler(new ClickHandler(){
 			@Override
@@ -104,7 +92,7 @@ public class EntryPointWidget extends ScreenWidget{
 	public void submit(){
 		Iterator<Widget> i=tabs.iterator();
 		
-		for(int x=0; x<numTabs; x++){
+		for(int x=0; x<numTabs; x++){ //gets info from entrypointtab and saves it in einfo object
 			EntryPointTab info=(EntryPointTab)i.next();
 			EntryMethodInfo e=new EntryMethodInfo();
 			e.setMethodName(info.getName());

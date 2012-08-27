@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -46,6 +48,13 @@ public class EntryPointTab extends VerticalPanel {
 
 		methodName = new TextBox();
 		methodName.setText("Method name goes here.");
+		methodName.addKeyUpHandler(new KeyUpHandler() {
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				EntryPointWidget.updateTitle(methodName.getText());
+			}
+
+		});
 		panel.add(methodName);
 		panel.setWidgetLeftWidth(methodName, 0.0, Unit.PX, 275, Unit.PX);
 		panel.setWidgetTopHeight(methodName, labelHeight * 3 + 5, Unit.PX,

@@ -18,8 +18,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class EntryPointWidget extends ScreenWidget {
 	private TextArea text;
-	private TabPanel tabs;
-	private int numTabs;
+	private static TabPanel tabs;
+	private static int numTabs;
 	private final String story;
 	private final EntryPointInfo eInfo;
 	private final HTML h = new HTML();
@@ -117,5 +117,12 @@ public class EntryPointWidget extends ScreenWidget {
 
 	public EntryPointInfo getInfo() {
 		return eInfo;
+	}
+
+	public static void updateTitle(String text2) {
+		for (int x = 0; x < numTabs; x++) {
+			tabs.getTabBar().setTabText(tabs.getTabBar().getSelectedTab(),
+					text2);
+		}
 	}
 }

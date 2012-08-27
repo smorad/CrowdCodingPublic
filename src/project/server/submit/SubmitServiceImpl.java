@@ -120,6 +120,7 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements
 			EntryMethodInfo e = new EntryMethodInfo();
 			e.setMethodDescription(p.getDescription());
 			e.setMethodName(p.getName());
+			e.setReturnType(p.getReturnType()); // added
 			for (int i = 0; i < p.getNumParameters(); i++)
 				e.addParameter(p.getParameter(i));
 			result.addMethod(e);
@@ -225,6 +226,7 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements
 			e.setMethodDescription(p.getDescription());
 			e.setMethodName(p.getName());
 			e.setParameters(p.getParameters());
+			e.setReturnType(p.getReturnType());
 			e.newTest();
 			e.newCode();
 			pInfo.addMethod(e);

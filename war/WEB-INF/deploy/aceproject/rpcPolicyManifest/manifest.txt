@@ -1,2 +1,8 @@
 # Module aceproject
 # RPC service class, partial path of RPC policy file
+project.client.points.PointUpdateService, D25B3302669734374461342FE4B3908E.gwt.rpc
+com.google.gwt.gen2.logging.handler.client.RemoteLogHandler.Service, CB6011C3122C25CB5209108BFFF191A0.gwt.rpc
+com.google.gwt.logging.shared.RemoteLoggingService, 01AB472CB0F19231258622E0CA899D66.gwt.rpc
+project.client.login.LoginService, CDCA161143A4CD2AE90C959C917AC0FD.gwt.rpc
+project.client.submission.SubmitService, 366CCE0492EDE316C15B0BB50E3983D6.gwt.rpc
+project.client.screen.SubmitService, 5D811B84D08495D02F245B1AAAAE598A.gwt.rpc

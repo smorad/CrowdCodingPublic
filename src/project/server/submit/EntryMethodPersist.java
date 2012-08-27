@@ -18,14 +18,13 @@ public class EntryMethodPersist {
 	private Long id;
 	private String methodDescription;
 	private String methodName;
-	private ArrayList<String> parameters; // causing oom error
+	private ArrayList<String> parameters;
 	private Key<TestCasePersist> test;// child
 	private Key<AceEditorPersist> code; // child
 	private boolean isDone;
 	private String returnType;
 
 	public void setMethodDescription(String description) {
-
 		methodDescription = description;
 		if (test != null) {
 			Logger.getLogger("NameOfYourLogger").log(Level.SEVERE,
@@ -95,6 +94,7 @@ public class EntryMethodPersist {
 		AceEditorPersist a = new AceEditorPersist();
 		a.setDescription(methodDescription);
 		a.setMethodName(methodName);
+		a.setReturnType(returnType);
 		if (parameters != null)
 			a.setParameters(parameters);
 		else {
@@ -132,6 +132,14 @@ public class EntryMethodPersist {
 	public String info() {
 		return "methodDescription is: " + methodDescription
 				+ "\nmethodName is: " + methodName;
+	}
+
+	public String getReturnType() {
+		return returnType;
+	}
+
+	public void setReturnType(String returnType2) {
+		returnType = returnType2;
 	}
 
 }

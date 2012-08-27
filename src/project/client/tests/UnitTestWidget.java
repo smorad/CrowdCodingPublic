@@ -50,7 +50,7 @@ public class UnitTestWidget extends EditorContainer {
 		txtbxTestCase.setReadOnly(true);
 		mainPanel.add(txtbxTestCase);
 
-		aceEditor.setWidth("652px");
+		aceEditor.setWidth("750px");
 		aceEditor.setHeight("300px");
 		mainPanel.add(aceEditor);
 	}

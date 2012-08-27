@@ -1,30 +1,21 @@
 package project.client.entry;
 
 import java.util.ArrayList;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
-
 import project.client.InfoObject;
 import project.client.editor.AceEditorInfo;
 import project.client.tests.TestCaseInfo;
-
 
 public class EntryMethodInfo implements IsSerializable, InfoObject{
 
 	private boolean isDone;
 	private String methodDescription;
-	
 	private String methodName;
-	
 	private Long keyString;
-	
 	private String returnType;
-	
 	private ArrayList<String> parameters;
-	
-	private TestCaseInfo test;//child
-	
-	private AceEditorInfo code; //child  //causing problems
+	private TestCaseInfo test; //child
+	private AceEditorInfo code; //child  
 	
 	public EntryMethodInfo(){
 		methodDescription="description";
@@ -32,7 +23,7 @@ public class EntryMethodInfo implements IsSerializable, InfoObject{
 		returnType="type";
 		parameters=new ArrayList<String>();
 		test=new TestCaseInfo();
-		code = new AceEditorInfo(); //causing problems
+		code = new AceEditorInfo();
 	}
 	
 	public void setMethodDescription(String description){
@@ -41,18 +32,23 @@ public class EntryMethodInfo implements IsSerializable, InfoObject{
 		code.setDescription(description);
 		System.out.println("editor object created with desc: "+ description);
 	}
+	
 	public void setMethodName(String name){
 		methodName=name;
 	}
+	
 	public void addParameter(String parameter){
 		parameters.add(parameter);
 	}
+	
 	public void setParameters(ArrayList<String> parameters){
 		this.parameters=parameters;
 	}
+	
 	public void removeParameter(String parameter){
 		parameters.remove(parameter);
 	}
+	
 	public void removeParameter(int index){
 		parameters.remove(index);
 	}
@@ -60,19 +56,24 @@ public class EntryMethodInfo implements IsSerializable, InfoObject{
 	public String getDescription(){
 		return methodDescription;
 	}
+	
 	public String getName(){
 		return methodName;
 	}
+	
 	public String getParameter(int index){
 		return parameters.get(index);
 	}
+	
 	public int getNumParameters(){
 		return parameters.size();
 	}
 	
+	
 	public void addTest(){
 		test=new TestCaseInfo();
 	}
+	
 	public void removeTest(){
 		test=null;
 	}
@@ -80,9 +81,11 @@ public class EntryMethodInfo implements IsSerializable, InfoObject{
 	public TestCaseInfo getTest(){
 		return test;
 	}
+	
 	public boolean isDone(){
 		return isDone;
 	}
+	
 	public void setDone(boolean bool){
 		isDone=bool;
 	}
@@ -90,11 +93,12 @@ public class EntryMethodInfo implements IsSerializable, InfoObject{
 	public void setKeyString(Long s){
 		keyString=s;
 	}
+	
 	public Long getKeyString(){
 		return keyString;
 	}
 	
-	//for testing
+	//for testing, this prints out debug info
 	public String info(){
 		return "methodDescription is: "+methodDescription
 				+"\nmethodName is: "+methodName;
@@ -111,9 +115,4 @@ public class EntryMethodInfo implements IsSerializable, InfoObject{
 	public ArrayList<String> getParameters() {
 	return parameters;
 	}
-	
-	
-	
-	
-	
 }

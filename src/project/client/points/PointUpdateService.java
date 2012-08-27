@@ -8,5 +8,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("points")
 public interface PointUpdateService extends RemoteService {
 	List<String> updatedList();
+
 	Long updatedPoints();
 }

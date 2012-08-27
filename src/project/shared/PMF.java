@@ -7,12 +7,13 @@ import javax.jdo.PersistenceManagerFactory;
 //But Objectify is based on JDO so I'm not sure
 //Chances are we don't, but I'm being safe
 public final class PMF {
-    private static final PersistenceManagerFactory pmfInstance =
-        JDOHelper.getPersistenceManagerFactory("transactions-optional");
+	private static final PersistenceManagerFactory pmfInstance = JDOHelper
+			.getPersistenceManagerFactory("transactions-optional");
 
-    private PMF() {}
+	private PMF() {
+	}
 
-    public static PersistenceManagerFactory get() {
-        return pmfInstance;
-    }
+	public static PersistenceManagerFactory get() {
+		return pmfInstance;
+	}
 }

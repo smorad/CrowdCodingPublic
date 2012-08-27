@@ -1,70 +1,76 @@
 package project.client.userstory;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
 import project.client.InfoObject;
 import project.client.entry.EntryPointInfo;
 
-public class UserStoryInfo implements IsSerializable, InfoObject{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class UserStoryInfo implements IsSerializable, InfoObject {
 
 	private boolean isDone;
 	private String story;
 	private String name;
-
-	private EntryPointInfo childInfo;//child
+	private EntryPointInfo childInfo;// child
 	private Long keyString;
-	
-	public UserStoryInfo(){
-		story="story";
-		name="name";
-		childInfo=new EntryPointInfo();
+
+	public UserStoryInfo() {
+		story = "story";
+		name = "name";
+		childInfo = new EntryPointInfo();
 	}
-		
-	public void setStory(String story){
-		this.story=story;
+
+	public void setStory(String story) {
+		this.story = story;
 		childInfo.setStory(story);
 	}
-	
-	public String getStory(){
+
+	public String getStory() {
 		return story;
 	}
-	
-	public void deleteChild(){
-		childInfo=new EntryPointInfo();
+
+	public void deleteChild() {
+		childInfo = new EntryPointInfo();
 	}
-	
-	public EntryPointInfo getChild(){
+
+	public EntryPointInfo getChild() {
 		return childInfo;
 	}
-	public void setChild(EntryPointInfo c){
-		childInfo=c;
+
+	public void setChild(EntryPointInfo c) {
+		childInfo = c;
 	}
-	
-	public void setName(String name){
-		this.name=name;
+
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
-	public boolean isDone(){
+
+	@Override
+	public boolean isDone() {
 		return isDone;
 	}
-	public void setDone(boolean bool){
-		isDone=bool;
+
+	@Override
+	public void setDone(boolean bool) {
+		isDone = bool;
 	}
-	public void setKeyString(Long s){
-		keyString=s;
+
+	@Override
+	public void setKeyString(Long s) {
+		keyString = s;
 	}
-	public Long getKeyString(){
+
+	@Override
+	public Long getKeyString() {
 		return keyString;
 	}
-	
-	//for testing
-	public String info(){
-		return "name is: "+name
-				+"\nstory is: "+story;
+
+	// for testing
+	@Override
+	public String info() {
+		return "name is: " + name + "\nstory is: " + story;
 	}
-	
-	
-	
 }

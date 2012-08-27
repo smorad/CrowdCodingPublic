@@ -28,10 +28,8 @@ public class EntryPointWidget extends ScreenWidget{
 	
 	public EntryPointWidget(EntryPointInfo eInfo){
 		setSize("1150px", "768px");
-		
 		this.story=eInfo.getStory();
 		this.eInfo=eInfo;
-
 		UI();
 	}
 	
@@ -43,7 +41,6 @@ public class EntryPointWidget extends ScreenWidget{
 				"Don't forget to give your methods names and types!");
 		instructions.add(h);
 		text=new TextArea(); //this should probably be changed to HTML in the future
-		
 		text.setText(story);
 		text.setReadOnly(true);
 		text.setSize("600px", "80px");
@@ -91,7 +88,6 @@ public class EntryPointWidget extends ScreenWidget{
 
 	public void submit(){
 		Iterator<Widget> i=tabs.iterator();
-		
 		for(int x=0; x<numTabs; x++){ //gets info from entrypointtab and saves it in einfo object
 			EntryPointTab info=(EntryPointTab)i.next();
 			EntryMethodInfo e=new EntryMethodInfo();
@@ -100,7 +96,6 @@ public class EntryPointWidget extends ScreenWidget{
 			e.setParameters(info.getParameters());
 			e.addTest();
 			eInfo.addMethod(e);
-			
 		}
 		eInfo.setDone(true);
 	}
@@ -112,6 +107,4 @@ public class EntryPointWidget extends ScreenWidget{
 	public EntryPointInfo getInfo(){
 		return eInfo;
 	}
-
-
 }

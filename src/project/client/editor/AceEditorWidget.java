@@ -30,11 +30,7 @@ public class AceEditorWidget  extends EditorContainer{
 	private TextArea lint;
 	private Timer timer;
 	private HTML h = new HTML();
-	
-	//JSLint j=new JSLintBuilder().fromDefault();
-	
-
-	
+		
 	public AceEditorWidget(AceEditorInfo aInfo ){
 		this.aInfo = aInfo;
 		this.methodDescription = aInfo.getDescription();
@@ -46,18 +42,12 @@ public class AceEditorWidget  extends EditorContainer{
 			public void run(){
 				checkSyntax();
 			}
-
 			private void checkSyntax() {
 				lint.setText("JSLint checker output: \n" +lintData);
 			}
 		};
-		
 		timer.scheduleRepeating(5000);
 	}
-	
-	
-
-	
 	
 	public void UI(){
 		h.setStyleName("h1");
@@ -68,11 +58,9 @@ public class AceEditorWidget  extends EditorContainer{
 		instructions.add(h);
 		setSize("1150px", "768px");
 		mainPanel.add(panel);
-	
+		// create AceEditor widget
 		
-		// create first AceEditor widget
-		
-		aceEditor.setWidth("652px");
+		aceEditor.setWidth("750px");
 		aceEditor.setHeight("300px");
 		TextArea textArea = new TextArea();
 		lint = new TextArea();  //This is the JsLint checker output area
@@ -102,10 +90,16 @@ public class AceEditorWidget  extends EditorContainer{
 	public void buildEditor(){
 		super.buildEditor();
 		aceEditor.setText(aInfo.getCode());
-/*		if(!aInfo.getStubCreated()){
+	}
+	
+	@Deprecated
+	public void buildEditorAndStub(){
+		super.buildEditor();
+		aceEditor.setText(aInfo.getCode());
+		if(!aInfo.getStubCreated()){
 			aceEditor.setText(method());  //autogenerates method stub in Editor. Currently not in use,
 			aInfo.setStubCreated(true);   //since method signature already generated in textArea
-		}*/
+		}
 	}
 	
 	@Deprecated
@@ -132,8 +126,6 @@ public class AceEditorWidget  extends EditorContainer{
 			s+=" null";
 		return s+";\n}";
 	}
-	
-	
 	
 	public void submit(){
 		boolean tempIsDone = true;

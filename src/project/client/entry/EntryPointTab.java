@@ -68,7 +68,6 @@ public class EntryPointTab extends VerticalPanel{
 			}
 		});
 		h.add(addParButton);
-		
 		Button removeParButton=new Button("Remove last Parameter");
 		removeParButton.setSize("200px", "30px");
 		removeParButton.addClickHandler(new ClickHandler(){
@@ -85,9 +84,11 @@ public class EntryPointTab extends VerticalPanel{
 	public String getName(){
 		return methodName.getText();
 	}
+	
 	public String getDesc(){
 		return methodDesc.getText();
 	}
+	
 	public ArrayList<String> getParameters(){
 		ArrayList<String> result=new ArrayList<String>();
 		for(int x=0; x<parameters.size(); x++)

@@ -1,4 +1,5 @@
 package project.client;
+
 import project.client.editor.AceEditorInfo;
 import project.client.editor.AceEditorWidget;
 import project.client.endpage.EndPageWidget;
@@ -21,9 +22,9 @@ import project.client.userstory.UserStoryWidget;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /* This is here to start all the services and serve as an entrypoint
  * Depending on which info type the server serves, this will load the appropriate widget
@@ -48,42 +49,49 @@ public class AceProject implements EntryPoint {
 	 * 
 	 * @wbp.parser.entryPoint
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
-	public void onModuleLoad() {		
+	public void onModuleLoad() {
 		// Check login status using login service.
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 		loginService.login(GWT.getHostPageBaseURL(),
-			new AsyncCallback<LoginInfo>() {
-		
-				public void onFailure(Throwable error) {
-				}
+				new AsyncCallback<LoginInfo>() {
 
-				public void onSuccess(final LoginInfo result) {
-					ScreenWidget.setLoginInfo(result);
-					
-					service.register(new AsyncCallback() {
-						public void onSuccess(Object t) {
-							loginInfo = result;
-							if (loginInfo.isLoggedIn()) {
-								loadEditorAndService();
-							} else {
-								loadLogin();
+					@Override
+					public void onFailure(Throwable error) {
+					}
+
+					@Override
+					public void onSuccess(final LoginInfo result) {
+						ScreenWidget.setLoginInfo(result);
+
+						service.register(new AsyncCallback() {
+							@Override
+							public void onSuccess(Object t) {
+								loginInfo = result;
+								if (loginInfo.isLoggedIn()) {
+									loadEditorAndService();
+								} else {
+									loadLogin();
+								}
+
 							}
 
-						}
-
-						public void onFailure(Throwable t) {
-							Window.alert("Didn't work");
-						}
-					});
-				}
-			});
+							@Override
+							public void onFailure(Throwable t) {
+								Window.alert("Didn't work");
+							}
+						});
+					}
+				});
 	}
 
 	private void loadLogin() {
 		if (loginPanel == null)
-			loginPanel = new LoginWidget(loginInfo); // make sure only 1 service is running
-		RootPanel.get("ace").add(new ScrollPanel(loginPanel));// see the html file for id
+			loginPanel = new LoginWidget(loginInfo); // make sure only 1 service
+														// is running
+		RootPanel.get("ace").add(new ScrollPanel(loginPanel));// see the html
+																// file for id
 	}
 
 	private void loadEditorAndService() {
@@ -96,11 +104,13 @@ public class AceProject implements EntryPoint {
 	private static void callCreate() {
 		service.create((UserStoryInfo) storyInfo,
 				new AsyncCallback<UserStoryInfo>() {
-			
+
+					@Override
 					public void onFailure(Throwable t) {
 						t.printStackTrace();
 					}
 
+					@Override
 					public void onSuccess(UserStoryInfo info) {
 						storyInfo = info;
 						editor = new UserStoryWidget((UserStoryInfo) storyInfo);
@@ -112,41 +122,43 @@ public class AceProject implements EntryPoint {
 
 	public static void instantiateRandomly(final LoginInfo loginInfo) {
 		RootPanel.get("ace").clear();
-		
-		service.retrieve(ScreenWidget.getLoginInfo(), new AsyncCallback<InfoObject>() {
-			public void onFailure(Throwable t) {
-				t.printStackTrace();
-			}
 
-			public void onSuccess(InfoObject info) {
-				storyInfo = info;
-				if (info == null) {
-					RootPanel.get("ace").clear();
-					RootPanel.get("ace").add(new EndPageWidget());
-					return;
-				}
-				if (info instanceof EntryPointInfo)
-					editor = new EntryPointWidget((EntryPointInfo) info);
-				else if (info instanceof TestCaseInfo)
-					editor = new TestCaseWidget((TestCaseInfo) info);
-				else if (info instanceof UnitTestInfo)
-					editor = new UnitTestWidget((UnitTestInfo) info);
-				else if (info instanceof UserStoryInfo)
-					editor = new UserStoryWidget((UserStoryInfo) info);
-				else if (info instanceof AceEditorInfo)
-					editor = new AceEditorWidget((AceEditorInfo) info);
+		service.retrieve(ScreenWidget.getLoginInfo(),
+				new AsyncCallback<InfoObject>() {
+					@Override
+					public void onFailure(Throwable t) {
+						t.printStackTrace();
+					}
 
-				RootPanel.get("ace").add(new ScrollPanel(editor));
-				if (editor instanceof EditorContainer)
-					((EditorContainer) editor).buildEditor();
-			}
-		});
+					@Override
+					public void onSuccess(InfoObject info) {
+						storyInfo = info;
+						if (info == null) {
+							RootPanel.get("ace").clear();
+							RootPanel.get("ace").add(new EndPageWidget());
+							return;
+						}
+						if (info instanceof EntryPointInfo)
+							editor = new EntryPointWidget((EntryPointInfo) info);
+						else if (info instanceof TestCaseInfo)
+							editor = new TestCaseWidget((TestCaseInfo) info);
+						else if (info instanceof UnitTestInfo)
+							editor = new UnitTestWidget((UnitTestInfo) info);
+						else if (info instanceof UserStoryInfo)
+							editor = new UserStoryWidget((UserStoryInfo) info);
+						else if (info instanceof AceEditorInfo)
+							editor = new AceEditorWidget((AceEditorInfo) info);
 
+						RootPanel.get("ace").add(new ScrollPanel(editor));
+						if (editor instanceof EditorContainer)
+							((EditorContainer) editor).buildEditor();
+					}
+				});
 	}
 
 	public static void submit() {
 		editor.submit();
-		if(editor instanceof EditorContainer)
+		if (editor instanceof EditorContainer)
 			((EditorContainer) editor).clearTimer();
 		RootPanel.get("ace").clear();
 		callSubmit();
@@ -155,10 +167,12 @@ public class AceProject implements EntryPoint {
 	@SuppressWarnings("rawtypes")
 	private static void callSubmit() {
 		service.submit(storyInfo, new AsyncCallback() {
+			@Override
 			public void onFailure(Throwable t) {
 				t.printStackTrace();
 			}
 
+			@Override
 			public void onSuccess(Object result) {
 				instantiateRandomly(loginInfo);
 			}

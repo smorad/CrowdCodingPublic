@@ -16,7 +16,6 @@ public class UnitTestWidget extends EditorContainer {
 		this.uInfo = uInfo;
 		this.description = uInfo.getMethodDesc();
 		this.testCase = uInfo.getTestDesc();
-
 		UI();
 	}
 
@@ -24,7 +23,9 @@ public class UnitTestWidget extends EditorContainer {
 	public void UI() {
 		h.setStyleName("h1");
 		h.setHTML("<b>This is the unit test phase. Using the test case given by another user, "
-				+ "write a JsUnit test. Try to write as much as possible, don't worry about processing cycles or storage limits!");
+				+ "write a JsUnit test. Try to write as much as possible, don't worry about processing cycles or storage limits!"
+				+ " We use QUnit tests, <a href=\"http://api.qunitjs.com/\"target=\"_blank\">here is the api,</a> "
+				+ " and some <a href=\"http://qunitjs.com/intro/\"target=\"_blank\">general information about JS unit testing.</a>");
 		instructions.add(h);
 		setSize("1150px", "768px");
 
@@ -53,6 +54,13 @@ public class UnitTestWidget extends EditorContainer {
 		aceEditor.setWidth("750px");
 		aceEditor.setHeight("300px");
 		mainPanel.add(aceEditor);
+	}
+
+	@Override
+	public void buildEditor() {
+		super.buildEditor();
+		aceEditor.setText("test( \"hello test\", function() {\n"
+				+ "ok( 1 == \"1\", \"Passed!\" );\n");
 	}
 
 	@Override

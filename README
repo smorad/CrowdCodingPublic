@@ -1,0 +1,3 @@
+Here are two projects. One is the AceEditor by DaveHo@Github, the other is the thing we worked on. Make sure you:
+
+right click AceProject in eclipse -> build path -> configure build path -> projects -> add -> AceGWT (editor) if it isn't already in the build path (it should be, so you shouldn't have to worry about this). 

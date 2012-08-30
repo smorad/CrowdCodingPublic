@@ -88,6 +88,10 @@ public abstract class ScreenWidget extends VerticalPanel {
 	// This function is messy, just read the comments at the very top for a
 	// better picture
 	private void buildUI() {
+		RootPanel.get("ace").setSize(Window.getClientWidth() + "px",
+				Window.getClientHeight() + "px"); // so horizontal scrollbar
+													// floats at the bottom of
+													// the page
 		userPointsPanel = new VerticalPanel();
 		hPanel.add(userPointsPanel);
 		userPointsPanel.setSize("250px", "40px");

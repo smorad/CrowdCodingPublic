@@ -34,7 +34,6 @@ public class LoginWidget extends VerticalPanel {
 	private final HTML h = new HTML();
 
 	public LoginWidget(final LoginInfo loginInfo) {
-		setSize("1150px", "768px");
 		this.loginInfo = loginInfo;
 		createLogin();
 		RootPanel.get("ace").getElement().setAttribute("align", "center");
@@ -53,6 +52,8 @@ public class LoginWidget extends VerticalPanel {
 	private void createLogin() {
 		VerticalPanel vPanel = new VerticalPanel(); // This vPanel gets rid of
 													// superfluous spacing
+		vPanel.setSize("1150px", "300px");
+		RootPanel.get("ace").setSize("1150px", "768px"); // For h.scrollbar
 		h.setHTML("This project is about crowdsourcing programming. We're trying to see if a complex task like "
 				+ "coding can successfully be broken up into a large number of small pieces. You can be part "
 				+ "of this project and help us test the new paradigm, especially if you have some background "
@@ -83,7 +84,7 @@ public class LoginWidget extends VerticalPanel {
 		absolutePanel.add(tos, 0, 86);
 		tos.setSize("408px", "20px");
 		vPanel.add(h);
-		vPanel.setSize("1150px", "250px");
+		// vPanel.setSize("1024px", "250px");
 		add(vPanel);
 
 		CheckBox chckbxNewCheckBox = new CheckBox(

@@ -17,7 +17,7 @@ public class EntryMethodInfo implements IsSerializable, InfoObject {
 	private String returnType;
 	private ArrayList<String> parameters;
 	private TestCaseInfo test; // child
-	private final AceEditorInfo code; // child
+	private AceEditorInfo code; // child
 
 	public EntryMethodInfo() {
 		methodDescription = "description";

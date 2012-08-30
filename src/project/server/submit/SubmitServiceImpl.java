@@ -315,15 +315,10 @@ public class SubmitServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public void register() {
-		Register a = new Register();
-		// clears memory, REMOVE ONCE REAL USERS JOIN OR THEIR DATA WILL NOT BE
+		Register a = new Register(); // register classes for objectify
+		ClearAllData b = new ClearAllData(); // clears all saved data
+		// REMOVE ONCE REAL USERS JOIN OR THEIR DATA WILL NOT BE
 		// SAVED
-		Objectify o = ObjectifyService.begin();
-		o.delete(o.query(UserStoryPersist.class).fetchKeys());
-		o.delete(o.query(UnitTestPersist.class).fetchKeys());
-		o.delete(o.query(TestCasePersist.class).fetchKeys());
-		o.delete(o.query(EntryPointPersist.class).fetchKeys());
-		o.delete(o.query(EntryMethodPersist.class).fetchKeys());
-		o.delete(o.query(AceEditorPersist.class).fetchKeys());
+
 	}
 }

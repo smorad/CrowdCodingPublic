@@ -52,7 +52,7 @@ public class LoginWidget extends VerticalPanel {
 	private void createLogin() {
 		VerticalPanel vPanel = new VerticalPanel(); // This vPanel gets rid of
 													// superfluous spacing
-		vPanel.setSize("1150px", "300px");
+		vPanel.setSize("700px", "400px");
 		RootPanel.get("ace").setSize("1150px", "768px"); // For h.scrollbar
 		h.setHTML("This project is about crowdsourcing programming. We're trying to see if a complex task like "
 				+ "coding can successfully be broken up into a large number of small pieces. You can be part "
